@@ -1,1 +1,3 @@
 venv
+bert-base-uncased_tests
+distilbert-base-uncased_tests
