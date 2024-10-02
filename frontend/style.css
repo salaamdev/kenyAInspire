@@ -1,0 +1,259 @@
+/* Custom styling for header and hero */
+.hero {
+    background-color: #007777;
+    color: white;
+    padding: 100px 0;
+    text-align: center;
+}
+.hero h1 {
+    font-size: 3rem;
+}
+.disability-icon {
+    cursor: pointer;
+    font-size: 2rem;
+}
+.learning-materials {
+    display: none;
+    margin-top: 20px;
+}
+.learning-materials.active {
+    display: block;
+}
+
+.features {
+    padding: 2rem;
+    background-color: blueviolet;
+    text-align: center;
+}
+
+.features h2 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+}
+
+.feature-card {
+    display: inline-block;
+    width: 200px;
+    padding: 1.5rem;
+    background-color: white;
+    margin: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.feature-card .icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.about {
+    padding: 2rem;
+    background-color: #f9f9f9;
+    text-align: center;
+}
+
+.about h2 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+}
+
+footer {
+    background-color: #333;
+    color: white;
+    padding: 1.5rem;
+    text-align: center;
+}
+
+footer .footer-content {
+    display: flex;
+    justify-content: space-between;
+}
+
+footer .links a, footer .social-media a {
+    color: white;
+    text-decoration: none;
+    margin: 0 0.5rem;
+}
+
+/* Student registration page */
+.registration-form {
+    background-color: mintcream;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+}
+
+.social-login-btns img {
+    height: 24px;
+    margin-right: 8px;
+}
+
+/* General styles for the dashboard */
+body {
+    background-color: #f8f9fa;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Navbar customization */
+.navbar {
+    padding: 10px 20px;
+    font-size: 18px;
+}
+
+.nav-link {
+    color: #fff !important;
+    font-weight: 500;
+}
+
+.nav-link:hover {
+    color: #ffcc00 !important;
+}
+
+/* Sidebar styles */
+.card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    background-color: #007bff;
+    color: #fff;
+    font-weight: 600;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.card-body button {
+    font-size: 16px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+/* Dashboard content area */
+h3 {
+    color: #333;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+/* Progress Bar styling */
+.progress {
+    height: 25px;
+    margin-bottom: 10px;
+}
+
+.progress-bar {
+    background-color: #28a745;
+}
+
+/* List styles for assignments and activities */
+.list-group-item {
+    font-size: 16px;
+    color: #555;
+}
+
+.list-group-item:hover {
+    background-color: #f1f1f1;
+}
+
+/* Recommended Resources */
+.card-body ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.card-body ul li {
+    font-size: 16px;
+    padding: 10px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.card-body ul li:hover {
+    background-color: #f8f9fa;
+    cursor: pointer;
+}
+
+/* Gamified Learning */
+.card-header, .card-body p {
+    font-size: 16px;
+    color: #495057;
+}
+
+.card-body p strong {
+    color: #007bff;
+}
+
+/* Achievements and leaderboard styling */
+.leaderboard {
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+/* Styling for badges earned */
+.badges {
+    font-size: 14px;
+    font-weight: 500;
+    color: #28a745;
+}
+
+/* Button styles */
+.btn-block {
+    background-color: #007bff;
+    color: #fff;
+    font-size: 16px;
+    padding: 10px;
+}
+
+.btn-block:hover {
+    background-color: #0056b3;
+    color: #fff;
+}
+
+/* Accessibility buttons */
+.btn-secondary {
+    background-color: #343a40;
+    color: #fff;
+    font-size: 16px;
+}
+
+.btn-secondary:hover {
+    background-color: #495057;
+    color: #fff;
+}
+
+/* Card hover effect */
+.card:hover {
+    transform: translateY(-3px);
+    transition: 0.3s ease-in-out;
+}
+
+.card {
+    margin-bottom: 30px;
+}
+
+.card-title {
+    font-size: 1.5rem;
+}
+
+.progress-bar {
+    background-color: #007bff;
+}
+
+.profile-section img {
+    border: 2px solid #ddd;
+    padding: 5px;
+}
+
+.profile-section h4 {
+    margin-top: 15px;
+}
+
+.profile-section .list-group-item {
+    border: none;
+    padding: 10px 15px;
+}
+
+.profile-section .list-group-item strong {
+    color: #333;
+}
