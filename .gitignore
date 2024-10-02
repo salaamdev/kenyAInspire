@@ -1,0 +1,14 @@
+# Environments
+venv
+env
+
+# Data
+models/bert-base-uncased_tests/*
+models/distilbert-base-uncased_tests/*
+
+# Models
+models/distilbert-imdb-model/*
+models/logs
+models/results/checkpoint-*/*
+
+# put files and folders you want to not be tracked by git here
