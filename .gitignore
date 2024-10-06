@@ -12,6 +12,5 @@ models/logs
 models/results/checkpoint-*/*
 
 # fine tuned models
-models/imdb_fine_tuned_text_classification_model/*
-
+models/text_classification/imdb_fine_tuned_text_classification_model
 # put files and folders you want to not be tracked by git here
