@@ -83,9 +83,59 @@ footer .links a, footer .social-media a {
     box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
 }
 
-.social-login-btns img {
-    height: 24px;
-    margin-right: 8px;
+/* Form container */
+.form-container {
+    width: 300px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+}
+
+/* Form input fields */
+form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+form input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Redirect links */
+.register-redirect, .forgot-password {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.register-redirect a, .forgot-password a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.register-redirect a:hover, .forgot-password a:hover {
+    text-decoration: underline;
 }
 
 /* General styles for the dashboard */
@@ -93,6 +143,7 @@ body {
     background-color: #f8f9fa;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+
 
 /* Navbar customization */
 .navbar {
@@ -256,4 +307,80 @@ h3 {
 
 .profile-section .list-group-item strong {
     color: #333;
+}
+
+/* Styling for the Create Lesson Plan page */
+.create-lesson-plan-container {
+    margin-top: 50px;
+    max-width: 800px;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.create-lesson-plan-container h2 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.create-lesson-plan-container p {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.create-lesson-plan-container textarea {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: none;
+    margin-bottom: 20px;
+    font-size: 1rem;
+}
+
+.create-lesson-plan-container input[type="file"] {
+    margin-bottom: 20px;
+    padding: 10px;
+    font-size: 1rem;
+}
+
+.create-lesson-plan-container button {
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    cursor: pointer;
+}
+
+.create-lesson-plan-container button:hover {
+    background-color: #0056b3;
+}
+
+#createLessonPlanStatus {
+    font-size: 1rem;
+    font-weight: bold;
+    color: green;
+    margin-top: 20px;
+    text-align: center;
+}
+
+/* AI Assistant button styling */
+#aiAssistantButton {
+    background-color: #6c757d;
+    color: white;
+    padding: 12px;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#aiAssistantButton:hover {
+    background-color: #5a6268;
 }

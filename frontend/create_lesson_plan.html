@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Lesson Plan</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="create-lesson-plan-container">
+        <h2>Create Lesson Plan</h2>
+        <p>Use the textbox below to create your lesson plan or upload a document containing the lesson plan.</p>
+
+        <!-- Textbox for creating the lesson plan -->
+        <textarea id="lessonPlanText" class="form-control mb-3" rows="5" placeholder="Write your lesson plan here..."></textarea>
+
+        <!-- File input for uploading lesson plan document -->
+        <label for="lessonPlanFile">Or upload a document:</label>
+        <input type="file" id="lessonPlanFile" class="form-control mb-3" accept=".doc,.docx,.pdf">
+
+        <!-- Save Button -->
+        <button class="btn btn-primary" id="saveLessonPlan">Save Lesson Plan</button>
+
+        <!-- Feedback area for save status -->
+        <div id="saveStatus" class="mt-3"></div>
+
+        <!-- AI Assistant Button -->
+        <button class="btn btn-secondary mt-3" id="aiAssistantButton">Ask AI Assistant 🤖</button>
+
+    </div>
+
+    <!-- Bootstrap JS and Dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.11/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        document.getElementById("saveLessonPlan").addEventListener("click", function() {
+            let lessonText = document.getElementById("lessonPlanText").value;
+            let lessonFile = document.getElementById("lessonPlanFile").files[0];
+
+            if (lessonText.trim() !== "" || lessonFile) {
+                // Simulate saving process
+                document.getElementById("saveStatus").textContent = "Saving your lesson plan...";
+                
+                setTimeout(() => {
+                    document.getElementById("saveStatus").textContent = "Lesson plan saved successfully!";
+                }, 1000); // Simulate a save delay
+            } else {
+                alert("Please either write a lesson plan or upload a document.");
+            }
+        });
+
+        // AI Assistant Floating Icon Click Event
+        document.getElementById("aiAssistantIcon").addEventListener("click", function() {
+            alert("AI Assistant activated to help with lesson planning.");
+        });
+    </script>
+
+</body>
+</html>
