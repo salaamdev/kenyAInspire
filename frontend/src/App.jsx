@@ -1,35 +1,49 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from "react";
+import { BrowserRouter } from "react-router-dom";
+import AuthContextProvider from "./contexts/AuthContext";
+import UserPreferencesContextProvider from "./contexts/UserPreferencesContext";
+import AppRoutes from "./routes/AppRoutes";
+import GlobalStyles from "./styles/GlobalStyles";
+import ErrorBoundary from "./components/ErrorBoundary";
+import { ThemeProvider } from "styled-components";
+
+const theme = {
+  colors: {
+    primary: "#1A73E8", // Blue
+    secondary: "#34A853", // Green
+    accent: "#FBBC05", // Yellow
+    background: "#FFFFFF", // White
+    text: "#202124", // Dark Gray
+    lightGray: "#F1F3F4",
+    darkGray: "#5F6368",
+  },
+  fonts: {
+    main: "'Roboto', sans-serif",
+  },
+  breakpoints: {
+    mobile: "600px",
+    tablet: "960px",
+    desktop: "1280px",
+    large: "1920px",
+  },
+  spacing: (factor) => `${factor * 8}px`, // For consistent spacing
+};
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <ThemeProvider theme={theme}>
+      <ErrorBoundary>
+        <AuthContextProvider>
+          <UserPreferencesContextProvider>
+            <BrowserRouter>
+              <GlobalStyles />
+              <AppRoutes />
+            </BrowserRouter>
+          </UserPreferencesContextProvider>
+        </AuthContextProvider>
+      </ErrorBoundary>
+    </ThemeProvider>
+  );
 }
 
-export default App
+export default App;
