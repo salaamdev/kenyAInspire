@@ -7,6 +7,7 @@ import Announcements from "../components/Announcements";
 import ProgressWidgets from "../components/ProgressWidgets";
 import PersonalizedContent from "../components/PersonalizedContent";
 import UpcomingEvents from "../components/UpcomingEvents";
+import CoursesList from "../components/CoursesList";
 
 const DashboardContainer = styled.div`
   display: flex;
@@ -27,6 +28,7 @@ function Dashboard() {
           <WelcomeBanner />
           <Announcements />
           <ProgressWidgets />
+          <CoursesList />
           <PersonalizedContent />
           <UpcomingEvents />
         </ContentArea>

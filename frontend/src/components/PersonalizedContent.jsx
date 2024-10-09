@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { getRecommendations } from "../services/api";
+import { AuthContext } from "../contexts/AuthContext";
 
 const ContentContainer = styled.section`
   margin-top: ${({ theme }) => theme.spacing(4)};
@@ -19,26 +21,27 @@ const ContentItem = styled.div`
 `;
 
 function PersonalizedContent() {
-  const dummyContent = [
-    {
-      title: "Mathematics - Algebra",
-      description: "Strengthen your algebra skills with these exercises.",
-    },
-    {
-      title: "Science - Biology",
-      description: "Explore the world of cells and organisms.",
-    },
-  ];
+  const { token } = React.useContext(AuthContext);
+  const [recommendations, setRecommendations] = useState("");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getRecommendations(token);
+        setRecommendations(data.recommendations);
+      } catch (error) {
+        console.error("Error fetching recommendations:", error);
+      }
+    };
+    fetchData();
+  }, [token]);
 
   return (
     <ContentContainer>
-      <Title>Your Personalized Content</Title>
-      {dummyContent.map((item, index) => (
-        <ContentItem key={index}>
-          <h3>{item.title}</h3>
-          <p>{item.description}</p>
-        </ContentItem>
-      ))}
+      <Title>Your Personalized Recommendations</Title>
+      <ContentItem>
+        <p>{recommendations || "Loading recommendations..."}</p>
+      </ContentItem>
     </ContentContainer>
   );
 }
