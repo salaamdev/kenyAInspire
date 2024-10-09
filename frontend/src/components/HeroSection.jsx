@@ -81,7 +81,11 @@ function HeroSection() {
         </Subtitle>
         <Button to="/signup">Get Started</Button>
       </Content>
-      <Image src={heroImage} alt="Students learning" />
+      <Image
+        src={heroImage}
+        alt="Students learning"
+        style={{ width: "200px" }}
+      />
     </Hero>
   );
 }

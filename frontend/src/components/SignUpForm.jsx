@@ -3,6 +3,8 @@ import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import Container from "./Container"; // Import the Container component
+import { useNavigate } from "react-router-dom";
+import { registerUser } from "../services/api";
 
 const FormContainer = styled(Container)`
   margin: ${({ theme }) => theme.spacing(8)} auto;
@@ -58,11 +60,17 @@ const TextLink = styled(Link)`
 `;
 
 function SignUpForm() {
+  const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
 
-  const onSubmit = (data) => {
-    // Implement sign-up logic
-    console.log(data);
+  const onSubmit = async (data) => {
+    try {
+      await registerUser(data);
+      navigate("/login");
+    } catch (error) {
+      console.error("Registration Error:", error);
+      // Display error message to user
+    }
   };
 
   return (

@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { AuthContext } from "../contexts/AuthContext";
 import { Link } from "react-router-dom";
 import Container from "./Container"; // Import the Container component
+import { useNavigate } from "react-router-dom";
 
 const FormContainer = styled(Container)`
   margin: ${({ theme }) => theme.spacing(8)} auto;
@@ -59,11 +60,18 @@ const TextLink = styled(Link)`
 `;
 
 function LoginForm() {
+  const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
   const { login } = React.useContext(AuthContext);
 
-  const onSubmit = (data) => {
-    login(data);
+  const onSubmit = async (data) => {
+    try {
+      await login(data);
+      navigate("/dashboard");
+    } catch (error) {
+      console.error("Login Error:", error);
+      // Display error message to user
+    }
   };
 
   return (

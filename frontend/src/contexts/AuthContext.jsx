@@ -1,26 +1,31 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useState, useEffect } from "react";
+import { loginUser } from "../services/api";
 
-// Create the context
 export const AuthContext = createContext();
 
-// Provider component
 function AuthContextProvider({ children }) {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(
+    JSON.parse(localStorage.getItem("user")) || null
+  );
+  const [token, setToken] = useState(localStorage.getItem("token") || null);
 
-  // Mock login function
   const login = async (credentials) => {
-    // Replace with actual API call
-    const mockUser = { id: 1, name: "John Doe" };
-    setUser(mockUser);
+    const data = await loginUser(credentials);
+    setUser(data.user);
+    setToken(data.token);
+    localStorage.setItem("user", JSON.stringify(data.user));
+    localStorage.setItem("token", data.token);
   };
 
-  // Logout function
   const logout = () => {
     setUser(null);
+    setToken(null);
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, token, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
