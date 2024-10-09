@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { getProgress } from "../services/api";
+import { AuthContext } from "../contexts/AuthContext";
 
 const WidgetsContainer = styled.div`
   display: flex;
@@ -30,19 +32,49 @@ const Widget = styled.div`
 `;
 
 function ProgressWidgets() {
+  const { token } = React.useContext(AuthContext);
+  const [progressData, setProgressData] = useState([]);
+  const [totalCompleted, setTotalCompleted] = useState(0);
+  const [totalModules, setTotalModules] = useState(0);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getProgress(token);
+        setProgressData(data.progress);
+        let completed = 0;
+        let modules = 0;
+        data.progress.forEach((item) => {
+          completed += item.completed_modules;
+          modules += item.total_modules;
+        });
+        setTotalCompleted(completed);
+        setTotalModules(modules);
+      } catch (error) {
+        console.error("Error fetching progress:", error);
+      }
+    };
+    fetchData();
+  }, [token]);
+
   return (
     <WidgetsContainer>
       <Widget>
-        <h3>Courses Completed</h3>
-        <p>5</p>
+        <h3>Modules Completed</h3>
+        <p>{totalCompleted}</p>
       </Widget>
       <Widget>
-        <h3>Hours Spent Learning</h3>
-        <p>120</p>
+        <h3>Total Modules</h3>
+        <p>{totalModules}</p>
       </Widget>
       <Widget>
-        <h3>Achievements</h3>
-        <p>3 Badges Earned</p>
+        <h3>Completion Rate</h3>
+        <p>
+          {totalModules > 0
+            ? ((totalCompleted / totalModules) * 100).toFixed(2)
+            : 0}
+          %
+        </p>
       </Widget>
     </WidgetsContainer>
   );
