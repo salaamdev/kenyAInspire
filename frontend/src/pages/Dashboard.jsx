@@ -2,10 +2,11 @@ import React from "react";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import styled from "styled-components";
+import WelcomeBanner from "../components/WelcomeBanner";
+import Announcements from "../components/Announcements";
+import ProgressWidgets from "../components/ProgressWidgets";
 import PersonalizedContent from "../components/PersonalizedContent";
-import AccessibilityOptions from "../components/AccessibilityOptions";
-import VirtualLab from "../components/VirtualLab";
-import Container from "../components/Container";
+import UpcomingEvents from "../components/UpcomingEvents";
 
 const DashboardContainer = styled.div`
   display: flex;
@@ -14,7 +15,6 @@ const DashboardContainer = styled.div`
 const ContentArea = styled.main`
   flex: 1;
   padding: ${({ theme }) => theme.spacing(4)};
-  /* Remove any width restrictions here */
 `;
 
 function Dashboard() {
@@ -24,11 +24,11 @@ function Dashboard() {
       <DashboardContainer>
         <Sidebar />
         <ContentArea>
-          <Container>
-            <AccessibilityOptions />
-            <PersonalizedContent />
-            <VirtualLab />
-          </Container>
+          <WelcomeBanner />
+          <Announcements />
+          <ProgressWidgets />
+          <PersonalizedContent />
+          <UpcomingEvents />
         </ContentArea>
       </DashboardContainer>
     </>
