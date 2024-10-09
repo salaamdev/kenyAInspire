@@ -32,7 +32,7 @@ const Question = styled.h4`
 const Answer = styled.p`
   color: ${({ theme }) => theme.colors.darkGray};
   margin-bottom: ${({ theme }) => theme.spacing(2)};
-  display: ${({ isOpen }) => (isOpen ? "block" : "none")};
+  display: ${({ $isOpen }) => ($isOpen ? "block" : "none")};
 `;
 
 function FAQ() {
@@ -68,7 +68,7 @@ function FAQ() {
             <Question onClick={() => toggleAnswer(index)}>
               {faq.question}
             </Question>
-            <Answer isOpen={openIndex === index}>{faq.answer}</Answer>
+            <Answer $isOpen={openIndex === index}>{faq.answer}</Answer>
           </div>
         ))}
       </Container>

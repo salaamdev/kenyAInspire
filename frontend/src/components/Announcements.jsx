@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { getAnnouncements } from "../services/api";
 
 const AnnouncementsContainer = styled.div`
   padding: ${({ theme }) => theme.spacing(2)};
@@ -10,17 +11,28 @@ const AnnouncementsContainer = styled.div`
 `;
 
 function Announcements() {
-  const announcements = [
-    "New course on Machine Learning now available!",
-    "Scheduled maintenance on Saturday at 2 AM.",
-  ];
+  const [announcements, setAnnouncements] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getAnnouncements();
+        setAnnouncements(data.announcements);
+      } catch (error) {
+        console.error("Error fetching announcements:", error);
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
     <AnnouncementsContainer>
       <h3>Announcements</h3>
       <ul>
-        {announcements.map((announcement, index) => (
-          <li key={index}>- {announcement}</li>
+        {announcements.map((announcement) => (
+          <li key={announcement.id}>
+            <strong>{announcement.title}</strong>: {announcement.content}
+          </li>
         ))}
       </ul>
     </AnnouncementsContainer>
