@@ -3,6 +3,8 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 
+// Configure CORS options
+
 // Import middleware
 const errorHandler = require('./middleware/errorHandler');
 
@@ -11,7 +13,15 @@ const app = express();
 
 // Use middleware
 app.use(express.json());
+const corsOptions = {
+    origin: 'http://localhost:5173', // Your frontend URL
+    optionsSuccessStatus: 200,
+};
+
 app.use(cors());
+app.use(cors(corsOptions));
+const chatbotRoutes = require('./routes/chatbotRoutes');
+app.use('/api/chatbot', chatbotRoutes);
 
 // Import routes
 const courseRoutes = require('./routes/courseRoutes');
