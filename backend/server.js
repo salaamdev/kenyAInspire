@@ -14,7 +14,7 @@ const app = express();
 // Use middleware
 app.use(express.json());
 const corsOptions = {
-    origin: 'http://localhost:5173', // Your frontend URL
+    origin: 'http://localhost:5175', // Allow all origins
     optionsSuccessStatus: 200,
 };
 
@@ -31,6 +31,7 @@ const progressRoutes = require('./routes/progressRoutes');
 const announcementRoutes = require('./routes/announcementRoutes');
 const eventRoutes = require('./routes/eventRoutes');
 const recommendationRoutes = require('./routes/recommendationRoutes');
+const userRoutes = require('./routes/userRoutes');
 
 
 // Use routes
@@ -41,7 +42,7 @@ app.use('/api/protected', protectedRoutes);
 app.use('/api/announcements', announcementRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/recommendations', recommendationRoutes);
-
+app.use('/api/users', userRoutes);
 
 
 // Error handler middleware (should be after all routes)

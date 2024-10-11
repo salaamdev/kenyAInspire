@@ -1,6 +1,6 @@
 import React from "react";
-import Navbar from "../components/Navbar";
-import Sidebar from "../components/Sidebar";
+// import Navbar from "../components/Navbar";
+// import Sidebar from "../components/Sidebar";
 import styled from "styled-components";
 import ProgressWidgets from "../components/ProgressWidgets";
 import ProgressDetails from "../components/ProgressDetails";
@@ -17,9 +17,9 @@ const ContentArea = styled.main`
 function Progress() {
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
       <PageContainer>
-        <Sidebar />
+        {/* <Sidebar /> */}
         <ContentArea>
           <h2>Your Progress</h2>
           <ProgressWidgets />

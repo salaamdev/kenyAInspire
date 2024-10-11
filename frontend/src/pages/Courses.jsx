@@ -1,6 +1,6 @@
 import React from "react";
-import Navbar from "../components/Navbar";
-import Sidebar from "../components/Sidebar";
+// import Navbar from "../components/Navbar";
+// import Sidebar from "../components/Sidebar";
 import styled from "styled-components";
 import CoursesList from "../components/CoursesList";
 
@@ -16,9 +16,9 @@ const ContentArea = styled.main`
 function Courses() {
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
       <PageContainer>
-        <Sidebar />
+        {/* <Sidebar /> */}
         <ContentArea>
           <h2>Your Courses</h2>
           <CoursesList />

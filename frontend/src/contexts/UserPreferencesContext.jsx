@@ -1,25 +1,24 @@
 import React, { createContext, useState } from "react";
 
-// Create the context
 export const UserPreferencesContext = createContext();
 
-// Provider component
-function UserPreferencesContextProvider({ children }) {
-  const [preferences, setPreferences] = useState({
-    theme: "light",
-    fontSize: "medium",
-    accessibilityOptions: {},
-  });
+export const UserPreferencesProvider = ({ children }) => {
+  const [fontSize, setFontSize] = useState("medium"); // Options: small, medium, large
+  const [highContrast, setHighContrast] = useState(false);
 
-  const updatePreferences = (newPreferences) => {
-    setPreferences((prev) => ({ ...prev, ...newPreferences }));
+  const toggleHighContrast = () => {
+    setHighContrast(!highContrast);
+  };
+
+  const changeFontSize = (size) => {
+    setFontSize(size);
   };
 
   return (
-    <UserPreferencesContext.Provider value={{ preferences, updatePreferences }}>
+    <UserPreferencesContext.Provider
+      value={{ fontSize, highContrast, toggleHighContrast, changeFontSize }}
+    >
       {children}
     </UserPreferencesContext.Provider>
   );
-}
-
-export default UserPreferencesContextProvider;
+};

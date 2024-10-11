@@ -28,11 +28,17 @@ const ProgressFill = styled.div`
 function ProgressDetails() {
   const { token } = useContext(AuthContext);
   const [progressData, setProgressData] = useState([]);
+  const data = progressData.map((item) => ({
+    name: `Course ${item.course_id}`,
+    completed: item.completed_modules,
+    total: item.total_modules,
+  }));
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await getProgress(token);
+        console.log("Fetched progress:", data.progress); // Add this line
         setProgressData(data.progress);
       } catch (error) {
         console.error("Error fetching progress details:", error);

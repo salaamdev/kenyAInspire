@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import styled from "styled-components";
 import { AuthContext } from "../contexts/AuthContext";
+import { updateProfile } from "../services/api";
 
 const SettingsContainer = styled.div`
   margin-top: ${({ theme }) => theme.spacing(4)};
@@ -33,14 +34,29 @@ const Button = styled.button`
 `;
 
 function ProfileSettings() {
-  const { user, token } = useContext(AuthContext);
+  const { user, token, setUser } = useContext(AuthContext);
   const [name, setName] = useState(user.name);
-  const [email] = useState(user.email);
+  const [email, setEmail] = useState(user.email);
+  const [password, setPassword] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Implement update logic
-    alert("Profile updated successfully!");
+
+    try {
+      const userData = { name, email };
+      if (password) {
+        userData.password = password;
+      }
+      await updateProfile(token, userData);
+
+      // Update user context
+      setUser({ ...user, name, email });
+
+      alert("Profile updated successfully!");
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      alert("Failed to update profile. Please try again.");
+    }
   };
 
   return (
@@ -51,7 +67,15 @@ function ProfileSettings() {
         <Input value={name} onChange={(e) => setName(e.target.value)} />
 
         <Label>Email</Label>
-        <Input value={email} disabled />
+        <Input value={email} onChange={(e) => setEmail(e.target.value)} />
+
+        <Label>New Password</Label>
+        <Input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Leave blank to keep current password"
+        />
 
         <Button type="submit">Save Changes</Button>
       </Form>
