@@ -65,7 +65,7 @@ function FeaturesOverview() {
   return (
     <Section>
       <Container>
-        <Title>Our Features</Title>
+        {/* <Title>Our Features</Title> */}
         <FeaturesGrid>
           <FeatureCard>
             <Icon src={featureIcon1} alt="Feature 1" />

@@ -15,11 +15,11 @@ function HomePage() {
       <Navbar />
       <HeroSection />
       <FeaturedContent />
-      <AboutUs />
+      {/* <AboutUs /> */}
       <FeaturesOverview />
       <FAQ />
-      <CTA />
       <Partners />
+      <CTA />
       <Footer />
     </>
   );
