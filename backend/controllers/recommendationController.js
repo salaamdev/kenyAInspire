@@ -14,16 +14,19 @@ exports.getRecommendations = async (req, res) => {
 
     try {
         // Create a prompt for the AI
-        const prompt = `Provide personalized learning recommendations for a student named ${ userName } based on their progress in various subjects.`;
+        const messages = [
+            {role: "system", content: "You are a helpful assistant."},
+            {role: "user", content: `Provide personalized learning recommendations for a student named ${ userName } based on their progress in various subjects.`}
+        ];
 
-        // Call OpenAI API
-        const aiResponse = await openai.createCompletion({
-            model: 'text-davinci-003',
-            prompt: prompt,
-            max_tokens: 150,
+        // Call OpenAI API with GPT-4o-mini
+        const aiResponse = await openai.createChatCompletion({
+            model: 'gpt-4o-mini',
+            messages: messages,
+            max_tokens: 150, // Adjust based on token limits
         });
 
-        const recommendations = aiResponse.data.choices[0].text.trim();
+        const recommendations = aiResponse.data.choices[0].message.content.trim();
 
         res.json({recommendations});
     } catch (error) {
