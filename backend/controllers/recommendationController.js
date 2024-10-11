@@ -12,6 +12,7 @@ exports.getRecommendations = async (req, res) => {
     const userName = req.user.name;
 
     try {
+<<<<<<< HEAD
         // Fetch user's progress data
         const progressResult = await pool.query(
             'SELECT course_id, completed_modules, total_modules FROM progress WHERE user_id = $1',
@@ -44,6 +45,19 @@ Recommendations:
             messages: [{role: 'user', content: prompt}],
             max_tokens: 250,
             temperature: 0.7,
+=======
+        // Create a prompt for the AI
+        const messages = [
+            {role: "system", content: "You are a helpful assistant."},
+            {role: "user", content: `Provide personalized learning recommendations for a student named ${ userName } based on their progress in various subjects.`}
+        ];
+
+        // Call OpenAI API with GPT-4o-mini
+        const aiResponse = await openai.createChatCompletion({
+            model: 'gpt-4o-mini',
+            messages: messages,
+            max_tokens: 150, // Adjust based on token limits
+>>>>>>> devbranch
         });
 
         const recommendations = aiResponse.data.choices[0].message.content.trim();
