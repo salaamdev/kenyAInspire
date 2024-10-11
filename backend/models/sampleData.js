@@ -4,15 +4,28 @@ const faker = require('faker');
 
 const createSampleData = async () => {
   try {
+    // Generate and insert sample users
+    const users = [];
+    for (let i = 0; i < 10; i++) {
+      const name = faker.name.findName();
+      const email = faker.internet.email();
+      const password = faker.internet.password();
+      users.push(`('${ name }', '${ email }', '${ password }')`);
+    }
+    await pool.query(`
+            INSERT INTO users (name, email, password) VALUES
+            ${ users.join(', ') };
+        `);
+
     // Generate and insert sample courses
     const courses = [];
     for (let i = 0; i < 100; i++) {
       courses.push(`('${ faker.lorem.words(3) }', '${ faker.lorem.sentences(2) }')`);
     }
     await pool.query(`
-      INSERT INTO courses (title, description) VALUES
-      ${ courses.join(', ') };
-    `);
+            INSERT INTO courses (title, description) VALUES
+            ${ courses.join(', ') };
+        `);
 
     // Generate and insert sample progress
     const progress = [];
@@ -24,9 +37,9 @@ const createSampleData = async () => {
       progress.push(`(${ userId }, ${ courseId }, ${ completedModules }, ${ totalModules })`);
     }
     await pool.query(`
-      INSERT INTO progress (user_id, course_id, completed_modules, total_modules) VALUES
-      ${ progress.join(', ') };
-    `);
+            INSERT INTO progress (user_id, course_id, completed_modules, total_modules) VALUES
+            ${ progress.join(', ') };
+        `);
 
     console.log('Sample data inserted successfully');
   } catch (error) {

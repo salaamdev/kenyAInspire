@@ -1,7 +1,6 @@
 {
   "dependencies": {
     "faker": "^6.6.6",
-    "openai": "^4.67.3",
     "pg": "^8.13.0"
   }
 }
