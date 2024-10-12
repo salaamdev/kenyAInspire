@@ -3,6 +3,8 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 
+// Configure CORS options
+
 // Import middleware
 const errorHandler = require('./middleware/errorHandler');
 
@@ -11,7 +13,15 @@ const app = express();
 
 // Use middleware
 app.use(express.json());
+const corsOptions = {
+    origin: 'http://localhost:5175', // Allow all origins
+    optionsSuccessStatus: 200,
+};
+
 app.use(cors());
+app.use(cors(corsOptions));
+const chatbotRoutes = require('./routes/chatbotRoutes');
+app.use('/api/chatbot', chatbotRoutes);
 
 // Import routes
 const courseRoutes = require('./routes/courseRoutes');
@@ -21,6 +31,7 @@ const progressRoutes = require('./routes/progressRoutes');
 const announcementRoutes = require('./routes/announcementRoutes');
 const eventRoutes = require('./routes/eventRoutes');
 const recommendationRoutes = require('./routes/recommendationRoutes');
+const userRoutes = require('./routes/userRoutes');
 
 
 // Use routes
@@ -31,7 +42,7 @@ app.use('/api/protected', protectedRoutes);
 app.use('/api/announcements', announcementRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/recommendations', recommendationRoutes);
-
+app.use('/api/users', userRoutes);
 
 
 // Error handler middleware (should be after all routes)

@@ -27,14 +27,17 @@ function AIRecommendationsContextProvider({ children }) {
           return;
         }
 
-        // Fetch data from OpenAI API
-        const response = await openai.completions.create({
-          model: "gpt-3.5-turbo-instruct", // Updated model name
-          prompt: "Generate personalized content...",
+        // Fetch data from OpenAI API using GPT-4o mini
+        const response = await openai.chat.completions.create({
+          model: "gpt-4o-mini", // Updated model
+          messages: [
+            { role: "system", content: "You are a helpful assistant." },
+            { role: "user", content: "Generate personalized content..." },
+          ],
           max_tokens: 50,
         });
 
-        const data = response.choices[0].text.trim();
+        const data = response.choices[0].message.content.trim();
         setRecommendations([data]);
 
         // Cache data for offline use

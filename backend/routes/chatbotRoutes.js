@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const authMiddleware = require('../middleware/authMiddleware');
-const courseController = require('../controllers/courseController');
+const chatbotController = require('../controllers/chatbotController');
 
-router.get('/', authMiddleware, courseController.getCoursesForStudent);
+router.post('/', authMiddleware, chatbotController.handleMessage);
 
 module.exports = router;

@@ -2,7 +2,7 @@ import React from "react";
 import "./App.css";
 import { BrowserRouter } from "react-router-dom";
 import AuthContextProvider from "./contexts/AuthContext";
-import UserPreferencesContextProvider from "./contexts/UserPreferencesContext";
+import { UserPreferencesProvider } from "./contexts/UserPreferencesContext";
 import AppRoutes from "./routes/AppRoutes";
 import GlobalStyles from "./styles/GlobalStyles";
 import ErrorBoundary from "./components/ErrorBoundary";
@@ -35,12 +35,12 @@ function App() {
     <ThemeProvider theme={theme}>
       <ErrorBoundary>
         <AuthContextProvider>
-          <UserPreferencesContextProvider>
+          <UserPreferencesProvider>
             <BrowserRouter>
               <GlobalStyles />
               <AppRoutes />
             </BrowserRouter>
-          </UserPreferencesContextProvider>
+          </UserPreferencesProvider>
         </AuthContextProvider>
       </ErrorBoundary>
     </ThemeProvider>

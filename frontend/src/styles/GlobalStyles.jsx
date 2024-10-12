@@ -1,37 +1,27 @@
 import { createGlobalStyle } from "styled-components";
+import { UserPreferencesContext } from "../contexts/UserPreferencesContext";
 
-const GlobalStyles = createGlobalStyle`
-  html {
-    box-sizing: border-box;
-    font-size: 16px;
-    scroll-behavior: smooth;
-  }
-
-  *, *::after, *::before {
-    box-sizing: inherit;
-  }
-
+const GlobalStyle = createGlobalStyle`
   body {
-    margin: 0;
-    font-family: ${({ theme }) => theme.fonts.main};
-    background-color: ${({ theme }) => theme.colors.background};
-    color: ${({ theme }) => theme.colors.text};
-  }
-
-  a {
-    text-decoration: none;
-    color: inherit;
-  }
-
-  button {
-    cursor: pointer;
-    font-family: ${({ theme }) => theme.fonts.main};
-  }
-
-  ul {
-    list-style: none;
-    padding: 0;
+    font-size: ${({ fontSize }) => {
+      switch (fontSize) {
+        case "small":
+          return "14px";
+        case "large":
+          return "18px";
+        default:
+          return "16px";
+      }
+    }};
+    background-color: ${({ highContrast }) => (highContrast ? "#000" : "#fff")};
+    color: ${({ highContrast }) => (highContrast ? "#fff" : "#000")};
   }
 `;
 
-export default GlobalStyles;
+export default (props) => (
+  <UserPreferencesContext.Consumer>
+    {({ fontSize, highContrast }) => (
+      <GlobalStyle fontSize={fontSize} highContrast={highContrast} {...props} />
+    )}
+  </UserPreferencesContext.Consumer>
+);
