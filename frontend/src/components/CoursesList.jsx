@@ -5,6 +5,9 @@ import { AuthContext } from "../contexts/AuthContext";
 import { Link } from "react-router-dom";
 
 const CoursesContainer = styled.section`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: ${({ theme }) => theme.spacing(2)};
   margin-top: ${({ theme }) => theme.spacing(4)};
 `;
 
@@ -12,7 +15,8 @@ const CourseCard = styled.div`
   padding: ${({ theme }) => theme.spacing(2)};
   background-color: ${({ theme }) => theme.colors.lightGray};
   border-radius: 8px;
-  margin-bottom: ${({ theme }) => theme.spacing(2)};
+  text-decoration: none;
+  color: inherit;
 `;
 
 const Title = styled.h3`
@@ -24,7 +28,7 @@ const ProgressBar = styled.div`
   background-color: ${({ theme }) => theme.colors.darkGray};
   border-radius: 4px;
   overflow: hidden;
-  height: 20px;
+  height: 10px;
   margin-top: ${({ theme }) => theme.spacing(1)};
 `;
 

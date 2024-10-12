@@ -1,10 +1,26 @@
 const pool = require('../config/db');
 
+// connect to the database first
+pool.connect((err, client, release) => {
+    if (err) {
+        return console.error('Error acquiring client', err.stack);
+    }
+    client.query('SELECT NOW()', (err, result) => {
+        release();
+        if (err) {
+            return console.error('Error executing query', err.stack);
+        }
+        console.log('Connected to the database');
+    });
+});
+
+
+
 // Function to create tables
 const createTables = async () => {
-  try {
-    // Users table
-    await pool.query(`
+    try {
+        // Users table
+        await pool.query(`
             CREATE TABLE IF NOT EXISTS users (
                 id SERIAL PRIMARY KEY,
                 name VARCHAR(100) NOT NULL,
@@ -14,8 +30,8 @@ const createTables = async () => {
             );
         `);
 
-    // Courses table
-    await pool.query(`
+        // Courses table
+        await pool.query(`
             CREATE TABLE IF NOT EXISTS courses (
                 id SERIAL PRIMARY KEY,
                 title VARCHAR(255) NOT NULL,
@@ -24,8 +40,8 @@ const createTables = async () => {
             );
         `);
 
-    // Enrollments table
-    await pool.query(`
+        // Enrollments table
+        await pool.query(`
             CREATE TABLE IF NOT EXISTS enrollments (
                 id SERIAL PRIMARY KEY,
                 user_id INTEGER REFERENCES users(id),
@@ -34,8 +50,8 @@ const createTables = async () => {
             );
         `);
 
-    // Progress table
-    await pool.query(`
+        // Progress table
+        await pool.query(`
             CREATE TABLE IF NOT EXISTS progress (
                 id SERIAL PRIMARY KEY,
                 user_id INTEGER REFERENCES users(id),
@@ -46,8 +62,8 @@ const createTables = async () => {
             );
         `);
 
-    // Announcements table
-    await pool.query(`
+        // Announcements table
+        await pool.query(`
             CREATE TABLE IF NOT EXISTS announcements (
                 id SERIAL PRIMARY KEY,
                 title VARCHAR(255) NOT NULL,
@@ -56,8 +72,8 @@ const createTables = async () => {
             );
         `);
 
-    // Events table
-    await pool.query(`
+        // Events table
+        await pool.query(`
             CREATE TABLE IF NOT EXISTS events (
                 id SERIAL PRIMARY KEY,
                 title VARCHAR(255) NOT NULL,
@@ -67,10 +83,10 @@ const createTables = async () => {
             );
         `);
 
-    console.log('Tables created successfully');
-  } catch (error) {
-    console.error('Error creating tables:', error);
-  }
+        console.log('Tables created successfully');
+    } catch (error) {
+        console.error('Error creating tables:', error);
+    }
 };
 
 module.exports = createTables;

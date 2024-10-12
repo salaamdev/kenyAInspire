@@ -1,3 +1,4 @@
+// backend/controllers/courseController.js
 const pool = require('../config/db');
 
 // Get courses for a student, including progress
