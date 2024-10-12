@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { getCourses } from "../services/api";
 import { AuthContext } from "../contexts/AuthContext";
 import { Link } from "react-router-dom";
+import { LinearProgress, Box } from "@mui/material";
 
 const CoursesContainer = styled.section`
   display: grid;
@@ -24,20 +25,6 @@ const Title = styled.h3`
   color: ${({ theme }) => theme.colors.primary};
 `;
 
-const ProgressBar = styled.div`
-  background-color: ${({ theme }) => theme.colors.darkGray};
-  border-radius: 4px;
-  overflow: hidden;
-  height: 10px;
-  margin-top: ${({ theme }) => theme.spacing(1)};
-`;
-
-const ProgressFill = styled.div`
-  height: 100%;
-  background-color: ${({ theme }) => theme.colors.primary};
-  width: ${({ percentage }) => percentage}%;
-`;
-
 function CoursesList() {
   const { token } = React.useContext(AuthContext);
   const [courses, setCourses] = useState([]);
@@ -55,31 +42,29 @@ function CoursesList() {
     fetchData();
   }, [token]);
 
+  if (!courses.length) {
+    return <p>No courses available.</p>;
+  }
+
   return (
     <CoursesContainer>
-      {courses.length > 0 ? (
-        courses.map((course) => {
-          const percentage = course.total_modules
-            ? ((course.completed_modules / course.total_modules) * 100).toFixed(
-                2
-              )
-            : 0;
-          return (
-            <Link to={`/dashboard/courses/${course.id}`} key={course.id}>
-              <CourseCard>
-                <Title>{course.title}</Title>
-                <p>{course.description}</p>
-                <ProgressBar>
-                  <ProgressFill percentage={percentage} />
-                </ProgressBar>
-                <p>{percentage}% completed</p>
-              </CourseCard>
-            </Link>
-          );
-        })
-      ) : (
-        <p>No courses available.</p>
-      )}
+      {courses.map((course) => {
+        const percentage = course.total_modules
+          ? ((course.completed_modules / course.total_modules) * 100).toFixed(2)
+          : 0;
+        return (
+          <Link to={`/dashboard/courses/${course.id}`} key={course.id}>
+            <CourseCard>
+              <Title>{course.title}</Title>
+              <p>{course.description}</p>
+              <Box sx={{ width: "100%", mt: 1 }}>
+                <LinearProgress variant="determinate" value={percentage} />
+              </Box>
+              <p>{percentage}% completed</p>
+            </CourseCard>
+          </Link>
+        );
+      })}
     </CoursesContainer>
   );
 }

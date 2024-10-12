@@ -4,10 +4,11 @@ const progressController = require('../controllers/progressController');
 const authMiddleware = require('../middleware/authMiddleware');
 
 router.get('/', authMiddleware, progressController.getProgressForStudent);
+router.get('/overall', authMiddleware, progressController.getOverallProgress); // New route
 router.put(
     '/courses/:courseId/topics/:topicId',
     authMiddleware,
     progressController.updateTopicCompletion
-); // New route
+);
 
 module.exports = router;

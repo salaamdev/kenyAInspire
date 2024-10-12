@@ -13,6 +13,14 @@ export const sendMessageToAI = async (token, message) => {
     return response.data;
 };
 
+export const getOverallProgress = async (token) => {
+    const response = await axios.get(`${ API_URL }/progress/overall`, {
+        headers: {Authorization: `Bearer ${ token }`},
+    });
+    return response.data;
+};
+
+
 export const getCourseDetail = async (token, courseId) => {
     const response = await axios.get(
         `${ API_URL }/courses/${ courseId }`,
@@ -101,3 +109,4 @@ export const updateProfile = async (token, userData) => {
     );
     return response.data;
 };
+

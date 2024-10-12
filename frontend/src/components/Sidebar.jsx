@@ -124,9 +124,9 @@ function Sidebar({ isOpen, setIsOpen }) {
           <MenuItem>
             <StyledNavLink to="/dashboard/my-courses">My Courses</StyledNavLink>
           </MenuItem>
-          <MenuItem>
+          {/* <MenuItem>
             <StyledNavLink to="/dashboard/progress">Progress</StyledNavLink>
-          </MenuItem>
+          </MenuItem> */}
           <MenuItem>
             <StyledNavLink to="/dashboard/settings">Settings</StyledNavLink>
           </MenuItem>

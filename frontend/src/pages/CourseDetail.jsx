@@ -4,6 +4,7 @@ import { getCourseDetail, updateTopicCompletion } from "../services/api";
 import { AuthContext } from "../contexts/AuthContext";
 import AIQuiz from "../components/AIQuiz";
 import AIFlashcards from "../components/AIFlashcards";
+import { LinearProgress, Box } from "@mui/material";
 
 function CourseDetail() {
   const { token } = React.useContext(AuthContext);
@@ -15,7 +16,6 @@ function CourseDetail() {
     const fetchCourseDetail = async () => {
       try {
         const data = await getCourseDetail(token, courseId);
-        console.log("Course Detail Data:", data);
         setCourse(data.course);
         setProgress(data.progress);
       } catch (error) {
@@ -28,22 +28,21 @@ function CourseDetail() {
   const handleTopicCompletion = async (topicId, isCompleted) => {
     try {
       await updateTopicCompletion(token, courseId, topicId, isCompleted);
-      // Update the course data locally
-      setCourse((prevCourse) => {
-        const updatedTopics = prevCourse.topics.map((topic) => {
-          if (topic._id === topicId) {
-            return { ...topic, isCompleted };
-          }
-          return topic;
-        });
-        return { ...prevCourse, topics: updatedTopics };
+      // Update the course data and progress locally
+      const updatedTopics = course.topics.map((topic) => {
+        if (topic._id === topicId) {
+          return { ...topic, isCompleted };
+        }
+        return topic;
       });
-      // Update progress
-      const completedTopicsCount = course.topics.filter(
+
+      const completedTopicsCount = updatedTopics.filter(
         (t) => t.isCompleted
       ).length;
-      const totalTopics = course.topics.length;
+      const totalTopics = updatedTopics.length;
       const progressPercentage = (completedTopicsCount / totalTopics) * 100;
+
+      setCourse({ ...course, topics: updatedTopics });
       setProgress({
         totalTopics,
         completedTopics: completedTopicsCount,
@@ -54,13 +53,19 @@ function CourseDetail() {
     }
   };
 
-  if (!course) return <p>Loading...</p>;
+  if (!course || !progress) return <p>Loading...</p>;
 
   return (
     <div>
       <h2>{course.title}</h2>
       <p>{course.description}</p>
       <h3>Progress: {progress.progressPercentage.toFixed(2)}%</h3>
+      <Box sx={{ width: "100%", mt: 1 }}>
+        <LinearProgress
+          variant="determinate"
+          value={progress.progressPercentage}
+        />
+      </Box>
       <h3>Topics</h3>
       <ul>
         {course.topics.map((topic) => (

@@ -1,9 +1,8 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
-const Course = require('../models/courseModel'); // Add this line
-const Enrollment = require('../models/enrollmentModel'); // Add this line
-
+const Course = require('../models/courseModel');
+const Enrollment = require('../models/enrollmentModel');
 
 exports.register = async (req, res) => {
     const {name, email, password} = req.body;
@@ -50,8 +49,6 @@ exports.register = async (req, res) => {
         res.status(500).json({message: 'Server error'});
     }
 };
-
-
 
 exports.login = async (req, res) => {
     const {email, password} = req.body;

@@ -1,5 +1,7 @@
 const Progress = require('../models/progressModel');
 const StudentProgress = require('../models/studentProgressModel');
+const Course = require('../models/courseModel');
+const Enrollment = require('../models/enrollmentModel'); // Assuming you have an Enrollment model
 
 exports.getProgressForStudent = async (req, res) => {
     const userId = req.user.id;
@@ -52,6 +54,44 @@ exports.updateTopicCompletion = async (req, res) => {
         res.json({message: 'Topic completion status updated'});
     } catch (error) {
         console.error('Error updating topic completion:', error);
+        res.status(500).json({message: 'Server error'});
+    }
+};
+
+exports.getOverallProgress = async (req, res) => {
+    const userId = req.user._id;
+
+    try {
+        const progressData = await StudentProgress.find({user_id: userId});
+
+        let totalCompletedTopics = 0;
+        let totalTopics = 0;
+
+        for (const progress of progressData) {
+            const course = await Course.findById(progress.course_id);
+            const courseTotalTopics = course ? course.topics.length : 0;
+            totalCompletedTopics += progress.completed_topics.length;
+            totalTopics += courseTotalTopics;
+        }
+
+        // Fetch courses without progress to include any courses the user hasn't started
+        const enrolledCourses = await Enrollment.find({user_id: userId}).populate('course_id');
+        for (const enrollment of enrolledCourses) {
+            const course = enrollment.course_id;
+            if (course && !progressData.find((p) => p.course_id.equals(course._id))) {
+                totalTopics += course.topics.length;
+            }
+        }
+
+        const completionRate = totalTopics > 0 ? (totalCompletedTopics / totalTopics) * 100 : 0;
+
+        res.json({
+            totalCompletedTopics,
+            totalTopics,
+            completionRate,
+        });
+    } catch (error) {
+        console.error('Error fetching overall progress:', error);
         res.status(500).json({message: 'Server error'});
     }
 };

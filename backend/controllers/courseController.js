@@ -1,69 +1,44 @@
 const mongoose = require('mongoose');
 const Course = require('../models/courseModel');
 const Enrollment = require('../models/enrollmentModel');
-const Progress = require('../models/progressModel');
 const StudentProgress = require('../models/studentProgressModel');
 
 exports.getCoursesForStudent = async (req, res) => {
-    const userId = req.user._id; // Use _id instead of id
+    const userId = req.user._id;
 
     try {
-        console.log('Fetching courses for user:', userId);
+        const enrollments = await Enrollment.find({user_id: userId}).populate('course_id').lean();
 
-        // Find enrollments
-        const enrollments = await Enrollment.find({user_id: userId}).populate('course_id');
-        console.log('Enrollments:', enrollments);
+        const courses = await Promise.all(
+            enrollments.map(async (enrollment) => {
+                const course = enrollment.course_id;
+                if (!course) {
+                    return null;
+                }
 
-        let courses = [];
+                const progress = await StudentProgress.findOne({
+                    user_id: userId,
+                    course_id: course._id,
+                });
 
-        if (enrollments.length > 0) {
-            // Get progress for each course
-            courses = await Promise.all(
-                enrollments.map(async (enrollment) => {
-                    try {
-                        const course = enrollment.course_id;
+                const totalTopics = course.topics.length || 0;
+                const completedTopicsCount = progress ? progress.completed_topics.length : 0;
+                const progressPercentage = totalTopics > 0 ? (completedTopicsCount / totalTopics) * 100 : 0;
 
-                        if (!course) {
-                            console.error('Course not found for enrollment:', enrollment);
-                            return null;
-                        }
+                return {
+                    id: course._id,
+                    title: course.title,
+                    description: course.description,
+                    totalTopics,
+                    completedTopics: completedTopicsCount,
+                    progressPercentage,
+                };
+            })
+        );
 
-                        const progress = await Progress.findOne({
-                            user_id: userId,
-                            course_id: course._id,
-                        });
+        const filteredCourses = courses.filter((course) => course !== null);
 
-                        return {
-                            id: course._id,
-                            title: course.title,
-                            description: course.description,
-                            completed_modules: progress ? progress.completed_modules : 0,
-                            total_modules: progress ? progress.total_modules : 0,
-                        };
-                    } catch (err) {
-                        console.error('Error in enrollment mapping:', err);
-                        return null;
-                    }
-                })
-            );
-
-            // Remove any null values (in case of errors)
-            courses = courses.filter((course) => course !== null);
-        } else {
-            console.log('No enrollments found for user:', userId);
-
-            // If no enrollments, return all courses
-            const allCourses = await Course.find({});
-            courses = allCourses.map((course) => ({
-                id: course._id,
-                title: course.title,
-                description: course.description,
-                completed_modules: 0,
-                total_modules: 0,
-            }));
-        }
-
-        res.json({courses});
+        res.json({courses: filteredCourses});
     } catch (error) {
         console.error('Error fetching courses:', error);
         res.status(500).json({message: 'Server error'});
