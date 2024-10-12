@@ -19,26 +19,30 @@ exports.getCoursesForStudent = async (req, res) => {
             // Get progress for each course
             courses = await Promise.all(
                 enrollments.map(async (enrollment) => {
-                    const course = enrollment.course_id;
+                    try {
+                        const course = enrollment.course_id;
 
-                    // Check if course is populated
-                    if (!course) {
-                        console.error('Course not found for enrollment:', enrollment);
+                        if (!course) {
+                            console.error('Course not found for enrollment:', enrollment);
+                            return null;
+                        }
+
+                        const progress = await Progress.findOne({
+                            user_id: userId,
+                            course_id: course._id,
+                        });
+
+                        return {
+                            id: course._id,
+                            title: course.title,
+                            description: course.description,
+                            completed_modules: progress ? progress.completed_modules : 0,
+                            total_modules: progress ? progress.total_modules : 0,
+                        };
+                    } catch (err) {
+                        console.error('Error in enrollment mapping:', err);
                         return null;
                     }
-
-                    const progress = await Progress.findOne({
-                        user_id: userId,
-                        course_id: course._id,
-                    });
-
-                    return {
-                        id: course._id,
-                        title: course.title,
-                        description: course.description,
-                        completed_modules: progress ? progress.completed_modules : 0,
-                        total_modules: progress ? progress.total_modules : 0,
-                    };
                 })
             );
 
