@@ -1,9 +1,7 @@
-// Import dependencies
 const express = require('express');
 const cors = require('cors');
+const connectDB = require('./config/db');
 require('dotenv').config();
-
-// Configure CORS options
 
 // Import middleware
 const errorHandler = require('./middleware/errorHandler');
@@ -33,7 +31,6 @@ const eventRoutes = require('./routes/eventRoutes');
 const recommendationRoutes = require('./routes/recommendationRoutes');
 const userRoutes = require('./routes/userRoutes');
 
-
 // Use routes
 app.use('/api/progress', progressRoutes);
 app.use('/api/courses', courseRoutes);
@@ -44,9 +41,11 @@ app.use('/api/events', eventRoutes);
 app.use('/api/recommendations', recommendationRoutes);
 app.use('/api/users', userRoutes);
 
-
 // Error handler middleware (should be after all routes)
 app.use(errorHandler);
+
+// Connect to MongoDB
+connectDB();
 
 // Start the server
 const PORT = process.env.PORT || 5000;

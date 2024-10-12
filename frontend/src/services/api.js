@@ -36,10 +36,13 @@ export const registerUser = async (userData) => {
 };
 export const getCourses = async (token) => {
     const response = await axios.get(`${ API_URL }/courses`, {
-        headers: {Authorization: `Bearer ${ token }`},
+        headers: {
+            Authorization: `Bearer ${ token }`,
+        },
     });
     return response.data;
 };
+
 
 export const getProgress = async (token) => {
     const response = await axios.get(`${ API_URL }/progress`, {

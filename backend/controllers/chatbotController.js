@@ -1,12 +1,28 @@
+const OpenAI = require('openai');
+const Course = require('../models/courseModel');
+const Progress = require('../models/progressModel');
+
+const configuration = new OpenAI.Configuration({
+    apiKey: process.env.OPENAI_API_KEY,
+});
+
+const openai = new OpenAI.OpenAIApi(configuration);
+
 exports.handleMessage = async (req, res) => {
     const userMessage = req.body.message;
     const userName = req.user.name;
-    const {courses, progress} = req.body; // Receive student data from frontend
+    const userId = req.user.id;
 
     try {
+        // Fetch courses and progress data
+        const enrollments = await Enrollment.find({user_id: userId}).populate('course_id');
+        const courses = enrollments.map((enrollment) => enrollment.course_id);
+
+        const progressData = await Progress.find({user_id: userId});
+
         // Format courses and progress data for the prompt
         const coursesList = courses.map((course) => course.title).join(', ');
-        const progressSummary = progress
+        const progressSummary = progressData
             .map(
                 (p) =>
                     `Course ${ p.course_id }: ${ p.completed_modules }/${ p.total_modules } modules completed`

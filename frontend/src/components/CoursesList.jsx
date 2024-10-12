@@ -46,8 +46,8 @@ function CoursesList() {
     const fetchData = async () => {
       try {
         const data = await getCourses(token);
-        console.log("Fetched courses:", data.courses); // Debugging log
-        setCourses(data.courses || []); // Ensure courses is an array
+        console.log("Fetched courses:", data.courses);
+        setCourses(data.courses || []);
       } catch (error) {
         console.error("Error fetching courses:", error);
       }

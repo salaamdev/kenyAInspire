@@ -1,49 +1,68 @@
 require('dotenv').config();
-const pool = require('../config/db');
-const faker = require('faker');
+const mongoose = require('mongoose');
+const faker = require('@faker-js/faker').faker;
+const bcrypt = require('bcryptjs');
+
+const User = require('./userModel');
+const Course = require('./courseModel');
+const Enrollment = require('./enrollmentModel');
+const Progress = require('./progressModel');
+const Announcement = require('./announcementModel');
+const Event = require('./eventModel');
+
+const connectDB = require('../config/db');
 
 const createSampleData = async () => {
   try {
-    // Generate and insert sample users
+    await connectDB();
+
+    // Clear existing data
+    await User.deleteMany({});
+    await Course.deleteMany({});
+    await Enrollment.deleteMany({});
+    await Progress.deleteMany({});
+    await Announcement.deleteMany({});
+    await Event.deleteMany({});
+
+    // Create sample users
     const users = [];
     for (let i = 0; i < 10; i++) {
-      const name = faker.name.findName();
-      const email = faker.internet.email();
-      const password = faker.internet.password();
-      users.push(`('${ name }', '${ email }', '${ password }')`);
+      const user = new User({
+        name: faker.person.fullName(),  // Updated method
+        email: faker.internet.email(),
+        password: await bcrypt.hash('password', 10),
+      });
+      await user.save();
+      users.push(user);
     }
-    await pool.query(`
-            INSERT INTO users (name, email, password) VALUES
-            ${ users.join(', ') };
-        `);
 
-    // Generate and insert sample courses
+    // Create sample courses
     const courses = [];
-    for (let i = 0; i < 100; i++) {
-      courses.push(`('${ faker.lorem.words(3) }', '${ faker.lorem.sentences(2) }')`);
+    for (let i = 0; i < 20; i++) {
+      const course = new Course({
+        title: faker.lorem.words(3),
+        description: faker.lorem.sentences(2),
+      });
+      await course.save();
+      courses.push(course);
     }
-    await pool.query(`
-            INSERT INTO courses (title, description) VALUES
-            ${ courses.join(', ') };
-        `);
 
-    // Generate and insert sample progress
-    const progress = [];
-    for (let i = 0; i < 1000; i++) {
-      const userId = faker.datatype.number({min: 1, max: 10});
-      const courseId = faker.datatype.number({min: 1, max: 100});
-      const completedModules = faker.datatype.number({min: 0, max: 10});
-      const totalModules = 10; // Assuming each course has 10 modules
-      progress.push(`(${ userId }, ${ courseId }, ${ completedModules }, ${ totalModules })`);
+    // Enroll users in courses
+    for (let i = 0; i < users.length; i++) {
+      for (let j = 0; j < 2; j++) {
+        const enrollment = new Enrollment({
+          user: users[i]._id,
+          course: courses[Math.floor(Math.random() * courses.length)]._id,
+        });
+        await enrollment.save();
+      }
     }
-    await pool.query(`
-            INSERT INTO progress (user_id, course_id, completed_modules, total_modules) VALUES
-            ${ progress.join(', ') };
-        `);
 
-    console.log('Sample data inserted successfully');
+    console.log('Sample data created successfully');
   } catch (error) {
     console.error('Error inserting sample data:', error);
+  } finally {
+    mongoose.connection.close();
   }
 };
 
