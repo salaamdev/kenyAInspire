@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { sendMessageToAI } from "../services/api";
+import { getFlashcards } from "../services/api";
 import { AuthContext } from "../contexts/AuthContext";
 
 function AIFlashcards({ courseId }) {
@@ -9,9 +9,8 @@ function AIFlashcards({ courseId }) {
   useEffect(() => {
     const fetchFlashcards = async () => {
       try {
-        const message = `Generate flashcards for the course with ID ${courseId}.`;
-        const response = await sendMessageToAI(token, message);
-        setFlashcards(response.reply.split("\n"));
+        const data = await getFlashcards(token, courseId);
+        setFlashcards(data.flashcards);
       } catch (error) {
         console.error("Error fetching flashcards:", error);
       }
@@ -21,12 +20,16 @@ function AIFlashcards({ courseId }) {
 
   return (
     <div>
-      <h3>Flashcards</h3>
-      <ul>
-        {flashcards.map((flashcard, index) => (
-          <li key={index}>{flashcard}</li>
-        ))}
-      </ul>
+      {flashcards.map((flashcard, index) => (
+        <div key={index}>
+          <p>
+            <strong>Question:</strong> {flashcard.question}
+          </p>
+          <p>
+            <strong>Answer:</strong> {flashcard.answer}
+          </p>
+        </div>
+      ))}
     </div>
   );
 }

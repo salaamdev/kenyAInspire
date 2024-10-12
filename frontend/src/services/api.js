@@ -23,7 +23,30 @@ export const getCourseDetail = async (token, courseId) => {
     return response.data;
 };
 
-// Other API functions...
+export const updateTopicCompletion = async (token, courseId, topicId, isCompleted) => {
+    const response = await axios.put(
+        `${ API_URL }/progress/courses/${ courseId }/topics/${ topicId }`,
+        {isCompleted},
+        {
+            headers: {Authorization: `Bearer ${ token }`},
+        }
+    );
+    return response.data;
+};
+
+export const getFlashcards = async (token, courseId) => {
+    const response = await axios.get(`${ API_URL }/flashcards/${ courseId }`, {
+        headers: {Authorization: `Bearer ${ token }`},
+    });
+    return response.data;
+};
+
+export const getQuiz = async (token, courseId) => {
+    const response = await axios.get(`${ API_URL }/quizzes/${ courseId }`, {
+        headers: {Authorization: `Bearer ${ token }`},
+    });
+    return response.data;
+};
 
 export const loginUser = async (userData) => {
     const response = await axios.post(`${ API_URL }/auth/login`, userData);
@@ -34,6 +57,7 @@ export const registerUser = async (userData) => {
     const response = await axios.post(`${ API_URL }/auth/register`, userData);
     return response.data;
 };
+
 export const getCourses = async (token) => {
     const response = await axios.get(`${ API_URL }/courses`, {
         headers: {
@@ -42,7 +66,6 @@ export const getCourses = async (token) => {
     });
     return response.data;
 };
-
 
 export const getProgress = async (token) => {
     const response = await axios.get(`${ API_URL }/progress`, {
