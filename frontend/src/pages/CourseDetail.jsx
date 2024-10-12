@@ -4,9 +4,36 @@ import { getCourseDetail, updateTopicCompletion } from "../services/api";
 import { AuthContext } from "../contexts/AuthContext";
 import AIQuiz from "../components/AIQuiz";
 import AIFlashcards from "../components/AIFlashcards";
-import { LinearProgress, Box } from "@mui/material";
+import {
+  LinearProgress,
+  Box,
+  Typography,
+  Checkbox,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemSecondaryAction,
+  Container,
+  Paper,
+  Divider,
+  Grid,
+} from "@mui/material";
+import { styled } from "@mui/system";
 
-function CourseDetail() {
+const StyledContainer = styled(Container)({
+  marginTop: "2rem",
+});
+
+const StyledPaper = styled(Paper)({
+  padding: "2rem",
+  marginBottom: "2rem",
+});
+
+const StyledListItem = styled(ListItem)({
+  paddingLeft: 0,
+});
+
+const CourseDetail = () => {
   const { token } = React.useContext(AuthContext);
   const { courseId } = useParams();
   const [course, setCourse] = useState(null);
@@ -53,43 +80,70 @@ function CourseDetail() {
     }
   };
 
-  if (!course || !progress) return <p>Loading...</p>;
+  if (!course || !progress) return <Typography>Loading...</Typography>;
 
   return (
-    <div>
-      <h2>{course.title}</h2>
-      <p>{course.description}</p>
-      <h3>Progress: {progress.progressPercentage.toFixed(2)}%</h3>
-      <Box sx={{ width: "100%", mt: 1 }}>
-        <LinearProgress
-          variant="determinate"
-          value={progress.progressPercentage}
-        />
-      </Box>
-      <h3>Topics</h3>
-      <ul>
-        {course.topics.map((topic) => (
-          <li key={topic._id}>
-            <input
-              type="checkbox"
-              checked={topic.isCompleted}
-              onChange={(e) =>
-                handleTopicCompletion(topic._id, e.target.checked)
-              }
-            />
-            {topic.title}
-            <p>{topic.content}</p>
-          </li>
-        ))}
-      </ul>
+    <StyledContainer>
+      <StyledPaper elevation={3}>
+        <Typography variant="h4" gutterBottom>
+          {course.title}
+        </Typography>
+        <Typography variant="body1" paragraph>
+          {course.description}
+        </Typography>
+        <Typography variant="h6" gutterBottom>
+          Progress: {progress.progressPercentage.toFixed(2)}%
+        </Typography>
+        <Box sx={{ width: "100%", mt: 1 }}>
+          <LinearProgress
+            variant="determinate"
+            value={progress.progressPercentage}
+          />
+        </Box>
+      </StyledPaper>
 
-      <h3>AI-Generated Flashcards</h3>
-      <AIFlashcards courseId={courseId} />
+      <StyledPaper elevation={3}>
+        <Typography variant="h5" gutterBottom>
+          Topics
+        </Typography>
+        <List>
+          {course.topics.map((topic) => (
+            <StyledListItem key={topic._id}>
+              <ListItemText primary={topic.title} secondary={topic.content} />
+              <ListItemSecondaryAction>
+                <Checkbox
+                  edge="end"
+                  checked={topic.isCompleted}
+                  onChange={(e) =>
+                    handleTopicCompletion(topic._id, e.target.checked)
+                  }
+                />
+              </ListItemSecondaryAction>
+            </StyledListItem>
+          ))}
+        </List>
+      </StyledPaper>
 
-      <h3>Practice Quiz</h3>
-      <AIQuiz courseId={courseId} />
-    </div>
+      <Grid container spacing={3}>
+        <Grid item xs={12} md={6}>
+          <StyledPaper elevation={3}>
+            <Typography variant="h5" gutterBottom>
+              AI-Generated Flashcards
+            </Typography>
+            <AIFlashcards courseId={courseId} />
+          </StyledPaper>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <StyledPaper elevation={3}>
+            <Typography variant="h5" gutterBottom>
+              Practice Quiz
+            </Typography>
+            <AIQuiz courseId={courseId} />
+          </StyledPaper>
+        </Grid>
+      </Grid>
+    </StyledContainer>
   );
-}
+};
 
 export default CourseDetail;
