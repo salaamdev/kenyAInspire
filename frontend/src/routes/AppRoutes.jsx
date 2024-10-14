@@ -1,26 +1,44 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import HomePage from "../pages/HomePage";
+import PrivateRoute from "../components/PrivateRoute";
+import DashboardLayout from "../pages/DashboardLayout";
+import Home from "../pages/Home";
+import Courses from "../pages/Courses";
+import Progress from "../pages/Progress";
+import Settings from "../pages/Settings";
 import LoginPage from "../pages/LoginPage";
-import SignUpForm from "../pages/SignUpPage";
-import Dashboard from "../pages/Dashboard";
+import SignUpPage from "../pages/SignUpPage";
+import HomePage from "../pages/HomePage";
 import ErrorPage from "../pages/ErrorPage";
-import PrivateRoute from "./PrivateRoute";
+import MyCourses from "../pages/MyCourses";
+import CourseDetail from "../pages/CourseDetail";
 
 function AppRoutes() {
   return (
     <Routes>
+      {/* Public Routes */}
       <Route path="/" element={<HomePage />} />
       <Route path="/login" element={<LoginPage />} />
-      <Route path="/signup" element={<SignUpForm />} />
+      <Route path="/signup" element={<SignUpPage />} />
+
+      {/* Protected Routes */}
       <Route
         path="/dashboard"
         element={
           <PrivateRoute>
-            <Dashboard />
+            <DashboardLayout />
           </PrivateRoute>
         }
-      />
+      >
+        <Route index element={<Home />} />
+        <Route path="courses" element={<Courses />} />
+        <Route path="my-courses" element={<MyCourses />} />
+        <Route path="courses/:courseId" element={<CourseDetail />} />
+        <Route path="progress" element={<Progress />} />
+        <Route path="settings" element={<Settings />} />
+      </Route>
+
+      {/* Fallback Route */}
       <Route path="*" element={<ErrorPage />} />
     </Routes>
   );

@@ -1,57 +1,40 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import { UserPreferencesContext } from "../contexts/UserPreferencesContext";
 
-const AccessibilityContainer = styled.div`
-  display: flex;
-  align-items: center;
-  margin-bottom: ${({ theme }) => theme.spacing(2)};
+const OptionsContainer = styled.div`
+  margin-top: ${({ theme }) => theme.spacing(4)};
 `;
 
 const Button = styled.button`
   margin-right: ${({ theme }) => theme.spacing(2)};
-  padding: ${({ theme }) => theme.spacing(1)} ${({ theme }) => theme.spacing(2)};
-  background-color: ${({ theme }) => theme.colors.secondary};
+  padding: ${({ theme }) => theme.spacing(1)};
+  background-color: ${({ theme }) => theme.colors.primary};
   color: #fff;
   border: none;
   border-radius: 4px;
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.darkGray};
-  }
 `;
 
 function AccessibilityOptions() {
-  const { preferences, updatePreferences } = React.useContext(
-    UserPreferencesContext
-  );
-
-  const toggleHighContrast = () => {
-    const newContrast = preferences.highContrast ? false : true;
-    updatePreferences({ highContrast: newContrast });
-    document.body.style.filter = newContrast ? "contrast(1.2)" : "none";
-  };
-
-  const increaseFontSize = () => {
-    const newSize = preferences.fontSize + 1;
-    updatePreferences({ fontSize: newSize });
-    document.body.style.fontSize = `${newSize}px`;
-  };
-
-  const decreaseFontSize = () => {
-    const newSize = preferences.fontSize - 1;
-    updatePreferences({ fontSize: newSize });
-    document.body.style.fontSize = `${newSize}px`;
-  };
+  const { fontSize, highContrast, toggleHighContrast, changeFontSize } =
+    useContext(UserPreferencesContext);
 
   return (
-    <AccessibilityContainer>
-      <Button onClick={toggleHighContrast}>
-        {preferences.highContrast ? "Disable" : "Enable"} High Contrast
-      </Button>
-      <Button onClick={increaseFontSize}>Increase Font Size</Button>
-      <Button onClick={decreaseFontSize}>Decrease Font Size</Button>
-    </AccessibilityContainer>
+    <OptionsContainer>
+      <h3>Accessibility Options</h3>
+      <div>
+        <p>Font Size:</p>
+        <Button onClick={() => changeFontSize("small")}>Small</Button>
+        <Button onClick={() => changeFontSize("medium")}>Medium</Button>
+        <Button onClick={() => changeFontSize("large")}>Large</Button>
+      </div>
+      <div>
+        <p>Contrast:</p>
+        <Button onClick={toggleHighContrast}>
+          {highContrast ? "Disable" : "Enable"} High Contrast
+        </Button>
+      </div>
+    </OptionsContainer>
   );
 }
 

@@ -2,8 +2,13 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { getCourses } from "../services/api";
 import { AuthContext } from "../contexts/AuthContext";
+import { Link } from "react-router-dom";
+import { LinearProgress, Box } from "@mui/material";
 
 const CoursesContainer = styled.section`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: ${({ theme }) => theme.spacing(2)};
   margin-top: ${({ theme }) => theme.spacing(4)};
 `;
 
@@ -11,7 +16,8 @@ const CourseCard = styled.div`
   padding: ${({ theme }) => theme.spacing(2)};
   background-color: ${({ theme }) => theme.colors.lightGray};
   border-radius: 8px;
-  margin-bottom: ${({ theme }) => theme.spacing(2)};
+  text-decoration: none;
+  color: inherit;
 `;
 
 const Title = styled.h3`
@@ -27,7 +33,8 @@ function CoursesList() {
     const fetchData = async () => {
       try {
         const data = await getCourses(token);
-        setCourses(data.courses);
+        console.log("Fetched courses:", data.courses);
+        setCourses(data.courses || []);
       } catch (error) {
         console.error("Error fetching courses:", error);
       }
@@ -35,15 +42,29 @@ function CoursesList() {
     fetchData();
   }, [token]);
 
+  if (!courses.length) {
+    return <p>No courses available.</p>;
+  }
+
   return (
     <CoursesContainer>
-      <Title>Your Courses</Title>
-      {courses.map((course) => (
-        <CourseCard key={course.id}>
-          <h4>{course.title}</h4>
-          <p>{course.description}</p>
-        </CourseCard>
-      ))}
+      {courses.map((course) => {
+        const percentage = course.total_modules
+          ? ((course.completed_modules / course.total_modules) * 100).toFixed(2)
+          : 0;
+        return (
+          <Link to={`/dashboard/courses/${course.id}`} key={course.id}>
+            <CourseCard>
+              <Title>{course.title}</Title>
+              <p>{course.description}</p>
+              <Box sx={{ width: "100%", mt: 1 }}>
+                <LinearProgress variant="determinate" value={percentage} />
+              </Box>
+              <p>{percentage}% completed</p>
+            </CourseCard>
+          </Link>
+        );
+      })}
     </CoursesContainer>
   );
 }

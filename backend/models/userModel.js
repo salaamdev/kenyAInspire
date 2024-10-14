@@ -1,42 +1,23 @@
-const pool = require('../config/db');
+const mongoose = require('mongoose');
 
-// Function to create the users table if it doesn't exist
-const createUserTable = async () => {
-    const query = `
-    CREATE TABLE IF NOT EXISTS users (
-      id SERIAL PRIMARY KEY,
-      name VARCHAR(100) NOT NULL,
-      email VARCHAR(100) UNIQUE NOT NULL,
-      password VARCHAR(255) NOT NULL,
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    );
-  `;
-    await pool.query(query);
-};
+const UserSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  created_at: {
+    type: Date,
+    default: Date.now,
+  },
+});
 
-// Call the function to create the table
-createUserTable();
-
-module.exports = {
-    // Function to insert a new user
-    createUser: async (name, email, hashedPassword) => {
-        const query = `
-      INSERT INTO users (name, email, password)
-      VALUES ($1, $2, $3)
-      RETURNING id, name, email;
-    `;
-        const values = [name, email, hashedPassword];
-        const res = await pool.query(query, values);
-        return res.rows[0];
-    },
-
-    // Function to find a user by email
-    findUserByEmail: async (email) => {
-        const query = `
-      SELECT * FROM users WHERE email = $1;
-    `;
-        const values = [email];
-        const res = await pool.query(query, values);
-        return res.rows[0];
-    },
-};
+module.exports = mongoose.model('User', UserSchema);
