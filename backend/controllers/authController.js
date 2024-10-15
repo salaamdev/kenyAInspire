@@ -4,6 +4,11 @@ const User = require('../models/userModel');
 const Course = require('../models/courseModel');
 const Enrollment = require('../models/enrollmentModel');
 
+/**
+ * @desc    Register a new user
+ * @route   POST /api/auth/register
+ * @access  Public
+ */
 exports.register = async (req, res) => {
     const {name, email, password} = req.body;
 
@@ -25,21 +30,23 @@ exports.register = async (req, res) => {
         });
         await user.save();
 
-        // Enroll user in all courses
+        // Enroll user in all existing courses
         const courses = await Course.find({});
-        for (const course of courses) {
+        const enrollmentPromises = courses.map(course => {
             const enrollment = new Enrollment({
                 user_id: user._id,
                 course_id: course._id,
             });
-            await enrollment.save();
-        }
+            return enrollment.save();
+        });
+        await Promise.all(enrollmentPromises);
 
-        // Generate token
+        // Generate JWT token
         const token = jwt.sign({id: user._id}, process.env.JWT_SECRET, {
             expiresIn: '1d',
         });
 
+        // Respond with token and user data
         res.status(201).json({
             token,
             user: {id: user._id, name: user.name, email: user.email},
@@ -50,11 +57,16 @@ exports.register = async (req, res) => {
     }
 };
 
+/**
+ * @desc    Login user
+ * @route   POST /api/auth/login
+ * @access  Public
+ */
 exports.login = async (req, res) => {
     const {email, password} = req.body;
 
     try {
-        // Find user
+        // Find user by email
         const user = await User.findOne({email});
         if (!user) {
             return res.status(400).json({message: 'Invalid credentials'});
@@ -66,12 +78,16 @@ exports.login = async (req, res) => {
             return res.status(400).json({message: 'Invalid credentials'});
         }
 
-        // Generate token
+        // Generate JWT token
         const token = jwt.sign({id: user._id}, process.env.JWT_SECRET, {
             expiresIn: '1d',
         });
 
-        res.status(200).json({token, user: {id: user._id, name: user.name, email: user.email}});
+        // Respond with token and user data
+        res.status(200).json({
+            token,
+            user: {id: user._id, name: user.name, email: user.email},
+        });
     } catch (error) {
         console.error('Login Error:', error);
         res.status(500).json({message: 'Server error'});
