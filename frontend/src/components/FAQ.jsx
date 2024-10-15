@@ -1,39 +1,5 @@
 import React, { useState } from "react";
-import styled from "styled-components";
-
-const Section = styled.section`
-  padding: ${({ theme }) => theme.spacing(4)} 0;
-  background-color: ${({ theme }) => theme.colors.background};
-`;
-
-const Container = styled.div`
-  width: 60%;
-  margin: 0 auto;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    width: 90%;
-  }
-`;
-
-const Title = styled.h2`
-  text-align: center;
-  font-size: 2rem;
-  color: ${({ theme }) => theme.colors.primary};
-  margin-bottom: ${({ theme }) => theme.spacing(4)};
-`;
-
-const Question = styled.h4`
-  font-size: 1.25rem;
-  color: ${({ theme }) => theme.colors.secondary};
-  cursor: pointer;
-  margin-bottom: ${({ theme }) => theme.spacing(1)};
-`;
-
-const Answer = styled.p`
-  color: ${({ theme }) => theme.colors.darkGray};
-  margin-bottom: ${({ theme }) => theme.spacing(2)};
-  display: ${({ $isOpen }) => ($isOpen ? "block" : "none")};
-`;
+import "./componentStyles/FAQ.css";
 
 function FAQ() {
   const [openIndex, setOpenIndex] = useState(null);
@@ -60,19 +26,21 @@ function FAQ() {
   };
 
   return (
-    <Section>
-      <Container>
-        <Title>Frequently Asked Questions</Title>
+    <section className="faq-section">
+      <div className="faq-container">
+        <h2 className="faq-title">Frequently Asked Questions</h2>
         {faqs.map((faq, index) => (
           <div key={index}>
-            <Question onClick={() => toggleAnswer(index)}>
+            <h4 className="faq-question" onClick={() => toggleAnswer(index)}>
               {faq.question}
-            </Question>
-            <Answer $isOpen={openIndex === index}>{faq.answer}</Answer>
+            </h4>
+            <p className={`faq-answer ${openIndex === index ? "open" : ""}`}>
+              {faq.answer}
+            </p>
           </div>
         ))}
-      </Container>
-    </Section>
+      </div>
+    </section>
   );
 }
 

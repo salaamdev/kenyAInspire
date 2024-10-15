@@ -1,35 +1,7 @@
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
 import { getProgress } from "../services/api";
 import { AuthContext } from "../contexts/AuthContext";
-
-const WidgetsContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    flex-direction: column;
-  }
-`;
-
-const Widget = styled.div`
-  flex: 1;
-  padding: ${({ theme }) => theme.spacing(2)};
-  background-color: ${({ theme }) => theme.colors.lightGray};
-  border-radius: 8px;
-  margin-right: ${({ theme }) => theme.spacing(2)};
-
-  &:last-child {
-    margin-right: 0;
-  }
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    margin-bottom: ${({ theme }) => theme.spacing(2)};
-    &:last-child {
-      margin-bottom: 0;
-    }
-  }
-`;
+import "./componentStyles/ProgressWidgets.css";
 
 function ProgressWidgets() {
   const { token } = React.useContext(AuthContext);
@@ -58,16 +30,16 @@ function ProgressWidgets() {
   }, [token]);
 
   return (
-    <WidgetsContainer>
-      <Widget>
+    <div className="widgets-container">
+      <div className="widget">
         <h3>Modules Completed</h3>
         <p>{totalCompleted}</p>
-      </Widget>
-      <Widget>
+      </div>
+      <div className="widget">
         <h3>Total Modules</h3>
         <p>{totalModules}</p>
-      </Widget>
-      <Widget>
+      </div>
+      <div className="widget">
         <h3>Completion Rate</h3>
         <p>
           {totalModules > 0
@@ -75,8 +47,8 @@ function ProgressWidgets() {
             : 0}
           %
         </p>
-      </Widget>
-    </WidgetsContainer>
+      </div>
+    </div>
   );
 }
 

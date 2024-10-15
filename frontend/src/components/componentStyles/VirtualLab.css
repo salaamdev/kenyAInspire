@@ -1,0 +1,15 @@
+.lab-container {
+  margin-top: 32px;
+}
+
+.lab-title {
+  font-size: 1.75rem;
+  color: #1a73e8;
+  margin-bottom: 16px;
+}
+
+.lab-content {
+  background-color: #f1f3f4;
+  padding: 32px;
+  border-radius: 8px;
+}

@@ -1,24 +1,7 @@
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
 import { getRecommendations } from "../services/api";
 import { AuthContext } from "../contexts/AuthContext";
-
-const ContentContainer = styled.section`
-  margin-top: ${({ theme }) => theme.spacing(4)};
-`;
-
-const Title = styled.h2`
-  font-size: 1.75rem;
-  color: ${({ theme }) => theme.colors.primary};
-  margin-bottom: ${({ theme }) => theme.spacing(2)};
-`;
-
-const ContentItem = styled.div`
-  background-color: ${({ theme }) => theme.colors.lightGray};
-  padding: ${({ theme }) => theme.spacing(2)};
-  border-radius: 8px;
-  margin-bottom: ${({ theme }) => theme.spacing(2)};
-`;
+import "./componentStyles/PersonalizedContent.css";
 
 function PersonalizedContent() {
   const { token } = React.useContext(AuthContext);
@@ -37,12 +20,12 @@ function PersonalizedContent() {
   }, [token]);
 
   return (
-    <ContentContainer>
-      <Title>Your Personalized Recommendations</Title>
-      <ContentItem>
+    <section className="content-container">
+      <h2 className="content-title">Your Personalized Recommendations</h2>
+      <div className="content-item">
         <p>{recommendations || "Loading recommendations..."}</p>
-      </ContentItem>
-    </ContentContainer>
+      </div>
+    </section>
   );
 }
 

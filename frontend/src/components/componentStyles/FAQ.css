@@ -1,0 +1,39 @@
+.faq-section {
+  padding: 32px 0;
+  background-color: #ffffff;
+}
+
+.faq-container {
+  width: 60%;
+  margin: 0 auto;
+}
+
+@media (max-width: 960px) {
+  .faq-container {
+    width: 90%;
+  }
+}
+
+.faq-title {
+  text-align: center;
+  font-size: 2rem;
+  color: #1a73e8;
+  margin-bottom: 32px;
+}
+
+.faq-question {
+  font-size: 1.25rem;
+  color: #34a853;
+  cursor: pointer;
+  margin-bottom: 8px;
+}
+
+.faq-answer {
+  color: #5f6368;
+  margin-bottom: 16px;
+  display: none;
+}
+
+.faq-answer.open {
+  display: block;
+}

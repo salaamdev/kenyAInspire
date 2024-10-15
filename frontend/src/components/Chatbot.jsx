@@ -1,71 +1,7 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import { sendMessageToAI } from "../services/api";
+import { sendMessageToAI, getCourses, getProgress } from "../services/api";
 import { AuthContext } from "../contexts/AuthContext";
-import { getCourses, getProgress } from "../services/api";
-
-const ChatbotContainer = styled.div`
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 350px;
-  height: 500px;
-  background-color: #fff;
-  border: 1px solid ${({ theme }) => theme.colors.primary};
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  z-index: 1000;
-`;
-
-const Header = styled.div`
-  background-color: ${({ theme }) => theme.colors.primary};
-  color: #fff;
-  padding: ${({ theme }) => theme.spacing(2)};
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const CloseButton = styled.button`
-  background: none;
-  border: none;
-  color: #fff;
-  font-size: 20px;
-  cursor: pointer;
-`;
-
-const MessagesContainer = styled.div`
-  height: 300px;
-  overflow-y: auto;
-  padding: ${({ theme }) => theme.spacing(2)};
-`;
-
-const Message = styled.div`
-  margin-bottom: ${({ theme }) => theme.spacing(2)};
-  text-align: ${({ isUser }) => (isUser ? "right" : "left")};
-`;
-
-const InputContainer = styled.form`
-  display: flex;
-  padding: ${({ theme }) => theme.spacing(2)};
-`;
-
-const Input = styled.input`
-  flex: 1;
-  padding: ${({ theme }) => theme.spacing(1)};
-  border: 1px solid ${({ theme }) => theme.colors.primary};
-  border-radius: 4px;
-`;
-
-const SendButton = styled.button`
-  padding: ${({ theme }) => theme.spacing(1)} ${({ theme }) => theme.spacing(2)};
-  background-color: ${({ theme }) => theme.colors.primary};
-  color: #fff;
-  border: none;
-  margin-left: ${({ theme }) => theme.spacing(1)};
-  border-radius: 4px;
-`;
+import "./componentStyles/Chatbot.css";
 
 function Chatbot({ isOpen, onClose }) {
   const { token, user } = React.useContext(AuthContext);
@@ -76,12 +12,21 @@ function Chatbot({ isOpen, onClose }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const coursesData = await getCourses(token);
-        const progressData = await getProgress(token);
-        setStudentData({
-          courses: coursesData.courses,
-          progress: progressData.progress,
-        });
+        if (!navigator.onLine) {
+          const cachedData = JSON.parse(localStorage.getItem("studentData"));
+          if (cachedData) {
+            setStudentData(cachedData);
+          }
+        } else {
+          const coursesData = await getCourses(token);
+          const progressData = await getProgress(token);
+          const data = {
+            courses: coursesData.courses,
+            progress: progressData.progress,
+          };
+          setStudentData(data);
+          localStorage.setItem("studentData", JSON.stringify(data));
+        }
         setMessages([
           {
             text: `Hello ${user.name}! How can I assist you today?`,
@@ -120,28 +65,33 @@ function Chatbot({ isOpen, onClose }) {
   if (!isOpen) return null;
 
   return (
-    <ChatbotContainer>
-      <Header>
+    <div className="chatbot-container">
+      <div className="chatbot-header">
         Chatbot
-        <CloseButton onClick={onClose}>×</CloseButton>
-      </Header>
-      <MessagesContainer>
+        <button className="close-button" onClick={onClose}>
+          ×
+        </button>
+      </div>
+      <div className="messages-container">
         {messages.map((msg, index) => (
-          <Message key={index} isUser={msg.isUser}>
+          <div key={index} className={`message ${msg.isUser ? "user" : "ai"}`}>
             {msg.text}
-          </Message>
+          </div>
         ))}
-      </MessagesContainer>
-      <InputContainer onSubmit={handleSubmit}>
-        <Input
+      </div>
+      <form className="input-container" onSubmit={handleSubmit}>
+        <input
           type="text"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           placeholder="Type your message..."
+          className="chat-input"
         />
-        <SendButton type="submit">Send</SendButton>
-      </InputContainer>
-    </ChatbotContainer>
+        <button type="submit" className="send-button">
+          Send
+        </button>
+      </form>
+    </div>
   );
 }
 

@@ -1,0 +1,36 @@
+.footer-container {
+  background-color: #1a73e8; /* theme.colors.primary */
+  color: #fff;
+  padding: 32px 0;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+  margin: 0 auto;
+}
+
+.footer-section > h4 {
+  margin-bottom: 16px;
+}
+
+.footer-section ul li a {
+  color: #fff;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.footer-section ul li a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 960px) {
+  .footer-content {
+    flex-direction: column;
+    text-align: center;
+  }
+  .footer-section {
+    margin-bottom: 32px;
+  }
+}

@@ -1,0 +1,23 @@
+.partners-section {
+  padding: 32px 0;
+  background-color: #f1f3f4; /* theme.colors.lightGray */
+  text-align: center;
+}
+
+.partners-title {
+  font-size: 2rem;
+  color: #1a73e8; /* theme.colors.primary */
+  margin-bottom: 32px;
+}
+
+.logos-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.logo {
+  width: 150px;
+  height: auto;
+  margin: 16px;
+}
