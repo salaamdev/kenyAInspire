@@ -1,42 +1,8 @@
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
 import { getCourses } from "../services/api";
 import { AuthContext } from "../contexts/AuthContext";
 import { Link } from "react-router-dom";
-
-const CoursesContainer = styled.section`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: ${({ theme }) => theme.spacing(2)};
-  margin-top: ${({ theme }) => theme.spacing(4)};
-`;
-
-const CourseCard = styled.div`
-  padding: ${({ theme }) => theme.spacing(2)};
-  background-color: ${({ theme }) => theme.colors.lightGray};
-  border-radius: 8px;
-  text-decoration: none;
-  color: inherit;
-`;
-
-const Title = styled.h3`
-  font-size: 1.5rem;
-  color: ${({ theme }) => theme.colors.primary};
-`;
-
-const ProgressBar = styled.div`
-  background-color: ${({ theme }) => theme.colors.darkGray};
-  border-radius: 4px;
-  overflow: hidden;
-  height: 10px;
-  margin-top: ${({ theme }) => theme.spacing(1)};
-`;
-
-const ProgressFill = styled.div`
-  height: 100%;
-  background-color: ${({ theme }) => theme.colors.primary};
-  width: ${({ percentage }) => percentage}%;
-`;
+import "./componentStyles/CoursesList.css";
 
 function CoursesList() {
   const { token } = React.useContext(AuthContext);
@@ -46,8 +12,8 @@ function CoursesList() {
     const fetchData = async () => {
       try {
         const data = await getCourses(token);
-        console.log("Fetched courses:", data.courses); // Debugging log
-        setCourses(data.courses || []); // Ensure courses is an array
+        console.log("Fetched courses:", data.courses);
+        setCourses(data.courses || []);
       } catch (error) {
         console.error("Error fetching courses:", error);
       }
@@ -55,32 +21,37 @@ function CoursesList() {
     fetchData();
   }, [token]);
 
+  if (!courses.length) {
+    return <p>No courses available.</p>;
+  }
+
   return (
-    <CoursesContainer>
-      {courses.length > 0 ? (
-        courses.map((course) => {
-          const percentage = course.total_modules
-            ? ((course.completed_modules / course.total_modules) * 100).toFixed(
-                2
-              )
-            : 0;
-          return (
-            <Link to={`/dashboard/courses/${course.id}`} key={course.id}>
-              <CourseCard>
-                <Title>{course.title}</Title>
-                <p>{course.description}</p>
-                <ProgressBar>
-                  <ProgressFill percentage={percentage} />
-                </ProgressBar>
-                <p>{percentage}% completed</p>
-              </CourseCard>
-            </Link>
-          );
-        })
-      ) : (
-        <p>No courses available.</p>
-      )}
-    </CoursesContainer>
+    <div className="courses-container">
+      {courses.map((course) => {
+        const percentage = course.total_modules
+          ? ((course.completed_modules / course.total_modules) * 100).toFixed(2)
+          : 0;
+        return (
+          <Link
+            to={`/dashboard/courses/${course.id}`}
+            key={course.id}
+            className="course-link"
+          >
+            <div className="course-card">
+              <h3 className="course-title">{course.title}</h3>
+              <p>{course.description}</p>
+              <div className="progress-bar">
+                <div
+                  className="progress-fill"
+                  style={{ width: `${percentage}%` }}
+                ></div>
+              </div>
+              <p>{percentage}% completed</p>
+            </div>
+          </Link>
+        );
+      })}
+    </div>
   );
 }
 

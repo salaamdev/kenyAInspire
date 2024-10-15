@@ -1,0 +1,79 @@
+.menu-button {
+  position: fixed;
+  top: 70px;
+  left: 10px;
+  background-color: #1a73e8;
+  color: #fff;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  z-index: 101;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 24px;
+  width: 30px;
+  transition: left 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+.menu-button.open {
+  left: 210px;
+}
+
+.menu-button.hidden {
+  opacity: 0;
+}
+
+.menu-button.visible {
+  opacity: 1;
+}
+
+.menu-button div {
+  background-color: #fff;
+  height: 2px;
+  width: 100%;
+}
+
+.sidebar-container {
+  width: 0;
+  transition: width 0.3s ease-in-out;
+  overflow: hidden;
+  background-color: #ffffff;
+  height: calc(100vh - 60px);
+  margin-top: 60px;
+}
+
+.sidebar-container.open {
+  width: 200px;
+}
+
+.menu-list {
+  list-style: none;
+  padding: 16px;
+  margin: 0;
+}
+
+.menu-item {
+  margin-bottom: 16px;
+}
+
+.nav-link {
+  color: #202124;
+  text-decoration: none;
+}
+
+.nav-link.active {
+  font-weight: bold;
+}
+
+.chat-bubble {
+  margin-top: auto;
+  padding: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.chat-bubble span {
+  margin-left: 8px;
+}

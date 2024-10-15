@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { sendMessageToAI } from "../services/api";
+import { getQuiz } from "../services/api";
 import { AuthContext } from "../contexts/AuthContext";
 
 function AIQuiz({ courseId }) {
   const { token } = React.useContext(AuthContext);
-  const [questions, setQuestions] = useState([]);
+  const [quiz, setQuiz] = useState([]);
 
   useEffect(() => {
     const fetchQuiz = async () => {
       try {
-        const message = `Generate a quiz for the course with ID ${courseId}.`;
-        const response = await sendMessageToAI(token, message);
-        setQuestions(response.reply.split("\n"));
+        const data = await getQuiz(token, courseId);
+        setQuiz(data.quiz);
       } catch (error) {
         console.error("Error fetching quiz:", error);
       }
@@ -21,12 +20,21 @@ function AIQuiz({ courseId }) {
 
   return (
     <div>
-      <h3>Quiz</h3>
-      <ul>
-        {questions.map((question, index) => (
-          <li key={index}>{question}</li>
-        ))}
-      </ul>
+      {quiz.map((q, index) => (
+        <div key={index}>
+          <p>
+            <strong>
+              {index + 1}. {q.question}
+            </strong>
+          </p>
+          <ul>
+            {q.options.map((option, idx) => (
+              <li key={idx}>{option}</li>
+            ))}
+          </ul>
+          {/* Implement functionality to select an answer and check correctness */}
+        </div>
+      ))}
     </div>
   );
 }

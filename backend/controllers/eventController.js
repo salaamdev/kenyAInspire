@@ -1,15 +1,9 @@
-const pool = require('../config/db');
+const Event = require('../models/eventModel');
 
-// Get all events
 exports.getEvents = async (req, res) => {
     try {
-        const result = await pool.query(`
-      SELECT id, title, event_date, description
-      FROM events
-      WHERE event_date >= CURRENT_DATE
-      ORDER BY event_date ASC
-    `);
-        res.json({events: result.rows});
+        const events = await Event.find({event_date: {$gte: new Date()}}).sort({event_date: 1});
+        res.json({events});
     } catch (error) {
         console.error('Error fetching events:', error);
         res.status(500).json({message: 'Server error'});

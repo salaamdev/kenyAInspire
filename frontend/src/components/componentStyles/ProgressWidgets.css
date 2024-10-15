@@ -1,0 +1,31 @@
+.widgets-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+@media (max-width: 960px) {
+  .widgets-container {
+    flex-direction: column;
+  }
+}
+
+.widget {
+  flex: 1;
+  padding: 16px;
+  background-color: #f1f3f4;
+  border-radius: 8px;
+  margin-right: 16px;
+}
+
+.widget:last-child {
+  margin-right: 0;
+}
+
+@media (max-width: 960px) {
+  .widget {
+    margin-bottom: 16px;
+  }
+  .widget:last-child {
+    margin-bottom: 0;
+  }
+}

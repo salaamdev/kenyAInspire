@@ -1,0 +1,30 @@
+.settings-container {
+  margin-top: 32px;
+}
+
+.settings-form {
+  display: flex;
+  flex-direction: column;
+  max-width: 400px;
+}
+
+.settings-label {
+  margin-top: 16px;
+}
+
+.settings-input {
+  padding: 8px;
+  margin-top: 8px;
+  border: 1px solid #1a73e8;
+  border-radius: 4px;
+}
+
+.settings-button {
+  margin-top: 32px;
+  padding: 8px;
+  background-color: #1a73e8;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}

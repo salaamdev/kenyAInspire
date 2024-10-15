@@ -1,0 +1,15 @@
+.content-container {
+  margin-top: 32px;
+}
+
+.content-title {
+  font-size: 1.75rem;
+  color: #1a73e8;
+  margin-bottom: 16px;
+}
+
+.content-item {
+  background-color: #f1f3f4;
+  padding: 16px;
+  border-radius: 8px;
+}

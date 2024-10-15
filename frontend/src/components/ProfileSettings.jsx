@@ -1,37 +1,7 @@
 import React, { useState, useContext } from "react";
-import styled from "styled-components";
 import { AuthContext } from "../contexts/AuthContext";
 import { updateProfile } from "../services/api";
-
-const SettingsContainer = styled.div`
-  margin-top: ${({ theme }) => theme.spacing(4)};
-`;
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  max-width: 400px;
-`;
-
-const Label = styled.label`
-  margin-top: ${({ theme }) => theme.spacing(2)};
-`;
-
-const Input = styled.input`
-  padding: ${({ theme }) => theme.spacing(1)};
-  margin-top: ${({ theme }) => theme.spacing(1)};
-  border: 1px solid ${({ theme }) => theme.colors.primary};
-  border-radius: 4px;
-`;
-
-const Button = styled.button`
-  margin-top: ${({ theme }) => theme.spacing(4)};
-  padding: ${({ theme }) => theme.spacing(1)};
-  background-color: ${({ theme }) => theme.colors.primary};
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-`;
+import "./componentStyles/ProfileSettings.css";
 
 function ProfileSettings() {
   const { user, token, setUser } = useContext(AuthContext);
@@ -49,7 +19,6 @@ function ProfileSettings() {
       }
       await updateProfile(token, userData);
 
-      // Update user context
       setUser({ ...user, name, email });
 
       alert("Profile updated successfully!");
@@ -60,26 +29,37 @@ function ProfileSettings() {
   };
 
   return (
-    <SettingsContainer>
+    <div className="settings-container">
       <h3>Profile Settings</h3>
-      <Form onSubmit={handleSubmit}>
-        <Label>Name</Label>
-        <Input value={name} onChange={(e) => setName(e.target.value)} />
+      <form onSubmit={handleSubmit} className="settings-form">
+        <label className="settings-label">Name</label>
+        <input
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          className="settings-input"
+        />
 
-        <Label>Email</Label>
-        <Input value={email} onChange={(e) => setEmail(e.target.value)} />
+        <label className="settings-label">Email</label>
+        <input
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className="settings-input"
+        />
 
-        <Label>New Password</Label>
-        <Input
+        <label className="settings-label">New Password</label>
+        <input
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Leave blank to keep current password"
+          className="settings-input"
         />
 
-        <Button type="submit">Save Changes</Button>
-      </Form>
-    </SettingsContainer>
+        <button type="submit" className="settings-button">
+          Save Changes
+        </button>
+      </form>
+    </div>
   );
 }
 

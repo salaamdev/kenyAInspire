@@ -1,63 +1,8 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import styled from "styled-components";
 import { AuthContext } from "../contexts/AuthContext";
-import { Link } from "react-router-dom";
-import Container from "./Container"; // Import the Container component
-import { useNavigate } from "react-router-dom";
-
-const FormContainer = styled(Container)`
-  margin: ${({ theme }) => theme.spacing(8)} auto;
-  padding: ${({ theme }) => theme.spacing(4)};
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  max-width: 400px; /* Ensure the form doesn't get too wide */
-`;
-
-const Title = styled.h2`
-  text-align: center;
-  margin-bottom: ${({ theme }) => theme.spacing(4)};
-  color: ${({ theme }) => theme.colors.primary};
-`;
-
-const Input = styled.input`
-  width: 100%;
-  padding: ${({ theme }) => theme.spacing(1)};
-  margin-bottom: ${({ theme }) => theme.spacing(2)};
-  border: 1px solid ${({ theme }) => theme.colors.lightGray};
-  border-radius: 4px;
-
-  &:focus {
-    border-color: ${({ theme }) => theme.colors.primary};
-    outline: none;
-  }
-`;
-
-const Button = styled.button`
-  width: 100%;
-  padding: ${({ theme }) => theme.spacing(1)};
-  background-color: ${({ theme }) => theme.colors.primary};
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  font-size: 1rem;
-  margin-top: ${({ theme }) => theme.spacing(2)};
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.darkGray};
-  }
-`;
-
-const TextLink = styled(Link)`
-  display: block;
-  text-align: center;
-  margin-top: ${({ theme }) => theme.spacing(2)};
-  color: ${({ theme }) => theme.colors.primary};
-
-  &:hover {
-    text-decoration: underline;
-  }
-`;
+import { Link, useNavigate } from "react-router-dom";
+import "./componentStyles/LoginForm.css";
 
 function LoginForm() {
   const navigate = useNavigate();
@@ -70,28 +15,33 @@ function LoginForm() {
       navigate("/dashboard");
     } catch (error) {
       console.error("Login Error:", error);
-      // Display error message to user
     }
   };
 
   return (
-    <FormContainer>
-      <Title>Login to EduKenya</Title>
+    <div className="form-container">
+      <h2 className="form-title">Login to EduKenya</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Input
+        <input
           type="text"
           placeholder="Email"
           {...register("email", { required: true })}
+          className="form-input"
         />
-        <Input
+        <input
           type="password"
           placeholder="Password"
           {...register("password", { required: true })}
+          className="form-input"
         />
-        <Button type="submit">Login</Button>
+        <button type="submit" className="form-button">
+          Login
+        </button>
       </form>
-      <TextLink to="/signup">Don't have an account? Sign Up</TextLink>
-    </FormContainer>
+      <Link to="/signup" className="form-link">
+        Don't have an account? Sign Up
+      </Link>
+    </div>
   );
 }
 

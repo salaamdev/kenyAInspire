@@ -1,0 +1,10 @@
+.events-container {
+  margin-top: 32px;
+}
+
+.event-item {
+  padding: 16px;
+  background-color: #f1f3f4;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}

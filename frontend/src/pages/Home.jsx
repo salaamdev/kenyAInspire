@@ -12,7 +12,7 @@ function Home() {
       <WelcomeBanner />
       <Announcements />
       <ProgressWidgets />
-      <CoursesList />
+      {/* <CoursesList /> */}
       <PersonalizedContent />
       <UpcomingEvents />
     </>

@@ -1,0 +1,12 @@
+.options-container {
+  margin-top: 32px; /* theme.spacing(4) */
+}
+
+.button {
+  margin-right: 16px; /* theme.spacing(2) */
+  padding: 8px; /* theme.spacing(1) */
+  background-color: #1a73e8; /* theme.colors.primary */
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+}

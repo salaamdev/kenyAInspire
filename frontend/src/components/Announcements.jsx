@@ -1,14 +1,6 @@
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
 import { getAnnouncements } from "../services/api";
-
-const AnnouncementsContainer = styled.div`
-  padding: ${({ theme }) => theme.spacing(2)};
-  background-color: ${({ theme }) => theme.colors.secondary};
-  color: #fff;
-  border-radius: 8px;
-  margin-bottom: ${({ theme }) => theme.spacing(4)};
-`;
+import "./componentStyles/Announcements.css";
 
 function Announcements() {
   const [announcements, setAnnouncements] = useState([]);
@@ -26,7 +18,7 @@ function Announcements() {
   }, []);
 
   return (
-    <AnnouncementsContainer>
+    <div className="announcements-container">
       <h3>Announcements</h3>
       <ul>
         {announcements.map((announcement) => (
@@ -35,7 +27,7 @@ function Announcements() {
           </li>
         ))}
       </ul>
-    </AnnouncementsContainer>
+    </div>
   );
 }
 
