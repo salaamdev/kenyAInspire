@@ -52,3 +52,9 @@
 .form-link:hover {
   text-decoration: underline;
 }
+
+.error-message{
+
+  font-size: 14px;
+  color: #e7787e;
+}

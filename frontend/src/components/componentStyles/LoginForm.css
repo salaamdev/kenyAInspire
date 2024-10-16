@@ -52,3 +52,40 @@
 .form-link:hover {
   text-decoration: underline;
 }
+
+/* password visibility toggle */
+
+
+
+.password-input-container {
+  position: relative;
+  margin-bottom: 15px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 5px;
+  top: 27%;
+  transform: translateY(-50%);
+  background: none;
+  cursor: pointer;
+  color: #007bff;
+  font-size: 15px;
+  width: 40px;
+  height: 25px;
+  z-index: 1;
+  margin-bottom: 0px;
+}
+
+.toggle-password:focus {
+  outline: none;
+  border: 0px ;
+  background: none;
+
+}
