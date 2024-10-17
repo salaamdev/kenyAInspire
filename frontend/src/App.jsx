@@ -6,7 +6,7 @@ import UserPreferencesContextProvider from "./contexts/UserPreferencesContext";
 import AppRoutes from "./routes/AppRoutes";
 import GlobalStyles from "./styles/GlobalStyles";
 import ErrorBoundary from "./components/ErrorBoundary";
-import { ThemeProvider } from "styled-components";
+import { ThemeProvider } from "styled-components"; 
 
 const theme = {
   colors: {
@@ -43,6 +43,7 @@ function App() {
           </UserPreferencesContextProvider>
         </AuthContextProvider>
       </ErrorBoundary>
+      <Footer />
     </ThemeProvider>
   );
 }
