@@ -26,9 +26,14 @@ exports.register = async (req, res) => {
             // Generate OTP
             const otpCode = otpGenerator.generate(6, {upperCaseAlphabets: false, specialChars: false});
 
-            // Save OTP in database
+            // Hash the password
+            const hashedPassword = await bcrypt.hash(password, 10);
+
+            // Save OTP along with name and hashed password
             const otpEntry = new OTP({
                 email,
+                name,
+                password: hashedPassword,
                 otp: otpCode,
                 createdAt: new Date(),
             });
@@ -44,6 +49,7 @@ exports.register = async (req, res) => {
         }
     }
 };
+
 
 /**
  * @desc    Verify OTP and complete registration
@@ -70,7 +76,7 @@ exports.verifyOTP = async (req, res) => {
         const user = new User({
             name: otpEntry.name,
             email: otpEntry.email,
-            password: otpEntry.password,
+            password: otpEntry.password, // Already hashed
         });
         await user.save();
 
@@ -104,13 +110,14 @@ exports.verifyOTP = async (req, res) => {
     }
 };
 
+
 /**
  * @desc    Send OTP Email
  */
 async function sendOTPEmail (email, otp) {
     // Create transporter
     let transporter = nodemailer.createTransport({
-        service: 'hotmail', // Use your email service
+        service: 'gmail', // Use your email provider
         auth: {
             user: process.env.EMAIL_USER, // Your email
             pass: process.env.EMAIL_PASS, // Your email password or app password
