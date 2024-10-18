@@ -1,11 +1,11 @@
+// controllers/authController.js
+
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const User = require('../models/userModel');
-const Course = require('../models/courseModel');
-const Enrollment = require('../models/enrollmentModel');
-const OTP = require('../models/otpModel'); // Create this model
+const {User, OTP, Enrollment, Course} = require('../models');
 const nodemailer = require('nodemailer');
 const otpGenerator = require('otp-generator');
+const {Op} = require('sequelize');
 
 /**
  * @desc    Register a new user (Step 1: Send OTP)
@@ -18,7 +18,7 @@ exports.register = async (req, res) => {
     if (action === 'request_otp') {
         try {
             // Check if user already exists
-            const existingUser = await User.findOne({email});
+            const existingUser = await User.findOne({where: {email}});
             if (existingUser) {
                 return res.status(400).json({message: 'Email already exists'});
             }
@@ -30,14 +30,13 @@ exports.register = async (req, res) => {
             const hashedPassword = await bcrypt.hash(password, 10);
 
             // Save OTP along with name and hashed password
-            const otpEntry = new OTP({
+            await OTP.create({
                 email,
                 name,
                 password: hashedPassword,
                 otp: otpCode,
                 createdAt: new Date(),
             });
-            await otpEntry.save();
 
             // Send OTP via email
             await sendOTPEmail(email, otpCode);
@@ -50,7 +49,6 @@ exports.register = async (req, res) => {
     }
 };
 
-
 /**
  * @desc    Verify OTP and complete registration
  * @route   POST /api/auth/verify-otp
@@ -61,55 +59,53 @@ exports.verifyOTP = async (req, res) => {
 
     try {
         // Find OTP entry
-        const otpEntry = await OTP.findOne({email, otp});
+        const otpEntry = await OTP.findOne({where: {email, otp}});
         if (!otpEntry) {
             return res.status(400).json({message: 'Invalid OTP'});
         }
 
         // Check if OTP is expired (valid for 10 minutes)
         const now = new Date();
-        if (now - otpEntry.createdAt > 10 * 60 * 1000) {
+        const otpAge = now - otpEntry.createdAt;
+        if (otpAge > 10 * 60 * 1000) {
             return res.status(400).json({message: 'OTP expired'});
         }
 
         // Create user
-        const user = new User({
+        const user = await User.create({
             name: otpEntry.name,
             email: otpEntry.email,
             password: otpEntry.password, // Already hashed
         });
-        await user.save();
 
         // Enroll user in all existing courses
-        const courses = await Course.find({});
+        const courses = await Course.findAll();
         const enrollmentPromises = courses.map((course) => {
-            const enrollment = new Enrollment({
-                user_id: user._id,
-                course_id: course._id,
+            return Enrollment.create({
+                user_id: user.id,
+                course_id: course.id,
             });
-            return enrollment.save();
         });
         await Promise.all(enrollmentPromises);
 
         // Generate JWT token
-        const token = jwt.sign({id: user._id}, process.env.JWT_SECRET, {
+        const token = jwt.sign({id: user.id}, process.env.JWT_SECRET, {
             expiresIn: '1d',
         });
 
         // Delete OTP entry
-        await OTP.deleteOne({_id: otpEntry._id});
+        await OTP.destroy({where: {id: otpEntry.id}});
 
         // Respond with token and user data
         res.status(201).json({
             token,
-            user: {id: user._id, name: user.name, email: user.email},
+            user: {id: user.id, name: user.name, email: user.email},
         });
     } catch (error) {
         console.error('OTP Verification Error:', error);
         res.status(500).json({message: 'Server error'});
     }
 };
-
 
 /**
  * @desc    Send OTP Email
@@ -146,7 +142,7 @@ exports.login = async (req, res) => {
 
     try {
         // Find user by email
-        const user = await User.findOne({email});
+        const user = await User.findOne({where: {email}});
         if (!user) {
             return res.status(400).json({message: 'Invalid credentials'});
         }
@@ -158,14 +154,14 @@ exports.login = async (req, res) => {
         }
 
         // Generate JWT token
-        const token = jwt.sign({id: user._id}, process.env.JWT_SECRET, {
+        const token = jwt.sign({id: user.id}, process.env.JWT_SECRET, {
             expiresIn: '1d',
         });
 
         // Respond with token and user data
         res.status(200).json({
             token,
-            user: {id: user._id, name: user.name, email: user.email},
+            user: {id: user.id, name: user.name, email: user.email},
         });
     } catch (error) {
         console.error('Login Error:', error);

@@ -1,7 +1,6 @@
 const OpenAI = require('openai');
-const StudentProgress = require('../models/studentProgressModel');
-const Course = require('../models/courseModel');
-
+const StudentProgress = require('../models/studentTopicProgress');
+const {Course, Topic} = require('../models');
 const configuration = new OpenAI.Configuration({
     apiKey: process.env.OPENAI_API_KEY,
 });
@@ -9,14 +8,29 @@ const configuration = new OpenAI.Configuration({
 const openai = new OpenAI.OpenAIApi(configuration);
 
 exports.generateQuiz = async (req, res) => {
-    const userId = req.user._id;
+    const userId = req.user.id;
     const courseId = req.params.courseId;
 
     try {
+        // Fetch the course with associated topics
+        const course = await Course.findByPk(courseId, {
+            include: [{model: Topic}],
+        });
+
+        if (!course || !course.Topics || course.Topics.length === 0) {
+            return res.status(404).json({error: 'No topics found for this course.'});
+        }
+
         // Get completed topics for the user in the course
-        const studentProgress = await StudentProgress.findOne({
-            user_id: userId,
-            course_id: courseId,
+        const studentProgress = await StudentProgress.findAll({
+            where: {
+                user_id: userId,
+                is_completed: true,
+            },
+            include: [{
+                model: Topic,
+                where: {course_id: courseId},
+            }],
         });
 
         if (!studentProgress || studentProgress.completed_topics.length === 0) {
@@ -24,8 +38,7 @@ exports.generateQuiz = async (req, res) => {
         }
 
         // Get topics content
-        const course = await Course.findById(courseId);
-        const completedTopics = course.topics.filter((topic) =>
+        const completedTopics = course.Topics.filter((topic) =>
             studentProgress.completed_topics.includes(topic._id)
         );
 
@@ -61,6 +74,7 @@ exports.generateQuiz = async (req, res) => {
         res.status(500).json({message: 'Server error'});
     }
 };
+
 function parseQuiz (text) {
     const quiz = [];
     const questions = text.split('\n\n').filter((q) => q.trim() !== '');

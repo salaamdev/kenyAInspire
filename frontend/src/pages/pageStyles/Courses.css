@@ -1,0 +1,25 @@
+.courses-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.courses-header {
+  margin-bottom: 2rem;
+}
+
+.courses-header h2 {
+  color: #0066cc;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .courses-page {
+    padding: 1rem;
+  }
+
+  .courses-header h2 {
+    font-size: 1.5rem;
+  }
+}

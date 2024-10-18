@@ -1,4 +1,22 @@
-.footer-container {
+/* src/components/componentStyles/Footer.css */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.dashboard-footer {
+  /* margin: 0; */
+  background-color: #ffffff;
+  color: #000000;
+  text-align: center;
+  padding: 1rem 0;
+  border-top: 1px solid #e6e6e6;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+}
+
+/* .footer-container {
   background-color: #0066cc;
   color: #ffffff;
   padding: 3rem 2rem;
@@ -72,4 +90,4 @@
 
 .footer-container {
   animation: fadeIn 0.8s ease-out;
-}
+} */
