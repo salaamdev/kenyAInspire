@@ -10,7 +10,7 @@ function Navbar() {
     <nav className="nav">
       <div className="logo">
         <Link to="/" style={{ color: "#fff" }}>
-          EduKenya
+          Keny<span style={{ color: "red" }}>AI</span>nspire
         </Link>
       </div>
       <div className="nav-links">

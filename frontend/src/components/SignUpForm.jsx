@@ -42,7 +42,7 @@ function SignUpForm() {
 
   return (
     <div className="form-container">
-      <h2 className="form-title">Sign Up for EduKenya</h2>
+      <h2 className="form-title">Sign Up Now</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         {!otpSent ? (
           <>

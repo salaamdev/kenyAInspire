@@ -128,7 +128,7 @@ async function sendOTPEmail (email, otp) {
     let mailOptions = {
         from: process.env.EMAIL_USER,
         to: email,
-        subject: 'EduKenya OTP Verification',
+        subject: 'KenyAInspire OTP Verification',
         text: `Your OTP code is ${ otp }. It is valid for 10 minutes.`,
     };
 

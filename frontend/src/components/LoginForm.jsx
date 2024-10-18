@@ -20,7 +20,7 @@ function LoginForm() {
 
   return (
     <div className="form-container">
-      <h2 className="form-title">Login to EduKenya</h2>
+      <h2 className="form-title">Login To Your Account</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <input
           type="text"
