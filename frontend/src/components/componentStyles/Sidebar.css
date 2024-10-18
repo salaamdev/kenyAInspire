@@ -1,79 +1,81 @@
-.menu-button {
+.sidebar {
   position: fixed;
-  top: 70px;
-  left: 10px;
-  background-color: #1a73e8;
-  color: #fff;
-  border: none;
-  padding: 8px;
-  cursor: pointer;
-  z-index: 101;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 250px;
+  background-color: #0066cc;
+  color: white;
+  transition: all 0.3s ease-in-out;
+  z-index: 1000;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
-  height: 24px;
-  width: 30px;
-  transition: left 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  justify-content: space-between;
 }
 
-.menu-button.open {
-  left: 210px;
+.sidebar.closed {
+  transform: translateX(-250px);
 }
 
-.menu-button.hidden {
-  opacity: 0;
+.sidebar-nav {
+  padding: 2rem 0;
 }
 
-.menu-button.visible {
-  opacity: 1;
-}
-
-.menu-button div {
-  background-color: #fff;
-  height: 2px;
-  width: 100%;
-}
-
-.sidebar-container {
-  width: 0;
-  transition: width 0.3s ease-in-out;
-  overflow: hidden;
-  background-color: #ffffff;
-  height: calc(100vh - 60px);
-  margin-top: 60px;
-}
-
-.sidebar-container.open {
-  width: 200px;
-}
-
-.menu-list {
-  list-style: none;
-  padding: 16px;
+.sidebar-nav ul {
+  list-style-type: none;
+  padding: 0;
   margin: 0;
 }
 
-.menu-item {
-  margin-bottom: 16px;
-}
-
 .nav-link {
-  color: #202124;
-  text-decoration: none;
-}
-
-.nav-link.active {
-  font-weight: bold;
-}
-
-.chat-bubble {
-  margin-top: auto;
-  padding: 16px;
-  cursor: pointer;
   display: flex;
   align-items: center;
+  padding: 1rem 2rem;
+  color: white;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
 }
 
-.chat-bubble span {
-  margin-left: 8px;
+.nav-link:hover,
+.nav-link.active {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.nav-link svg {
+  margin-right: 1rem;
+}
+
+.chat-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background-color: #005cb8;
+  border: none;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.chat-button:hover {
+  background-color: #004c96;
+}
+
+.chat-button svg {
+  margin-right: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    transform: translateY(-100%);
+  }
+
+  .sidebar.open {
+    transform: translateY(0);
+  }
+
+  .sidebar.closed {
+    transform: translateY(-100%);
+  }
 }

@@ -1,8 +1,12 @@
-const Announcement = require('../models/announcementModel');
+// controllers/announcementController.js
+
+const Announcement = require('../models/announcement');
 
 exports.getAnnouncements = async (req, res) => {
     try {
-        const announcements = await Announcement.find().sort({created_at: -1});
+        const announcements = await Announcement.findAll({
+            order: [['created_at', 'DESC']],
+        });
         res.json({announcements});
     } catch (error) {
         console.error('Error fetching announcements:', error);

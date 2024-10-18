@@ -1,7 +1,6 @@
 const OpenAI = require('openai');
-const StudentProgress = require('../models/studentProgressModel');
-const Course = require('../models/courseModel');
-
+const StudentProgress = require('../models/studentTopicProgress');
+const {Course, Topic} = require('../models');
 const configuration = new OpenAI.Configuration({
     apiKey: process.env.OPENAI_API_KEY,
 });
@@ -9,14 +8,29 @@ const configuration = new OpenAI.Configuration({
 const openai = new OpenAI.OpenAIApi(configuration);
 
 exports.generateFlashcards = async (req, res) => {
-    const userId = req.user._id;
-    const courseId = req.params.courseId;
+    const userId = req.user.id;
+    const {courseId} = req.params;
 
     try {
+        // Fetch the course with associated topics
+        const course = await Course.findByPk(courseId, {
+            include: [{model: Topic}],
+        });
+
+        if (!course || !course.Topics || course.Topics.length === 0) {
+            return res.status(404).json({error: 'No topics found for this course.'});
+        }
+
         // Get completed topics for the user in the course
-        const studentProgress = await StudentProgress.findOne({
-            user_id: userId,
-            course_id: courseId,
+        const studentProgress = await StudentProgress.findAll({
+            where: {
+                user_id: userId,
+                is_completed: true,
+            },
+            include: [{
+                model: Topic,
+                where: {course_id: courseId},
+            }],
         });
 
         if (!studentProgress || studentProgress.completed_topics.length === 0) {
@@ -24,13 +38,11 @@ exports.generateFlashcards = async (req, res) => {
         }
 
         // Get topics content
-        const course = await Course.findById(courseId);
-        const completedTopics = course.topics.filter((topic) =>
+        const completedTopics = course.Topics.filter((topic) =>
             studentProgress.completed_topics.includes(topic._id)
         );
 
         const topicsContent = completedTopics.map((topic) => topic.content).join('\n');
-
 
         // Generate flashcards using AI
         const prompt = `You are an assistant that creates educational flashcards. Based on the following content, generate a set of flashcards. Each flashcard should have a question (Q) and an answer (A).
@@ -57,6 +69,7 @@ exports.generateFlashcards = async (req, res) => {
         res.status(500).json({message: 'Server error'});
     }
 };
+
 function parseFlashcards (text) {
     const flashcards = [];
     const entries = text.split('\nQ:').map((entry, index) => (index === 0 ? entry : 'Q:' + entry));

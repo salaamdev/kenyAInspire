@@ -1,0 +1,27 @@
+.dashboard {
+  min-height: 100vh;
+  background-color: #f0f8ff;
+  padding: 2rem;
+}
+
+.dashboard-content {
+  max-width: 90%;
+  margin: 0 auto;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+@media (max-width: 768px) {
+  .dashboard {
+    padding: 1rem;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}

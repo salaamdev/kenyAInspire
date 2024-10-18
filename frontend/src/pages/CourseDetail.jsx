@@ -4,36 +4,9 @@ import { getCourseDetail, updateTopicCompletion } from "../services/api";
 import { AuthContext } from "../contexts/AuthContext";
 import AIQuiz from "../components/AIQuiz";
 import AIFlashcards from "../components/AIFlashcards";
-import {
-  LinearProgress,
-  Box,
-  Typography,
-  Checkbox,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemSecondaryAction,
-  Container,
-  Paper,
-  Divider,
-  Grid,
-} from "@mui/material";
-import { styled } from "@mui/system";
+import "./pageStyles/CourseDetails.css";
 
-const StyledContainer = styled(Container)({
-  marginTop: "2rem",
-});
-
-const StyledPaper = styled(Paper)({
-  padding: "2rem",
-  marginBottom: "2rem",
-});
-
-const StyledListItem = styled(ListItem)({
-  paddingLeft: 0,
-});
-
-const CourseDetail = () => {
+function CourseDetails() {
   const { token } = React.useContext(AuthContext);
   const { courseId } = useParams();
   const [course, setCourse] = useState(null);
@@ -55,9 +28,8 @@ const CourseDetail = () => {
   const handleTopicCompletion = async (topicId, isCompleted) => {
     try {
       await updateTopicCompletion(token, courseId, topicId, isCompleted);
-      // Update the course data and progress locally
       const updatedTopics = course.topics.map((topic) => {
-        if (topic._id === topicId) {
+        if (topic.id === topicId) {
           return { ...topic, isCompleted };
         }
         return topic;
@@ -80,70 +52,65 @@ const CourseDetail = () => {
     }
   };
 
-  if (!course || !progress) return <Typography>Loading...</Typography>;
+  if (!course || !progress) return <p className="loading">Loading...</p>;
 
   return (
-    <StyledContainer>
-      <StyledPaper elevation={3}>
-        <Typography variant="h4" gutterBottom>
-          {course.title}
-        </Typography>
-        <Typography variant="body1" paragraph>
-          {course.description}
-        </Typography>
-        <Typography variant="h6" gutterBottom>
-          Progress: {progress.progressPercentage.toFixed(2)}%
-        </Typography>
-        <Box sx={{ width: "100%", mt: 1 }}>
-          <LinearProgress
-            variant="determinate"
-            value={progress.progressPercentage}
-          />
-        </Box>
-      </StyledPaper>
+    <div className="course-details">
+      <div className="course-header">
+        <h2>{course.title}</h2>
+        <p>{course.description}</p>
+        <div className="progress-container">
+          <div className="progress-label">
+            Progress: {progress.progressPercentage.toFixed(2)}%
+          </div>
+          <div className="progress-bar">
+            <div
+              className="progress-fill"
+              style={{ width: `${progress.progressPercentage}%` }}
+              aria-valuenow={progress.progressPercentage}
+              aria-valuemin="0"
+              aria-valuemax="100"
+            ></div>
+          </div>
+        </div>
+      </div>
 
-      <StyledPaper elevation={3}>
-        <Typography variant="h5" gutterBottom>
-          Topics
-        </Typography>
-        <List>
+      <div className="course-content">
+        <div className="topics-list">
+          <h3>Topics</h3>
           {course.topics.map((topic) => (
-            <StyledListItem key={topic._id}>
-              <ListItemText primary={topic.title} secondary={topic.content} />
-              <ListItemSecondaryAction>
-                <Checkbox
-                  edge="end"
+            <div key={topic.id} className="topic-item">
+              <label className="topic-checkbox">
+                <input
+                  type="checkbox"
                   checked={topic.isCompleted}
                   onChange={(e) =>
-                    handleTopicCompletion(topic._id, e.target.checked)
+                    handleTopicCompletion(topic.id, e.target.checked)
                   }
                 />
-              </ListItemSecondaryAction>
-            </StyledListItem>
+                <span className="checkmark"></span>
+              </label>
+              <div className="topic-content">
+                <h4>{topic.title}</h4>
+                <p>{topic.content}</p>
+              </div>
+            </div>
           ))}
-        </List>
-      </StyledPaper>
+        </div>
 
-      <Grid container spacing={3}>
-        <Grid item xs={12} md={6}>
-          <StyledPaper elevation={3}>
-            <Typography variant="h5" gutterBottom>
-              AI-Generated Flashcards
-            </Typography>
+        <div className="ai-tools">
+          <div className="ai-section">
+            <h3>AI-Generated Flashcards</h3>
             <AIFlashcards courseId={courseId} />
-          </StyledPaper>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <StyledPaper elevation={3}>
-            <Typography variant="h5" gutterBottom>
-              Practice Quiz
-            </Typography>
+          </div>
+          <div className="ai-section">
+            <h3>Practice Quiz</h3>
             <AIQuiz courseId={courseId} />
-          </StyledPaper>
-        </Grid>
-      </Grid>
-    </StyledContainer>
+          </div>
+        </div>
+      </div>
+    </div>
   );
-};
+}
 
-export default CourseDetail;
+export default CourseDetails;
