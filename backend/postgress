@@ -1,8 +1,0 @@
-# Access the PostgreSQL prompt
-psql -U postgres
-
-# Create a new database
-CREATE DATABASE edukenya;
-
-# Exit the prompt
-\q

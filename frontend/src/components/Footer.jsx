@@ -7,10 +7,10 @@ function Footer() {
     <footer className="footer-container">
       <div className="footer-content">
         <div className="footer-section">
-          <h4>About EduKenya</h4>
+          <h4>About KenyAInspire</h4>
           <p>
-            EduKenya is committed to revolutionizing education in Kenya through
-            AI-powered personalized learning experiences.
+            KenyAInspire is committed to revolutionizing education in Kenya
+            through AI-powered personalized learning experiences.
           </p>
         </div>
         <div className="footer-section">
@@ -29,7 +29,7 @@ function Footer() {
         </div>
         <div className="footer-section">
           <h4>Contact Us</h4>
-          <p>Email: support@edukenya.co.ke</p>
+          <p>Email: support@kenyainspire.co.ke</p>
           <p>Phone: +254 700 000000</p>
         </div>
       </div>

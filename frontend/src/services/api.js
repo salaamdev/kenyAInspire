@@ -66,6 +66,11 @@ export const registerUser = async (userData) => {
     return response.data;
 };
 
+export const verifyOTP = async (otpData) => {
+    const response = await axios.post(`${ API_URL }/auth/verify-otp`, otpData);
+    return response.data;
+};
+
 export const getCourses = async (token) => {
     const response = await axios.get(`${ API_URL }/courses`, {
         headers: {

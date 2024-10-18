@@ -1,16 +1,34 @@
+// import React from "react";
+// import Navbar from "../components/Navbar";
+// import Footer from "../components/Footer";
+// import LoginForm from "../components/LoginForm";
+
+// function LoginPage() {
+//   return (
+//     <>
+//       <Navbar />
+//       <LoginForm />
+//       <Footer />
+//     </>
+//   );
+// }
+
+// export default LoginPage;
+
 import React from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import LoginForm from "../components/LoginForm";
+import "./pageStyles/LoginPage.css";
 
-function LoginPage() {
+export default function LoginPage() {
   return (
-    <>
+    <div className="page-container">
       <Navbar />
-      <LoginForm />
+      <main className="main-content">
+        <LoginForm />
+      </main>
       <Footer />
-    </>
+    </div>
   );
 }
-
-export default LoginPage;
