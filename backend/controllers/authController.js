@@ -24,7 +24,9 @@ exports.register = async (req, res) => {
             }
 
             // Generate OTP
-            const otpCode = otpGenerator.generate(6, {upperCaseAlphabets: false, specialChars: false});
+            // const otpCode = otpGenerator.generate(6, {upperCaseAlphabets: false, specialChars: false});
+            // Generate 6 digit random numerical OTP
+            const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
 
             // Hash the password
             const hashedPassword = await bcrypt.hash(password, 10);

@@ -41,7 +41,7 @@ exports.handleMessage = async (req, res) => {
         const messages = [
             {
                 role: 'system',
-                content: `You are an educational assistant. The student's name is ${ userName }. They are enrolled in the following courses: ${ coursesList }. Their progress is:\n${ progressSummary }\nUse this information to assist them.`,
+                content: `You are an educational assistant. The student's name is ${ userName }. They are enrolled in the following courses: ${ coursesList }. Their progress is as follows: ${ progressSummary }. Use this information to assist them with their educational queries. No matter what, if the question is not educational in nature, clearly refuse to respond and explain that you can only assist with educational content. Ensure that all responses are formatted without using symbols like dashes or asterisks.`,
             },
             {role: 'user', content: userMessage},
         ];

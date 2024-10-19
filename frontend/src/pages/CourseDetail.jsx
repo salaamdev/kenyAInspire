@@ -100,11 +100,15 @@ function CourseDetails() {
 
         <div className="ai-tools">
           <div className="ai-section">
-            <h3>AI-Generated Flashcards</h3>
+            <h3>AI Flashcards</h3>
             <AIFlashcards courseId={courseId} />
           </div>
           <div className="ai-section">
-            <h3>Practice Quiz</h3>
+            <h3>AI Practice Quiz</h3>
+            <AIQuiz courseId={courseId} />
+          </div>
+          <div className="ai-section">
+            <h3>AI Feedback</h3>
             <AIQuiz courseId={courseId} />
           </div>
         </div>
