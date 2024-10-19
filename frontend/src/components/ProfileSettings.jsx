@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import { updateProfile } from "../services/api";
-import "./componentStyles/ProfileSettings.css";
+import "./componentStyles/SettingsComponents.css";
 
 function ProfileSettings() {
   const { user, token, setUser } = useContext(AuthContext);
@@ -29,33 +29,40 @@ function ProfileSettings() {
   };
 
   return (
-    <div className="settings-container">
-      <h3>Profile Settings</h3>
-      <form onSubmit={handleSubmit} className="settings-form">
-        <label className="settings-label">Name</label>
-        <input
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className="settings-input"
-        />
-
-        <label className="settings-label">Email</label>
-        <input
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="settings-input"
-        />
-
-        <label className="settings-label">New Password</label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Leave blank to keep current password"
-          className="settings-input"
-        />
-
-        <button type="submit" className="settings-button">
+    <div className="settings-card">
+      <h2>Profile Settings</h2>
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label htmlFor="name">Name</label>
+          <input
+            id="name"
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="email">Email</label>
+          <input
+            id="email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="password">New Password</label>
+          <input
+            id="password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Leave blank to keep current password"
+          />
+        </div>
+        <button type="submit" className="btn-primary">
           Save Changes
         </button>
       </form>
