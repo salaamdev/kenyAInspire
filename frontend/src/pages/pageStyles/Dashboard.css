@@ -2,6 +2,8 @@
   min-height: 100vh;
   background-color: #f0f8ff;
   padding: 2rem;
+  /* the top part of the dashboard is hidden by the navbar */
+  padding-top: 6rem;
 }
 
 .dashboard-content {
@@ -19,6 +21,13 @@
 @media (max-width: 768px) {
   .dashboard {
     padding: 1rem;
+    margin-top: 150px;
+  }
+
+  @media (max-width: 527px) {
+    .dashboard {
+      padding: 1rem;
+      margin-top: 200px;
   }
 
   .dashboard-grid {
