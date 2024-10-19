@@ -6,16 +6,17 @@ function FAQ() {
 
   const faqs = [
     {
-      question: "Is EduKenya free to use?",
-      answer: "Yes, EduKenya is free for all students and teachers in Kenya.",
+      question: "Is KenyAInspire free to use?",
+      answer:
+        "Yes, KenyAInspire is free for all students and teachers in Kenya.",
     },
     {
-      question: "Can I use EduKenya without internet access?",
+      question: "Can I use KenyAInspire without internet access?",
       answer:
         "Absolutely! Our platform offers offline capabilities so you can learn anytime, anywhere.",
     },
     {
-      question: "How does EduKenya personalize my learning experience?",
+      question: "How does KenAInspire personalize my learning experience?",
       answer:
         "We use advanced AI algorithms to tailor content based on your performance and learning style.",
     },

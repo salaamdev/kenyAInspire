@@ -1,6 +1,10 @@
+// controllers/chatbotController.js
+
 const OpenAI = require('openai');
-const Course = require('../models/courseModel');
-const Progress = require('../models/progressModel');
+const Course = require('../models/course');
+const Progress = require('../models/progress');
+const Enrollment = require('../models/enrollment');
+const {Op} = require('sequelize');
 
 const configuration = new OpenAI.Configuration({
     apiKey: process.env.OPENAI_API_KEY,
@@ -15,10 +19,15 @@ exports.handleMessage = async (req, res) => {
 
     try {
         // Fetch courses and progress data
-        const enrollments = await Enrollment.find({user_id: userId}).populate('course_id');
-        const courses = enrollments.map((enrollment) => enrollment.course_id);
+        const enrollments = await Enrollment.findAll({
+            where: {user_id: userId},
+            include: [{model: Course}]
+        });
+        const courses = enrollments.map((enrollment) => enrollment.Course);
 
-        const progressData = await Progress.find({user_id: userId});
+        const progressData = await Progress.findAll({
+            where: {user_id: userId}
+        });
 
         // Format courses and progress data for the prompt
         const coursesList = courses.map((course) => course.title).join(', ');

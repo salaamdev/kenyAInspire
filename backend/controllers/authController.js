@@ -1,61 +1,136 @@
+// controllers/authController.js
+
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const User = require('../models/userModel');
-const Course = require('../models/courseModel');
-const Enrollment = require('../models/enrollmentModel');
+const {User, OTP, Enrollment, Course} = require('../models');
+const nodemailer = require('nodemailer');
+const otpGenerator = require('otp-generator');
+const {Op} = require('sequelize');
 
 /**
- * @desc    Register a new user
+ * @desc    Register a new user (Step 1: Send OTP)
  * @route   POST /api/auth/register
  * @access  Public
  */
 exports.register = async (req, res) => {
-    const {name, email, password} = req.body;
+    const {name, email, password, action} = req.body;
+
+    if (action === 'request_otp') {
+        try {
+            // Check if user already exists
+            const existingUser = await User.findOne({where: {email}});
+            if (existingUser) {
+                return res.status(400).json({message: 'Email already exists'});
+            }
+
+            // Generate OTP
+            const otpCode = otpGenerator.generate(6, {upperCaseAlphabets: false, specialChars: false});
+
+            // Hash the password
+            const hashedPassword = await bcrypt.hash(password, 10);
+
+            // Save OTP along with name and hashed password
+            await OTP.create({
+                email,
+                name,
+                password: hashedPassword,
+                otp: otpCode,
+                createdAt: new Date(),
+            });
+
+            // Send OTP via email
+            await sendOTPEmail(email, otpCode);
+
+            res.status(200).json({message: 'OTP sent to email'});
+        } catch (error) {
+            console.error('OTP Error:', error);
+            res.status(500).json({message: 'Server error'});
+        }
+    }
+};
+
+/**
+ * @desc    Verify OTP and complete registration
+ * @route   POST /api/auth/verify-otp
+ * @access  Public
+ */
+exports.verifyOTP = async (req, res) => {
+    const {email, otp} = req.body;
 
     try {
-        // Check if user already exists
-        const existingUser = await User.findOne({email});
-        if (existingUser) {
-            return res.status(400).json({message: 'Email already exists'});
+        // Find OTP entry
+        const otpEntry = await OTP.findOne({where: {email, otp}});
+        if (!otpEntry) {
+            return res.status(400).json({message: 'Invalid OTP'});
         }
 
-        // Hash password
-        const hashedPassword = await bcrypt.hash(password, 10);
+        // Check if OTP is expired (valid for 10 minutes)
+        const now = new Date();
+        const otpAge = now - otpEntry.createdAt;
+        if (otpAge > 10 * 60 * 1000) {
+            return res.status(400).json({message: 'OTP expired'});
+        }
 
         // Create user
-        const user = new User({
-            name,
-            email,
-            password: hashedPassword,
+        const user = await User.create({
+            name: otpEntry.name,
+            email: otpEntry.email,
+            password: otpEntry.password, // Already hashed
         });
-        await user.save();
 
         // Enroll user in all existing courses
-        const courses = await Course.find({});
-        const enrollmentPromises = courses.map(course => {
-            const enrollment = new Enrollment({
-                user_id: user._id,
-                course_id: course._id,
+        const courses = await Course.findAll();
+        const enrollmentPromises = courses.map((course) => {
+            return Enrollment.create({
+                user_id: user.id,
+                course_id: course.id,
             });
-            return enrollment.save();
         });
         await Promise.all(enrollmentPromises);
 
         // Generate JWT token
-        const token = jwt.sign({id: user._id}, process.env.JWT_SECRET, {
+        const token = jwt.sign({id: user.id}, process.env.JWT_SECRET, {
             expiresIn: '1d',
         });
+
+        // Delete OTP entry
+        await OTP.destroy({where: {id: otpEntry.id}});
 
         // Respond with token and user data
         res.status(201).json({
             token,
-            user: {id: user._id, name: user.name, email: user.email},
+            user: {id: user.id, name: user.name, email: user.email},
         });
     } catch (error) {
-        console.error('Register Error:', error);
+        console.error('OTP Verification Error:', error);
         res.status(500).json({message: 'Server error'});
     }
 };
+
+/**
+ * @desc    Send OTP Email
+ */
+async function sendOTPEmail (email, otp) {
+    // Create transporter
+    let transporter = nodemailer.createTransport({
+        service: 'gmail', // Use your email provider
+        auth: {
+            user: process.env.EMAIL_USER, // Your email
+            pass: process.env.EMAIL_PASS, // Your email password or app password
+        },
+    });
+
+    // Email options
+    let mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: email,
+        subject: 'KenyAInspire OTP Verification',
+        text: `Your OTP code is ${ otp }. It is valid for 10 minutes.`,
+    };
+
+    // Send email
+    await transporter.sendMail(mailOptions);
+}
 
 /**
  * @desc    Login user
@@ -67,7 +142,7 @@ exports.login = async (req, res) => {
 
     try {
         // Find user by email
-        const user = await User.findOne({email});
+        const user = await User.findOne({where: {email}});
         if (!user) {
             return res.status(400).json({message: 'Invalid credentials'});
         }
@@ -79,14 +154,14 @@ exports.login = async (req, res) => {
         }
 
         // Generate JWT token
-        const token = jwt.sign({id: user._id}, process.env.JWT_SECRET, {
+        const token = jwt.sign({id: user.id}, process.env.JWT_SECRET, {
             expiresIn: '1d',
         });
 
         // Respond with token and user data
         res.status(200).json({
             token,
-            user: {id: user._id, name: user.name, email: user.email},
+            user: {id: user.id, name: user.name, email: user.email},
         });
     } catch (error) {
         console.error('Login Error:', error);

@@ -1,39 +1,24 @@
-import React, { useState } from "react";
+// DashboardLayout.jsx
+
+import React from "react";
 import { Outlet } from "react-router-dom";
-import Navbar from "../components/Navbar";
-import Sidebar from "../components/Sidebar";
-import styled from "styled-components";
-import Chatbot from "../components/Chatbot";
+import Navbar from "../components/Navbar"; // Include if you have a Navbar
+import Footer from "../components/Footer";
+// import Sidebar from "../components/Sidebar"; // Include if you have a Sidebar
+import "./pageStyles/Dashboard.css";
 
-const DashboardContainer = styled.div`
-  display: flex;
-  width: ${({ $isOpen }) => ($isOpen ? "calc(100% - 200px)" : "100%")};
-  margin-left: ${({ $isOpen }) => ($isOpen ? "200px" : "0")};
-  transition: margin-left 0.3s ease-in-out, width 0.3s ease-in-out;
-`;
-
-const ContentArea = styled.main`
-  flex: 1;
-  padding: ${({ theme }) => theme.spacing(4)};
-`;
-
-function DashboardLayout() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-
+export default function DashboardLayout() {
   return (
     <>
-      <Navbar />
-      <div style={{ display: "flex" }}>
-        <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
-        <DashboardContainer isOpen={isSidebarOpen}>
-          <ContentArea>
-            <Outlet />
-          </ContentArea>
-        </DashboardContainer>
+      <div className="dashboard">
+        <Navbar />
+        {/* Optionally include Navbar and Sidebar */}
+        {/* <Sidebar /> */}
+        <main className="dashboard-content">
+          <Outlet /> {/* This renders the child components */}
+        </main>
       </div>
-      <Chatbot />
+      <Footer />
     </>
   );
 }
-
-export default DashboardLayout;

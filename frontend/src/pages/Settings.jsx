@@ -1,32 +1,21 @@
 import React from "react";
-// import Navbar from "../components/Navbar";
-// import Sidebar from "../components/Sidebar";
-import styled from "styled-components";
 import ProfileSettings from "../components/ProfileSettings";
 import AccessibilityOptions from "../components/AccessibilityOptions";
-
-const PageContainer = styled.div`
-  display: flex;
-`;
-
-const ContentArea = styled.main`
-  flex: 1;
-  padding: ${({ theme }) => theme.spacing(4)};
-`;
+import NotificationSettings from "../components/NotificationSettings";
+import PrivacySettings from "../components/PrivacySettings";
+import "./pageStyles/Settings.css";
 
 function Settings() {
   return (
-    <>
-      {/* <Navbar /> */}
-      <PageContainer>
-        {/* <Sidebar /> */}
-        <ContentArea>
-          <h2>Settings</h2>
-          <ProfileSettings />
-          <AccessibilityOptions />
-        </ContentArea>
-      </PageContainer>
-    </>
+    <div className="settings-page">
+      <h1 className="settings-title">Settings</h1>
+      <div className="settings-grid">
+        <ProfileSettings />
+        <AccessibilityOptions />
+        <NotificationSettings />
+        <PrivacySettings />
+      </div>
+    </div>
   );
 }
 

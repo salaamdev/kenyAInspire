@@ -1,5 +1,7 @@
+// middleware/authMiddleware.js
+
 const jwt = require('jsonwebtoken');
-const User = require('../models/userModel');
+const {User} = require('../models');
 
 const authMiddleware = async (req, res, next) => {
     // Get token from header
@@ -15,7 +17,7 @@ const authMiddleware = async (req, res, next) => {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
         // Fetch user details from the database
-        const user = await User.findById(decoded.id).select('-password');
+        const user = await User.findByPk(decoded.id);
 
         if (!user) {
             return res.status(401).json({message: 'User not found'});

@@ -1,31 +1,24 @@
 .widgets-container {
-  display: flex;
-  justify-content: space-between;
-}
-
-@media (max-width: 960px) {
-  .widgets-container {
-    flex-direction: column;
-  }
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
 }
 
 .widget {
-  flex: 1;
-  padding: 16px;
-  background-color: #f1f3f4;
+  background-color: #ffffff;
   border-radius: 8px;
-  margin-right: 16px;
+  padding: 1.5rem;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.widget:last-child {
-  margin-right: 0;
+.widget h3 {
+  color: #0066cc;
+  margin-bottom: 0.5rem;
 }
 
-@media (max-width: 960px) {
-  .widget {
-    margin-bottom: 16px;
-  }
-  .widget:last-child {
-    margin-bottom: 0;
-  }
+.widget p {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333333;
 }

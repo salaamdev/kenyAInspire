@@ -1,13 +1,20 @@
-const Progress = require('../models/progressModel');
-const StudentProgress = require('../models/studentProgressModel');
-const Course = require('../models/courseModel');
-const Enrollment = require('../models/enrollmentModel'); // Assuming you have an Enrollment model
+// controllers/progressController.js
+
+const Progress = require('../models/progress');
+const StudentProgress = require('../models/studentTopicProgress');
+const Course = require('../models/course');
+const Enrollment = require('../models/enrollment');
+const {Op} = require('sequelize');
+const User = require('../models/user');
+const Topic = require('../models/topic');
 
 exports.getProgressForStudent = async (req, res) => {
     const userId = req.user.id;
 
     try {
-        const progressData = await Progress.find({user_id: userId});
+        const progressData = await Progress.findAll({
+            where: {user_id: userId},
+        });
 
         res.json({progress: progressData});
     } catch (error) {
@@ -17,39 +24,45 @@ exports.getProgressForStudent = async (req, res) => {
 };
 
 exports.updateTopicCompletion = async (req, res) => {
-    const userId = req.user._id;
+    const userId = parseInt(req.user.id, 10);
     const {courseId, topicId} = req.params;
+    const topicIdInt = parseInt(topicId, 10);
     const {isCompleted} = req.body;
 
     try {
+        // Verify user exists
+        const userExists = await User.findByPk(userId);
+        if (!userExists) {
+            return res.status(400).json({message: 'User not found'});
+        }
+
+        // Verify topic exists
+        const topicExists = await Topic.findByPk(topicIdInt);
+        if (!topicExists) {
+            return res.status(400).json({message: 'Topic not found'});
+        }
+
         let studentProgress = await StudentProgress.findOne({
-            user_id: userId,
-            course_id: courseId,
+            where: {
+                user_id: userId,
+                topic_id: topicIdInt,
+            },
         });
 
         if (!studentProgress) {
-            // Create new progress document
-            studentProgress = new StudentProgress({
+            // Create new progress record
+            studentProgress = await StudentProgress.create({
                 user_id: userId,
-                course_id: courseId,
-                completed_topics: [],
+                topic_id: topicId,
+                is_completed: isCompleted,
+                last_updated: new Date(),
             });
-        }
-
-        if (isCompleted) {
-            // Add topicId to completed_topics if not already present
-            if (!studentProgress.completed_topics.includes(topicId)) {
-                studentProgress.completed_topics.push(topicId);
-            }
         } else {
-            // Remove topicId from completed_topics
-            studentProgress.completed_topics = studentProgress.completed_topics.filter(
-                (id) => id.toString() !== topicId
-            );
+            // Update existing progress record
+            studentProgress.is_completed = isCompleted;
+            studentProgress.last_updated = new Date();
+            await studentProgress.save();
         }
-
-        studentProgress.last_updated = new Date();
-        await studentProgress.save();
 
         res.json({message: 'Topic completion status updated'});
     } catch (error) {
@@ -59,28 +72,21 @@ exports.updateTopicCompletion = async (req, res) => {
 };
 
 exports.getOverallProgress = async (req, res) => {
-    const userId = req.user._id;
+    const userId = parseInt(req.user.id, 10);
 
     try {
-        const progressData = await StudentProgress.find({user_id: userId});
+        const progressData = await StudentProgress.findAll({
+            where: {user_id: userId},
+            include: [{model: Course, include: [Topic]}],
+        });
 
         let totalCompletedTopics = 0;
         let totalTopics = 0;
 
         for (const progress of progressData) {
-            const course = await Course.findById(progress.course_id);
-            const courseTotalTopics = course ? course.topics.length : 0;
-            totalCompletedTopics += progress.completed_topics.length;
-            totalTopics += courseTotalTopics;
-        }
-
-        // Fetch courses without progress to include any courses the user hasn't started
-        const enrolledCourses = await Enrollment.find({user_id: userId}).populate('course_id');
-        for (const enrollment of enrolledCourses) {
-            const course = enrollment.course_id;
-            if (course && !progressData.find((p) => p.course_id.equals(course._id))) {
-                totalTopics += course.topics.length;
-            }
+            const topics = progress.Course.Topics;
+            totalTopics += topics.length;
+            totalCompletedTopics += topics.filter((topic) => topic.StudentTopicProgress.is_completed).length;
         }
 
         const completionRate = totalTopics > 0 ? (totalCompletedTopics / totalTopics) * 100 : 0;

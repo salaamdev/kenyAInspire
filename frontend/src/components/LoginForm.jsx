@@ -73,7 +73,7 @@ function LoginForm() {
               onClick={togglePasswordVisibility}
               aria-label={showPassword ? "Hide password" : "Show password"}
             >
-              {showPassword ? "👁️" : "👁️‍🗨️"} 
+              {showPassword ? "👁️" : "👁️‍🗨️"}
             </button>
           </div>
           {errors.password && <p className="error-message">{errors.password.message}</p>}
@@ -95,6 +95,7 @@ function LoginForm() {
           </button>
         </form>
       )}
+
       <Link to="/signup" className="form-link">
         Don't have an account? Sign Up
       </Link>

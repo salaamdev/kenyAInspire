@@ -8,7 +8,7 @@ function FeaturedContent() {
   return (
     <section className="featured-section">
       <div className="featured-container">
-        <h2 className="featured-title">Why Choose EduKenya?</h2>
+        <h2 className="featured-title">Why Choose KenyAInspire?</h2>
         <div className="content-grid">
           <div className="content-card">
             <img

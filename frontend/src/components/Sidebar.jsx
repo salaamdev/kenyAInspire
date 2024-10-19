@@ -1,78 +1,51 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { NavLink } from "react-router-dom";
-import { FaCommentDots } from "react-icons/fa";
-import Chatbot from "./Chatbot";
-import "./componentStyles/Sidebar.css";
+import { FaHome, FaBook, FaCog, FaCommentDots } from "react-icons/fa";
+import "./Sidebar.css";
 
-function Sidebar({ isOpen, setIsOpen }) {
-  const [isChatbotOpen, setIsChatbotOpen] = useState(false);
-  const [isButtonVisible, setIsButtonVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
+interface SidebarProps {
+  isOpen: boolean;
+  toggleSidebar: () => void;
+}
 
-  const toggleSidebar = () => {
-    setIsOpen(!isOpen);
-  };
-
-  const handleScroll = () => {
-    if (window.scrollY > lastScrollY) {
-      setIsButtonVisible(false);
-    } else {
-      setIsButtonVisible(true);
-    }
-    setLastScrollY(window.scrollY);
-  };
-
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [lastScrollY]);
-
+export default function Sidebar({ isOpen, toggleSidebar }: SidebarProps) {
   return (
-    <>
-      <button
-        className={`menu-button ${isOpen ? "open" : ""} ${
-          isButtonVisible ? "visible" : "hidden"
-        }`}
-        onClick={toggleSidebar}
-      >
-        <div></div>
-        <div></div>
-        <div></div>
-      </button>
-      <div className={`sidebar-container ${isOpen ? "open" : ""}`}>
-        <ul className="menu-list">
-          <li className="menu-item">
-            <NavLink to="/dashboard" end className="nav-link">
-              Home
+    <aside className={`sidebar ${isOpen ? "open" : "closed"}`}>
+      <nav className="sidebar-nav">
+        <ul>
+          <li>
+            <NavLink
+              to="/dashboard"
+              end
+              className="nav-link"
+              onClick={toggleSidebar}
+            >
+              <FaHome /> <span>Home</span>
             </NavLink>
           </li>
-          <li className="menu-item">
-            <NavLink to="/dashboard/my-courses" className="nav-link">
-              My Courses
+          <li>
+            <NavLink
+              to="/dashboard/my-courses"
+              className="nav-link"
+              onClick={toggleSidebar}
+            >
+              <FaBook /> <span>My Courses</span>
             </NavLink>
           </li>
-          <li className="menu-item">
-            <NavLink to="/dashboard/settings" className="nav-link">
-              Settings
+          <li>
+            <NavLink
+              to="/dashboard/settings"
+              className="nav-link"
+              onClick={toggleSidebar}
+            >
+              <FaCog /> <span>Settings</span>
             </NavLink>
           </li>
         </ul>
-        <div
-          className="chat-bubble"
-          onClick={() => setIsChatbotOpen(!isChatbotOpen)}
-        >
-          <FaCommentDots size={24} />
-          <span>Chat</span>
-        </div>
-        <Chatbot
-          isOpen={isChatbotOpen}
-          onClose={() => setIsChatbotOpen(false)}
-        />
-      </div>
-    </>
+      </nav>
+      <button className="chat-button">
+        <FaCommentDots /> <span>Chat</span>
+      </button>
+    </aside>
   );
 }
-
-export default Sidebar;
