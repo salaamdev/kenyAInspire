@@ -1,6 +1,6 @@
 import os
 
-EXCLUDED_FOLDERS = {"node_modules", ".git"}
+EXCLUDED_FOLDERS = {"node_modules", ".git", "pageStyles", "componentStyles"}
 EXCLUDED_EXTENSIONS = {
     ".jpg",
     ".jpeg",
@@ -56,7 +56,16 @@ def write_file_paths_and_content(root_directory, output_file):
 
 
 if __name__ == "__main__":
-    root_directory = r"D:\Code\kenyAInspire---team-HassDonn\frontend"  # Change this to your root folder
-    output_file = r"D:\Code\kenyAInspire---team-HassDonn\unrelated\frontend.txt"  # Ensure this is a valid file path
-    write_file_paths_and_content(root_directory, output_file)
-    print(f"File paths and contents written to {output_file}")
+    # For backend folder
+    backend_root_directory = r"D:\Code\kenyAInspire---team-HassDonn\backend"
+    backend_output_file = r"D:\Code\kenyAInspire---team-HassDonn\unrelated\backend.txt"
+    write_file_paths_and_content(backend_root_directory, backend_output_file)
+    print(f"File paths and contents written to {backend_output_file}")
+
+    # For frontend folder
+    frontend_root_directory = r"D:\Code\kenyAInspire---team-HassDonn\frontend"
+    frontend_output_file = (
+        r"D:\Code\kenyAInspire---team-HassDonn\unrelated\frontend.txt"
+    )
+    write_file_paths_and_content(frontend_root_directory, frontend_output_file)
+    print(f"File paths and contents written to {frontend_output_file}")
