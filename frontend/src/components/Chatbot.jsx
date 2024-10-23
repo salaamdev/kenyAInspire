@@ -1,8 +1,17 @@
+// src/components/Chatbot.jsx
+
 import React, { useState, useEffect, useRef } from "react";
 import { sendMessageToAI, getCourses, getProgress } from "../services/api";
 import { AuthContext } from "../contexts/AuthContext";
-import { FaPaperPlane, FaTimes, FaRobot, FaUser } from "react-icons/fa";
-import "./componentStyles/Chatbot.css";
+import {
+  FaPaperPlane,
+  FaTimes,
+  FaRobot,
+  FaUser,
+  FaMicrophone,
+  FaVolumeUp,
+} from "react-icons/fa";
+import "./componentStyles/ChatBot.css";
 
 function Chatbot({ isOpen, onClose }) {
   const { token, user } = React.useContext(AuthContext);
@@ -11,6 +20,18 @@ function Chatbot({ isOpen, onClose }) {
   const [studentData, setStudentData] = useState({ courses: [], progress: [] });
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef(null);
+
+  const [isRecording, setIsRecording] = useState(false);
+  const recognitionRef = useRef(null);
+
+  useEffect(() => {
+    // Check if Speech Recognition API is supported
+    if (
+      !("webkitSpeechRecognition" in window || "SpeechRecognition" in window)
+    ) {
+      alert("Sorry, your browser does not support speech recognition.");
+    }
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,6 +59,76 @@ function Chatbot({ isOpen, onClose }) {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  // Text-to-Speech function
+  const handleSpeak = (text) => {
+    if ("speechSynthesis" in window) {
+      const utterance = new SpeechSynthesisUtterance(text);
+      speechSynthesis.speak(utterance);
+    } else {
+      alert("Sorry, your browser does not support text-to-speech.");
+    }
+  };
+
+  // Speech-to-Text (Speech Recognition)
+  const handleVoiceInput = () => {
+    const SpeechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (SpeechRecognition) {
+      if (!recognitionRef.current) {
+        recognitionRef.current = new SpeechRecognition();
+        recognitionRef.current.continuous = false;
+        recognitionRef.current.interimResults = false;
+        recognitionRef.current.lang = "en-US";
+
+        recognitionRef.current.onstart = () => {
+          setIsRecording(true);
+        };
+
+        recognitionRef.current.onresult = (event) => {
+          const transcript = event.results[0][0].transcript;
+          setInputValue((prev) => prev + " " + transcript);
+        };
+
+        recognitionRef.current.onerror = (event) => {
+          console.error("Speech recognition error:", event.error);
+          setIsRecording(false);
+
+          // Provide user-friendly feedback based on the error type
+          switch (event.error) {
+            case "network":
+              console.log(
+                "Network error: Please check your internet connection."
+              );
+              break;
+            case "no-speech":
+              console.log("No speech detected: Please try speaking again.");
+              break;
+            case "audio-capture":
+              console.log("Audio capture error: Please check your microphone.");
+              break;
+            default:
+              console.log(
+                "An error occurred with speech recognition. Please try again."
+              );
+          }
+        };
+
+        recognitionRef.current.onend = () => {
+          setIsRecording(false);
+        };
+      }
+
+      if (isRecording) {
+        recognitionRef.current.stop();
+      } else {
+        recognitionRef.current.start();
+      }
+    } else {
+      alert("Sorry, your browser does not support speech recognition.");
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -70,9 +161,7 @@ function Chatbot({ isOpen, onClose }) {
     <div className="chatbot-container">
       <div className="chatbot-header">
         <FaRobot className="chatbot-icon" />
-        <span>
-          Your Virtual <span style={{ color: "red" }}>AI</span> Assistant
-        </span>
+        <span>AI Assistant</span>
         <button
           className="close-button"
           onClick={onClose}
@@ -89,7 +178,16 @@ function Chatbot({ isOpen, onClose }) {
             ) : (
               <FaRobot className="message-icon" />
             )}
-            <div className="message-bubble">{msg.text}</div>
+            <div className="message-bubble">
+              <span className="message-text">{msg.text}</span>
+            </div>
+            <button
+              className="text-to-speech-button"
+              aria-label="Read message aloud"
+              onClick={() => handleSpeak(msg.text)}
+            >
+              <FaVolumeUp />
+            </button>
           </div>
         ))}
         {isTyping && (
@@ -113,6 +211,14 @@ function Chatbot({ isOpen, onClose }) {
           className="chat-input"
           aria-label="Type your message"
         />
+        <button
+          type="button"
+          className={`microphone-button ${isRecording ? "recording" : ""}`}
+          aria-label="Use voice input"
+          onClick={handleVoiceInput}
+        >
+          <FaMicrophone />
+        </button>
         <button type="submit" className="send-button" aria-label="Send message">
           <FaPaperPlane />
         </button>

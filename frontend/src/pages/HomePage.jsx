@@ -13,7 +13,7 @@ function HomePage() {
     <>
       <Navbar />
       <HeroSection />
-      <AboutUs />
+      {/* <AboutUs /> */}
       <FeatureShowcase />
       <FAQ />
       <Partners />

@@ -1,7 +1,8 @@
 import React, { useState, useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import { updateProfile } from "../services/api";
-import "./componentStyles/SettingsComponents.css";
+import { FaUser, FaEnvelope, FaLock } from "react-icons/fa";
+import "./componentStyles/ProfileSettings.css";
 
 function ProfileSettings() {
   const { user, token, setUser } = useContext(AuthContext);
@@ -29,37 +30,45 @@ function ProfileSettings() {
   };
 
   return (
-    <div className="settings-card">
-      <h2>Profile Settings</h2>
+    <div className="profile-settings">
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="name">Name</label>
+          <label htmlFor="name" className="form-label">
+            <FaUser className="form-icon" /> Name
+          </label>
           <input
             id="name"
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
+            className="form-input"
           />
         </div>
         <div className="form-group">
-          <label htmlFor="email">Email</label>
+          <label htmlFor="email" className="form-label">
+            <FaEnvelope className="form-icon" /> Email
+          </label>
           <input
             id="email"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            className="form-input"
           />
         </div>
         <div className="form-group">
-          <label htmlFor="password">New Password</label>
+          <label htmlFor="password" className="form-label">
+            <FaLock className="form-icon" /> New Password
+          </label>
           <input
             id="password"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Leave blank to keep current password"
+            className="form-input"
           />
         </div>
         <button type="submit" className="btn-primary">
