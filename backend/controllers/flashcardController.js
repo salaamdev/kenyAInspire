@@ -1,6 +1,7 @@
+// controllers/flashcardController.js
+
 const OpenAI = require('openai');
-const StudentProgress = require('../models/studentTopicProgress');
-const {Course, Topic} = require('../models');
+const {Topic} = require('../models');
 const configuration = new OpenAI.Configuration({
     apiKey: process.env.OPENAI_API_KEY,
 });
@@ -8,59 +9,50 @@ const configuration = new OpenAI.Configuration({
 const openai = new OpenAI.OpenAIApi(configuration);
 
 exports.generateFlashcards = async (req, res) => {
-    const userId = req.user.id;
     const {courseId} = req.params;
 
     try {
-        // Fetch the course with associated topics
-        const course = await Course.findByPk(courseId, {
-            include: [{model: Topic}],
+        // Fetch the topics for the course
+        const topics = await Topic.findAll({
+            where: {course_id: courseId},
+            attributes: ['title', 'content'],
         });
 
-        if (!course || !course.Topics || course.Topics.length === 0) {
-            return res.status(404).json({error: 'No topics found for this course.'});
+        if (!topics || topics.length === 0) {
+            return res.status(404).json({message: 'No topics found for this course.'});
         }
 
-        // Get completed topics for the user in the course
-        const studentProgress = await StudentProgress.findAll({
-            where: {
-                user_id: userId,
-                is_completed: true,
+        // Concatenate the content of all topics
+        const courseContent = topics.map((topic) => topic.content).join('\n');
+
+        // Prepare the messages for OpenAI Chat API
+        const messages = [
+            {
+                role: 'system',
+                content: `You are an assistant that creates educational flashcards. Based on the following course content, generate a set of flashcards. Mathematics will should have calculations related questions and answers. Each flashcard should have a question (Q) and an answer (A). Provide the flashcards in the format:
+
+Q: [Question]
+A: [Answer]
+
+Course Content:
+${ courseContent }
+
+
+`,
             },
-            include: [{
-                model: Topic,
-                where: {course_id: courseId},
-            }],
-        });
+        ];
 
-        if (!studentProgress || studentProgress.completed_topics.length === 0) {
-            return res.status(400).json({message: 'No completed topics found'});
-        }
-
-        // Get topics content
-        const completedTopics = course.Topics.filter((topic) =>
-            studentProgress.completed_topics.includes(topic._id)
-        );
-
-        const topicsContent = completedTopics.map((topic) => topic.content).join('\n');
-
-        // Generate flashcards using AI
-        const prompt = `You are an assistant that creates educational flashcards. Based on the following content, generate a set of flashcards. Each flashcard should have a question (Q) and an answer (A).
-        Content: ${ topicsContent }
-        Provide the flashcards in the format:
-        Q: [Question]
-        A: [Answer]`;
-
-        const aiResponse = await openai.createCompletion({
+        // Call OpenAI Chat Completion API
+        const aiResponse = await openai.createChatCompletion({
             model: 'gpt-4o-mini',
-            prompt: prompt,
-            max_tokens: 150,
+            messages: messages,
+            max_tokens: 1500,
             temperature: 0.7,
         });
 
-        const flashcardsText = aiResponse.data.choices[0].text.trim();
+        const flashcardsText = aiResponse.data.choices[0].message.content.trim();
 
-        // Parse the flashcards (assuming they are in a specific format)
+        // Parse the flashcards from the AI response
         const flashcards = parseFlashcards(flashcardsText);
 
         res.json({flashcards});
