@@ -4,3 +4,5 @@ venv
 env
 
 node_modules
+unrelated/backend.txt
+unrelated/frontend.txt
