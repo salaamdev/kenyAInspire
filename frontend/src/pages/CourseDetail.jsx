@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getCourseDetail, updateTopicCompletion } from "../services/api";
 import { AuthContext } from "../contexts/AuthContext";
-import AIQuiz from "../components/AIQuiz";
-import AIFlashcards from "../components/AIFlashcards";
+import FlashcardsModal from "../components/FlashcardsModal";
+import AIFeedbackModal from "../components/AIFeedbackModal";
+import PracticeQuizzesModal from "../components/PracticeQuizzesModal";
+import { FaLightbulb, FaRobot, FaQuestionCircle } from "react-icons/fa";
 import "./pageStyles/CourseDetails.css";
 
 function CourseDetails() {
@@ -11,6 +13,7 @@ function CourseDetails() {
   const { courseId } = useParams();
   const [course, setCourse] = useState(null);
   const [progress, setProgress] = useState(null);
+  const [activeModal, setActiveModal] = useState(null);
 
   useEffect(() => {
     const fetchCourseDetail = async () => {
@@ -52,6 +55,14 @@ function CourseDetails() {
     }
   };
 
+  const openModal = (modalType) => {
+    setActiveModal(modalType);
+  };
+
+  const closeModal = () => {
+    setActiveModal(null);
+  };
+
   if (!course || !progress) return <p className="loading">Loading...</p>;
 
   return (
@@ -72,6 +83,26 @@ function CourseDetails() {
               aria-valuemax="100"
             ></div>
           </div>
+        </div>
+        <div className="header-buttons">
+          <button
+            onClick={() => openModal("practiceQuizzes")}
+            className="header-button"
+          >
+            <FaQuestionCircle /> Practice Quizzes
+          </button>
+          <button
+            onClick={() => openModal("flashcards")}
+            className="header-button"
+          >
+            <FaLightbulb /> Flashcards
+          </button>
+          <button
+            onClick={() => openModal("aiFeedback")}
+            className="header-button"
+          >
+            <FaRobot /> AI Feedback
+          </button>
         </div>
       </div>
 
@@ -97,22 +128,17 @@ function CourseDetails() {
             </div>
           ))}
         </div>
-
-        <div className="ai-tools">
-          <div className="ai-section">
-            <h3>AI Flashcards</h3>
-            <AIFlashcards courseId={courseId} />
-          </div>
-          <div className="ai-section">
-            <h3>AI Practice Quiz</h3>
-            <AIQuiz courseId={courseId} />
-          </div>
-          <div className="ai-section">
-            <h3>AI Feedback</h3>
-            <AIQuiz courseId={courseId} />
-          </div>
-        </div>
       </div>
+
+      {activeModal === "flashcards" && (
+        <FlashcardsModal onClose={closeModal} courseId={courseId} />
+      )}
+      {activeModal === "aiFeedback" && (
+        <AIFeedbackModal onClose={closeModal} courseId={courseId} />
+      )}
+      {activeModal === "practiceQuizzes" && (
+        <PracticeQuizzesModal onClose={closeModal} courseId={courseId} />
+      )}
     </div>
   );
 }
