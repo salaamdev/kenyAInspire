@@ -46,7 +46,7 @@ ${ courseContent }
         const aiResponse = await openai.createChatCompletion({
             model: 'gpt-4o-mini',
             messages: messages,
-            max_tokens: 1500,
+            max_tokens: 500,
             temperature: 0.7,
         });
 
