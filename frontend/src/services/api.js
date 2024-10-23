@@ -42,20 +42,6 @@ export const updateTopicCompletion = async (token, courseId, topicId, isComplete
     return response.data;
 };
 
-export const getFlashcards = async (token, courseId) => {
-    const response = await axios.get(`${ API_URL }/flashcards/${ courseId }`, {
-        headers: {Authorization: `Bearer ${ token }`},
-    });
-    return response.data;
-};
-
-export const getQuiz = async (token, courseId) => {
-    const response = await axios.get(`${ API_URL }/quizzes/${ courseId }`, {
-        headers: {Authorization: `Bearer ${ token }`},
-    });
-    return response.data;
-};
-
 export const loginUser = async (userData) => {
     const response = await axios.post(`${ API_URL }/auth/login`, userData);
     return response.data;
