@@ -25,8 +25,6 @@ const announcementRoutes = require('./routes/announcementRoutes');
 const eventRoutes = require('./routes/eventRoutes');
 const recommendationRoutes = require('./routes/recommendationRoutes');
 const userRoutes = require('./routes/userRoutes');
-const flashcardRoutes = require('./routes/flashcardRoutes');
-const quizRoutes = require('./routes/quizRoutes');
 const chatbotRoutes = require('./routes/chatbotRoutes');
 const protectedRoutes = require('./routes/protectedRoutes');
 
@@ -38,8 +36,6 @@ app.use('/api/announcements', announcementRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/recommendations', recommendationRoutes);
 app.use('/api/users', userRoutes);
-app.use('/api/flashcards', flashcardRoutes);
-app.use('/api/quizzes', quizRoutes);
 app.use('/api/chatbot', chatbotRoutes);
 app.use('/api/protected', protectedRoutes);
 
