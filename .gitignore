@@ -3,18 +3,4 @@ node_modules
 venv
 env
 
-# Data
-models/bert-base-uncased_tests/*
-models/distilbert-base-uncased_tests/*
-
-# Models
-models/distilbert-imdb-model/*
-models/logs
-models/results/checkpoint-*/*
-
-# fine tuned models
-models/text_classification/imdb_fine_tuned_text_classification_model/*
-models/question_answer/my_awesome_qa_model/*
-models/casual_language/my_awesome_eli5_clm-model/*
-
 node_modules
