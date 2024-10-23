@@ -1,29 +1,31 @@
-import React, { useState } from "react";
-import "./componentStyles/PracticeQuizzesModal.css";
+// src/components/PracticeQuizzesModal.jsx
 
-const sampleQuestions = [
-  {
-    question: "What is the capital of Kenya?",
-    options: ["Nairobi", "Mombasa", "Kisumu", "Nakuru"],
-    correctAnswer: 0,
-  },
-  {
-    question:
-      "Which of the following is NOT one of Kenya's national languages?",
-    options: ["Swahili", "English", "French", "Kikuyu"],
-    correctAnswer: 2,
-  },
-  {
-    question: "What is the largest national park in Kenya?",
-    options: ["Amboseli", "Tsavo East", "Masai Mara", "Nairobi National Park"],
-    correctAnswer: 1,
-  },
-];
+import React, { useState, useEffect, useContext } from "react";
+import "./componentStyles/PracticeQuizzesModal.css";
+import { getPracticeQuizzes } from "../services/api";
+import { AuthContext } from "../contexts/AuthContext";
 
 function PracticeQuizzesModal({ onClose, courseId }) {
-  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const { token } = useContext(AuthContext);
+  const [questions, setQuestions] = useState([]);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [showResult, setShowResult] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchPracticeQuizzes = async () => {
+      try {
+        const data = await getPracticeQuizzes(token, courseId);
+        setQuestions(data.questions);
+      } catch (error) {
+        console.error("Error fetching practice quizzes:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchPracticeQuizzes();
+  }, [token, courseId]);
 
   const handleAnswerSelect = (index) => {
     setSelectedAnswer(index);
@@ -36,28 +38,55 @@ function PracticeQuizzesModal({ onClose, courseId }) {
   };
 
   const handleNextQuestion = () => {
-    setCurrentQuestion((prev) => (prev + 1) % sampleQuestions.length);
+    setCurrentQuestionIndex((prev) => (prev + 1) % questions.length);
     setSelectedAnswer(null);
     setShowResult(false);
   };
+
+  if (loading) {
+    return (
+      <div className="modal-overlay">
+        <div className="modal-content practice-quizzes-modal">
+          <p>Loading practice quizzes...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (questions.length === 0) {
+    return (
+      <div className="modal-overlay">
+        <div className="modal-content practice-quizzes-modal">
+          <p>No practice quizzes available.</p>
+          <button className="close-modal" onClick={onClose}>
+            Close
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  const currentQuestion = questions[currentQuestionIndex];
 
   return (
     <div className="modal-overlay">
       <div className="modal-content practice-quizzes-modal">
         <h2>Practice Quiz</h2>
         <div className="question-container">
-          <h3>{sampleQuestions[currentQuestion].question}</h3>
+          <h3>{currentQuestion.question}</h3>
           <div className="options-container">
-            {sampleQuestions[currentQuestion].options.map((option, index) => (
+            {currentQuestion.options.map((option, index) => (
               <button
                 key={index}
                 className={`option-button ${
                   selectedAnswer === index ? "selected" : ""
                 } ${
                   showResult
-                    ? index === sampleQuestions[currentQuestion].correctAnswer
+                    ? index === currentQuestion.correctAnswer
                       ? "correct"
-                      : "incorrect"
+                      : selectedAnswer === index
+                      ? "incorrect"
+                      : ""
                     : ""
                 }`}
                 onClick={() => handleAnswerSelect(index)}

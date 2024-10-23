@@ -101,6 +101,19 @@ export const updateProfile = async (token, userData) => {
     return response.data;
 };
 
+export const getPracticeQuizzes = async (token, courseId) => {
+    const response = await axios.get(
+        `${ API_URL }/courses/${ courseId }/practice-quizzes`,
+        {
+            headers: {
+                Authorization: `Bearer ${ token }`,
+            },
+        }
+    );
+    return response.data;
+};
+
+
 export const getFlashcards = async (token, courseId) => {
     const response = await axios.get(`${ API_URL }/courses/${ courseId }/flashcards`, {
         headers: {
@@ -109,3 +122,4 @@ export const getFlashcards = async (token, courseId) => {
     });
     return response.data;
 };
+
