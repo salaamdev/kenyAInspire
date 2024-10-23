@@ -4,13 +4,11 @@ import PrivateRoute from "../components/PrivateRoute";
 import DashboardLayout from "../pages/DashboardLayout";
 import Home from "../pages/Home";
 import Courses from "../pages/Courses";
-import Progress from "../pages/Progress";
 import Settings from "../pages/Settings";
 import LoginPage from "../pages/LoginPage";
 import SignUpPage from "../pages/SignUpPage";
 import HomePage from "../pages/HomePage";
 import ErrorPage from "../pages/ErrorPage";
-import MyCourses from "../pages/MyCourses";
 import CourseDetail from "../pages/CourseDetail";
 
 function AppRoutes() {
@@ -32,9 +30,7 @@ function AppRoutes() {
       >
         <Route index element={<Home />} />
         <Route path="courses" element={<Courses />} />
-        <Route path="my-courses" element={<MyCourses />} />
         <Route path="courses/:courseId" element={<CourseDetail />} />
-        <Route path="progress" element={<Progress />} />
         <Route path="settings" element={<Settings />} />
       </Route>
 
