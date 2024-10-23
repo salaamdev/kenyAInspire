@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { UserPreferencesContext } from "../contexts/UserPreferencesContext";
-import "./componentStyles/SettingsComponents.css";
+import { FaFont, FaAdjust, FaLowVision, FaVolumeUp } from "react-icons/fa";
+import "./componentStyles/AccessibilityOptions.css";
 
 function AccessibilityOptions() {
   const {
@@ -15,10 +16,11 @@ function AccessibilityOptions() {
   } = useContext(UserPreferencesContext);
 
   return (
-    <div className="settings-card">
-      <h2>Accessibility Options</h2>
-      <div className="form-group">
-        <label>Font Size</label>
+    <div className="accessibility-options">
+      <div className="option-group">
+        <label className="option-label">
+          <FaFont className="option-icon" /> Font Size
+        </label>
         <div className="button-group">
           <button
             className={`btn-secondary ${fontSize === "small" ? "active" : ""}`}
@@ -40,8 +42,10 @@ function AccessibilityOptions() {
           </button>
         </div>
       </div>
-      <div className="form-group">
-        <label htmlFor="high-contrast">High Contrast</label>
+      <div className="option-group">
+        <label htmlFor="high-contrast" className="option-label">
+          <FaAdjust className="option-icon" /> High Contrast
+        </label>
         <button
           id="high-contrast"
           className={`btn-toggle ${highContrast ? "active" : ""}`}
@@ -51,8 +55,10 @@ function AccessibilityOptions() {
           {highContrast ? "On" : "Off"}
         </button>
       </div>
-      <div className="form-group">
-        <label htmlFor="reduce-motion">Reduce Motion</label>
+      <div className="option-group">
+        <label htmlFor="reduce-motion" className="option-label">
+          <FaLowVision className="option-icon" /> Reduce Motion
+        </label>
         <button
           id="reduce-motion"
           className={`btn-toggle ${reduceMotion ? "active" : ""}`}
@@ -62,8 +68,10 @@ function AccessibilityOptions() {
           {reduceMotion ? "On" : "Off"}
         </button>
       </div>
-      <div className="form-group">
-        <label htmlFor="screen-reader">Screen Reader Optimization</label>
+      <div className="option-group">
+        <label htmlFor="screen-reader" className="option-label">
+          <FaVolumeUp className="option-icon" /> Screen Reader Optimization
+        </label>
         <button
           id="screen-reader"
           className={`btn-toggle ${enableScreenReader ? "active" : ""}`}
