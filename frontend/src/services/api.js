@@ -123,3 +123,17 @@ export const getFlashcards = async (token, courseId) => {
     return response.data;
 };
 
+export const sendFeedbackRequest = async (token, message, file, courseId) => {
+    const formData = new FormData();
+    if (message) formData.append('message', message);
+    if (file) formData.append('file', file);
+    formData.append('courseId', courseId);
+
+    const response = await axios.post(`${ API_URL }/ai-feedback`, formData, {
+        headers: {
+            Authorization: `Bearer ${ token }`,
+            'Content-Type': 'multipart/form-data',
+        },
+    });
+    return response.data;
+};

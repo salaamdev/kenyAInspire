@@ -2,6 +2,7 @@
 
 const express = require('express');
 const cors = require('cors');
+const multer = require('multer');
 require('dotenv').config();
 
 // Import Sequelize instance
@@ -12,6 +13,9 @@ const errorHandler = require('./middleware/errorHandler');
 
 // Initialize Express app
 const app = express();
+
+// Configure multer for file uploads
+const upload = multer({dest: 'uploads/'});
 
 // Use middleware
 app.use(express.json());
@@ -27,6 +31,8 @@ const recommendationRoutes = require('./routes/recommendationRoutes');
 const userRoutes = require('./routes/userRoutes');
 const chatbotRoutes = require('./routes/chatbotRoutes');
 const protectedRoutes = require('./routes/protectedRoutes');
+const aiFeedbackController = require('./controllers/aiFeedbackController');
+const authMiddleware = require('./middleware/authMiddleware');
 
 // Use routes
 app.use('/api/auth', authRoutes);
@@ -38,7 +44,12 @@ app.use('/api/recommendations', recommendationRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/chatbot', chatbotRoutes);
 app.use('/api/protected', protectedRoutes);
-
+app.post(
+    '/api/ai-feedback',
+    authMiddleware,
+    upload.single('file'),
+    aiFeedbackController.getAIFeedback
+);
 // Error handler middleware (should be after all routes)
 app.use(errorHandler);
 
