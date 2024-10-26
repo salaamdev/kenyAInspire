@@ -10,3 +10,8 @@ unrelated/frontend.txt
 .pdf
 uploads
 up
+
+\frontend\resources
+/frontend/resources
+\frontend\src\assets\kalasik
+/frontend/src/assets/kalasik
