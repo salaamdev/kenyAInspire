@@ -2,15 +2,23 @@ import React from "react";
 import "./componentStyles/Partners.css";
 import partnerLogo1 from "../assets/partner1.png";
 import partnerLogo2 from "../assets/partner2.png";
-import partnerLogo3 from "../assets/partner3.svg";
+import partnerLogo3 from "../assets/partner3.png";
 
 function Partners() {
   const partners = [
-    { name: "Partner 1", logo: partnerLogo1 },
-    { name: "Partner 2", logo: partnerLogo2 },
-    { name: "Partner 3", logo: partnerLogo3 },
-    { name: "Partner 4", logo: partnerLogo1 }, // Replace with actual logo
-    { name: "Partner 5", logo: partnerLogo2 }, // Replace with actual logo
+    { name: "Partner 3", logo: partnerLogo3, url: "https://www.kaps.co.ke/" },
+    { name: "Partner 1", logo: partnerLogo1, url: "https://spu.ac.ke/" },
+    {
+      name: "Partner 2",
+      logo: partnerLogo2,
+      url: "https://www.microsoft.com/en-us/",
+    },
+    // { name: "Partner 4", logo: partnerLogo1, url: "https://spu.ac.ke/" },
+    // {
+    //   name: "Partner 5",
+    //   logo: partnerLogo2,
+    //   url: "https://www.microsoft.com/en-us/",
+    // }, // Replace with actual logo and URL
   ];
 
   return (
@@ -24,11 +32,13 @@ function Partners() {
         <div className="logos-container">
           {partners.map((partner, index) => (
             <div key={index} className="partner-logo-wrapper">
-              <img
-                src={partner.logo}
-                alt={partner.name}
-                className="partner-logo"
-              />
+              <a href={partner.url} target="_blank" rel="noopener noreferrer">
+                <img
+                  src={partner.logo}
+                  alt={partner.name}
+                  className="partner-logo"
+                />
+              </a>
             </div>
           ))}
         </div>
