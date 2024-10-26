@@ -11,6 +11,8 @@ EXCLUDED_EXTENSIONS = {
     ".md",
     ".json",
     ".sqlite",
+    ".PDF",
+    ".pdf",
 }
 EXCLUDED_FILES = {
     "package.json",
