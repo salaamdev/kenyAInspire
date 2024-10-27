@@ -1,4 +1,6 @@
-const User = require('../models/user');
+// controllers/userController.js
+
+const {User} = require('../models');
 const bcrypt = require('bcrypt');
 
 exports.updateProfile = async (req, res) => {
@@ -14,7 +16,13 @@ exports.updateProfile = async (req, res) => {
             updateData.password = hashedPassword;
         }
 
-        await User.findByIdAndUpdate(userId, updateData);
+        const [updatedRowsCount] = await User.update(updateData, {
+            where: {id: userId},
+        });
+
+        if (updatedRowsCount === 0) {
+            return res.status(404).json({message: 'User not found'});
+        }
 
         res.json({message: 'Profile updated successfully'});
     } catch (error) {

@@ -17,5 +17,4 @@ router.get(
     practiceQuizController.generatePracticeQuizzes
 );
 
-
 module.exports = router;
