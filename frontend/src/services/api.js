@@ -21,25 +21,22 @@ export const getOverallProgress = async (token) => {
 };
 
 
+
 export const getCourseDetail = async (token, courseId) => {
-    const response = await axios.get(
-        `${ API_URL }/courses/${ courseId }`,
-        {
-            headers: {Authorization: `Bearer ${ token }`},
-        }
-    );
+    const response = await axios.get(`${ API_URL }/courses/${ courseId }`, {
+        headers: {Authorization: `Bearer ${ token }`},
+    });
     return response.data;
 };
 
 export const updateTopicCompletion = async (token, courseId, topicId, isCompleted) => {
-    const response = await axios.put(
+    await axios.put(
         `${ API_URL }/progress/courses/${ courseId }/topics/${ topicId }`,
         {isCompleted},
         {
             headers: {Authorization: `Bearer ${ token }`},
         }
     );
-    return response.data;
 };
 
 export const loginUser = async (userData) => {
@@ -101,9 +98,11 @@ export const updateProfile = async (token, userData) => {
     return response.data;
 };
 
-export const getPracticeQuizzes = async (token, courseId) => {
+export const getPracticeQuizzes = async (token, grade, subject) => {
     const response = await axios.get(
-        `${ API_URL }/courses/${ courseId }/practice-quizzes`,
+        `${ API_URL }/practice-quizzes/${ encodeURIComponent(
+            grade
+        ) }/${ encodeURIComponent(subject) }`,
         {
             headers: {
                 Authorization: `Bearer ${ token }`,
@@ -112,6 +111,7 @@ export const getPracticeQuizzes = async (token, courseId) => {
     );
     return response.data;
 };
+
 
 
 export const getFlashcards = async (token, courseId) => {

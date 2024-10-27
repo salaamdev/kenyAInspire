@@ -1,22 +1,50 @@
-// src/components/Books.jsx
+// src/pages/Books.jsx
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import coursesData from "../data/coursesData";
+import PracticeQuizzes from "../components/PracticeQuizzes";
+import AIFeedback from "../components/AIFeedback";
+import Flashcards from "../components/Flashcards";
+import { AuthContext } from "../contexts/AuthContext";
+import { getCourseDetail, updateTopicCompletion } from "../services/api";
 import "./pageStyles/Books.css";
 
 function Books() {
   const { grade, subject } = useParams();
   const decodedGrade = decodeURIComponent(grade);
   const decodedSubject = decodeURIComponent(subject);
+  const { token } = useContext(AuthContext);
 
   // Find the grade and subject data
-  const gradeData = coursesData.find((g) => g.grade === decodedGrade);
+  const gradeData = coursesData.find(
+    (g) => g.grade.toLowerCase() === decodedGrade.toLowerCase()
+  );
   const subjectData = gradeData
-    ? gradeData.subjects.find((s) => s.name === decodedSubject)
+    ? gradeData.subjects.find(
+        (s) => s.name.toLowerCase() === decodedSubject.toLowerCase()
+      )
     : null;
 
   const [selectedSection, setSelectedSection] = useState("Outline");
+  const [course, setCourse] = useState(null);
+  const [progress, setProgress] = useState(null);
+
+  // Fetch course details (if needed)
+  useEffect(() => {
+    const fetchCourseDetail = async () => {
+      try {
+        if (subjectData) {
+          const data = await getCourseDetail(token, subjectData.id);
+          setCourse(data.course);
+          setProgress(data.progress);
+        }
+      } catch (error) {
+        console.error("Error fetching course detail:", error);
+      }
+    };
+    fetchCourseDetail();
+  }, [token, subjectData]);
 
   if (!gradeData || !subjectData) {
     return (
@@ -31,51 +59,50 @@ function Books() {
     setSelectedSection(section);
   };
 
+  const handleTopicCompletion = async (topicId, isCompleted) => {
+    try {
+      await updateTopicCompletion(token, subjectData.id, topicId, isCompleted);
+      // Update course and progress state as needed...
+    } catch (error) {
+      console.error("Error updating topic completion:", error);
+    }
+  };
+
   // Render content based on selected section
   const renderContent = () => {
     switch (selectedSection) {
       case "Outline":
-        return (
+        return subjectData.outline ? (
           <embed
             src={subjectData.outline}
             type="application/pdf"
             width="100%"
             height="600px"
           />
+        ) : (
+          <p>No Outline Available</p>
         );
       case "Ebook":
-        return (
+        return subjectData.ebook ? (
           <embed
             src={subjectData.ebook}
             type="application/pdf"
             width="100%"
             height="600px"
           />
+        ) : (
+          <p>No Ebook Available</p>
         );
+      // case "AI Practice Quiz":
+      //   return <PracticeQuizzes courseId={subjectData.id} />;
       case "AI Practice Quiz":
         return (
-          <div>
-            <h3>AI Practice Quiz</h3>
-            {/* Implement AI Practice Quiz functionality here */}
-            <p>This feature is under development.</p>
-          </div>
+          <PracticeQuizzes grade={decodedGrade} subject={decodedSubject} />
         );
       case "AI Feedback":
-        return (
-          <div>
-            <h3>AI Feedback</h3>
-            {/* Implement AI Feedback functionality here */}
-            <p>This feature is under development.</p>
-          </div>
-        );
+        return <AIFeedback courseId={subjectData.id} />;
       case "AI Flashcard":
-        return (
-          <div>
-            <h3>AI Flashcard</h3>
-            {/* Implement AI Flashcard functionality here */}
-            <p>This feature is under development.</p>
-          </div>
-        );
+        return <Flashcards courseId={subjectData.id} />;
       default:
         return null;
     }

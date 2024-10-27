@@ -10,10 +10,12 @@ const authMiddleware = require('../middleware/authMiddleware');
 router.get('/', authMiddleware, courseController.getCoursesForStudent);
 router.get('/:courseId', authMiddleware, courseController.getCourseDetail);
 router.get('/:courseId/flashcards', authMiddleware, flashcardController.generateFlashcards);
+// Example in courseRoutes.js
 router.get(
-    '/:courseId/practice-quizzes',
+    "/practice-quizzes/:grade/:subject",
     authMiddleware,
     practiceQuizController.generatePracticeQuizzes
-); // New route
+);
+
 
 module.exports = router;

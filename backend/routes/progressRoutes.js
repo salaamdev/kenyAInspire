@@ -1,10 +1,12 @@
+// routes/progressRoutes.js
+
 const express = require('express');
 const router = express.Router();
 const progressController = require('../controllers/progressController');
 const authMiddleware = require('../middleware/authMiddleware');
 
 router.get('/', authMiddleware, progressController.getProgressForStudent);
-router.get('/overall', authMiddleware, progressController.getOverallProgress); // New route
+router.get('/overall', authMiddleware, progressController.getOverallProgress);
 router.put(
     '/courses/:courseId/topics/:topicId',
     authMiddleware,

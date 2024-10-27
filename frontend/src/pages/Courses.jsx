@@ -1,17 +1,16 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import coursesData from "../data/coursesData";
-import {
-  FaBook,
-  FaLanguage,
-  FaGlobeAfrica,
-  FaChevronDown,
-} from "react-icons/fa";
+import Lottie from "react-lottie";
+import animationData from "../animations/book.json"; // Example Lottie animation JSON
+import { FaChevronDown } from "react-icons/fa";
 import "./pageStyles/Courses.css";
 
 function Courses() {
-  const [selectedGrade, setSelectedGrade] = useState(null);
+  const defaultGrade = coursesData.find((grade) => grade.grade === "Grade 4");
+  const [selectedGrade, setSelectedGrade] = useState(defaultGrade);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [hoveredSubject, setHoveredSubject] = useState(null);
   const navigate = useNavigate();
 
   const handleGradeClick = (grade) => {
@@ -21,24 +20,19 @@ function Courses() {
 
   const handleSubjectClick = (grade, subject) => {
     navigate(
-      `/dashboard/books/${encodeURIComponent(grade.grade)}/${encodeURIComponent(
-        subject.name
-      )}`
+      `/dashboard/courses/books/${encodeURIComponent(
+        grade.grade
+      )}/${encodeURIComponent(subject.name)}`
     );
   };
 
-  const getSubjectIcon = (subjectName) => {
-    switch (subjectName.toLowerCase()) {
-      case "english":
-        return <FaBook />;
-      case "indigenous languages":
-      case "indigenous language":
-        return <FaLanguage />;
-      case "kiswahili":
-        return <FaGlobeAfrica />;
-      default:
-        return <FaBook />;
-    }
+  const defaultOptions = {
+    loop: true,
+    autoplay: false,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
   };
 
   return (
@@ -48,7 +42,7 @@ function Courses() {
           className="sidebar-header"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
-          <h3>Grades</h3>
+          <h3>{selectedGrade ? selectedGrade.grade : "Grades"}</h3>
           <FaChevronDown
             className={`dropdown-icon ${isMenuOpen ? "open" : ""}`}
           />
@@ -80,9 +74,17 @@ function Courses() {
                   key={subject.name}
                   className="subject-item"
                   onClick={() => handleSubjectClick(selectedGrade, subject)}
+                  onMouseEnter={() => setHoveredSubject(subject.name)}
+                  onMouseLeave={() => setHoveredSubject(null)}
                 >
                   <div className="subject-icon">
-                    {getSubjectIcon(subject.name)}
+                    <Lottie
+                      options={defaultOptions}
+                      height={100}
+                      width={100}
+                      isStopped={hoveredSubject !== subject.name}
+                      isPaused={hoveredSubject !== subject.name}
+                    />
                   </div>
                   <h3>{subject.name}</h3>
                 </div>
