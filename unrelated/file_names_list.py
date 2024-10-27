@@ -19,5 +19,5 @@ def list_directory_contents(directory_path):
 
 
 # Example usage:
-directory_to_scan = r"D:\Code\kenyAInspire---team-HassDonn\frontend\src\assets\kalasik"  # Replace with the path of the folder you want to scan
+directory_to_scan = r"D:\Code\kenyAInspire---team-HassDonn\frontend\public\kalasik"  # Replace with the path of the folder you want to scan
 list_directory_contents(directory_to_scan)
