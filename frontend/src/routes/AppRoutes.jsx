@@ -10,6 +10,8 @@ import SignUpPage from "../pages/SignUpPage";
 import HomePage from "../pages/HomePage";
 import ErrorPage from "../pages/ErrorPage";
 import CourseDetail from "../pages/CourseDetail";
+// import Subjects from "../pages/Subjects"; // Import Subjects component
+import Books from "../pages/Books"; // Import Books component
 
 function AppRoutes() {
   return (
@@ -32,6 +34,10 @@ function AppRoutes() {
         <Route path="courses" element={<Courses />} />
         <Route path="courses/:courseId" element={<CourseDetail />} />
         <Route path="settings" element={<Settings />} />
+        {/* <Route path="subjects" element={<Subjects />} />{" "} */}
+        {/* Add Subjects route */}
+        <Route path="books/:grade/:subject" element={<Books />} />{" "}
+        {/* Add Books route */}
       </Route>
 
       {/* Fallback Route */}
