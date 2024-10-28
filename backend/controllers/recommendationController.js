@@ -1,7 +1,6 @@
 // controllers/recommendationController.js
 
 const {Configuration, OpenAIApi} = require('openai');
-const Progress = require('../models/progress');
 const Enrollment = require('../models/enrollment'); // Assuming you have an Enrollment model
 require('dotenv').config();
 
@@ -18,9 +17,7 @@ exports.getRecommendations = async (req, res) => {
 
     try {
         // Fetch user progress from the database
-        const userProgress = await Progress.findAll({
-            where: {user_id: userId},
-        });
+
 
         // Fetch user enrollments from the database
         const userEnrollments = await Enrollment.findAll({

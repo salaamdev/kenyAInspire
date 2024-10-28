@@ -39,27 +39,22 @@ app.use(cors({
 // Import routes
 const authRoutes = require('./routes/authRoutes');
 const courseRoutes = require('./routes/courseRoutes');
-const progressRoutes = require('./routes/progressRoutes');
 const announcementRoutes = require('./routes/announcementRoutes');
 const eventRoutes = require('./routes/eventRoutes');
 const recommendationRoutes = require('./routes/recommendationRoutes');
 const userRoutes = require('./routes/userRoutes');
 const chatbotRoutes = require('./routes/chatbotRoutes');
 const protectedRoutes = require('./routes/protectedRoutes');
-const aiFeedbackController = require('./controllers/aiFeedbackController');
 const authMiddleware = require('./middleware/authMiddleware');
-const feedbackRoutes = require('./routes/feedbackRoutes');
 // Use routes
 app.use('/api/auth', authRoutes);
 app.use('/api/courses', courseRoutes);
-app.use('/api/progress', progressRoutes);
 app.use('/api/announcements', announcementRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/recommendations', recommendationRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/chatbot', chatbotRoutes);
 app.use('/api/protected', protectedRoutes);
-app.use('/api/ai-feedback', feedbackRoutes);
 // Error handler middleware (should be after all routes)
 app.use(errorHandler);
 
@@ -74,8 +69,6 @@ sequelize.authenticate()
             Course,
             Topic,
             Enrollment,
-            Progress,
-            StudentTopicProgress,
             Announcement,
             Event,
             OTP,

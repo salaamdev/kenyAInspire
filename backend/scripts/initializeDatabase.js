@@ -6,8 +6,6 @@ const {
     Course,
     Topic,
     Enrollment,
-    Progress,
-    StudentTopicProgress,
     Announcement,
     Event,
     OTP,

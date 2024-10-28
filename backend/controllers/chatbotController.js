@@ -2,7 +2,6 @@
 
 const OpenAI = require('openai');
 const Course = require('../models/course');
-const Progress = require('../models/progress');
 const Enrollment = require('../models/enrollment');
 const {Op} = require('sequelize');
 
@@ -25,23 +24,13 @@ exports.handleMessage = async (req, res) => {
         });
         const courses = enrollments.map((enrollment) => enrollment.Course);
 
-        const progressData = await Progress.findAll({
-            where: {user_id: userId}
-        });
-
         // Format courses and progress data for the prompt
         const coursesList = courses.map((course) => course.title).join(', ');
-        const progressSummary = progressData
-            .map(
-                (p) =>
-                    `Course ${ p.course_id }: ${ p.completed_modules }/${ p.total_modules } modules completed`
-            )
-            .join('\n');
 
         const messages = [
             {
                 role: 'system',
-                content: `You are an educational assistant. The student's name is ${ userName }. They are enrolled in the following courses: ${ coursesList }. Their progress is as follows: ${ progressSummary }. Use this information to assist them with their educational queries. No matter what, if the question is not educational in nature, clearly refuse to respond and explain that you can only assist with educational content. Ensure that all responses are formatted without using symbols like dashes or asterisks.`,
+                content: `You are an educational assistant. The student's name is ${ userName }. They are enrolled in the following courses: ${ coursesList }. Use this information to assist them with their educational queries. No matter what, if the question is not educational in nature, clearly refuse to respond and explain that you can only assist with educational content. Ensure that all responses are formatted without using symbols like dashes or asterisks.`,
             },
             {role: 'user', content: userMessage},
         ];
