@@ -2,8 +2,7 @@
 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const {User, OTP, Course} = require('../models');
-const nodemailer = require('nodemailer');
+const {User, OTP, Course, Enrollment} = require('../models'); const nodemailer = require('nodemailer');
 const {validationResult} = require('express-validator'); // Import for validation
 require('dotenv').config();
 

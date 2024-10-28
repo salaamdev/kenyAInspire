@@ -4,7 +4,6 @@ import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import coursesData from "../data/coursesData";
 import { AuthContext } from "../contexts/AuthContext";
-import { getCourseDetail, updateTopicCompletion } from "../services/api";
 import "./pageStyles/Books.css";
 
 function Books() {
@@ -24,22 +23,6 @@ function Books() {
     : null;
 
   const [selectedSection, setSelectedSection] = useState("Outline");
-  const [course, setCourse] = useState(null);
-
-  // Fetch course details (if needed)
-  useEffect(() => {
-    const fetchCourseDetail = async () => {
-      try {
-        if (subjectData) {
-          const data = await getCourseDetail(token, subjectData.id);
-          setCourse(data.course);
-        }
-      } catch (error) {
-        console.error("Error fetching course detail:", error);
-      }
-    };
-    fetchCourseDetail();
-  }, [token, subjectData]);
 
   if (!gradeData || !subjectData) {
     return (
@@ -52,15 +35,6 @@ function Books() {
   // Handlers for top section navigation
   const handleSectionClick = (section) => {
     setSelectedSection(section);
-  };
-
-  const handleTopicCompletion = async (topicId, isCompleted) => {
-    try {
-      await updateTopicCompletion(token, subjectData.id, topicId, isCompleted);
-      
-    } catch (error) {
-      console.error("Error updating topic completion:", error);
-    }
   };
 
   // Render content based on selected section
@@ -88,7 +62,11 @@ function Books() {
         ) : (
           <p>No Ebook Available</p>
         );
-      
+      default:
+        return <p>Select a section to view content</p>;
+    }
+  };
+
   return (
     <div className="books-page" style={{ padding: "20px" }}>
       <h2>

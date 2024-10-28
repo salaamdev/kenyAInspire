@@ -43,12 +43,6 @@ export const getAnnouncements = async () => {
     const response = await axios.get(`${ API_URL }/announcements`);
     return response.data;
 };
-
-export const getEvents = async () => {
-    const response = await axios.get(`${ API_URL }/events`);
-    return response.data;
-};
-
 export const getRecommendations = async (token) => {
     const response = await axios.get(`${ API_URL }/recommendations`, {
         headers: {Authorization: `Bearer ${ token }`},

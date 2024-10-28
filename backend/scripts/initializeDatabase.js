@@ -7,7 +7,6 @@ const {
     Topic,
     Enrollment,
     Announcement,
-    Event,
     OTP,
 } = require('../models');
 

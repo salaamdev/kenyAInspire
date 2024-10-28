@@ -40,7 +40,6 @@ app.use(cors({
 const authRoutes = require('./routes/authRoutes');
 const courseRoutes = require('./routes/courseRoutes');
 const announcementRoutes = require('./routes/announcementRoutes');
-const eventRoutes = require('./routes/eventRoutes');
 const recommendationRoutes = require('./routes/recommendationRoutes');
 const userRoutes = require('./routes/userRoutes');
 const chatbotRoutes = require('./routes/chatbotRoutes');
@@ -50,7 +49,6 @@ const authMiddleware = require('./middleware/authMiddleware');
 app.use('/api/auth', authRoutes);
 app.use('/api/courses', courseRoutes);
 app.use('/api/announcements', announcementRoutes);
-app.use('/api/events', eventRoutes);
 app.use('/api/recommendations', recommendationRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/chatbot', chatbotRoutes);
@@ -70,7 +68,6 @@ sequelize.authenticate()
             Topic,
             Enrollment,
             Announcement,
-            Event,
             OTP,
         } = require('./models');
 

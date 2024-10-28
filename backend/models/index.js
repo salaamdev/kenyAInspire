@@ -9,7 +9,6 @@ const Course = require('./course');
 const Topic = require('./topic');
 const Enrollment = require('./enrollment');
 const Announcement = require('./announcement');
-const Event = require('./event');
 const OTP = require('./otp');
 
 // Define associations
@@ -36,6 +35,5 @@ module.exports = {
     Topic,
     Enrollment,
     Announcement,
-    Event,
     OTP,
 };
