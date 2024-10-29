@@ -47,6 +47,7 @@ const protectedRoutes = require('./routes/protectedRoutes');
 const authMiddleware = require('./middleware/authMiddleware');
 const flashcardsRoutes = require('./routes/AI/flashcardsRoutes');
 
+
 // Use routes
 app.use('/api/auth', authRoutes);
 app.use('/api/courses', courseRoutes);

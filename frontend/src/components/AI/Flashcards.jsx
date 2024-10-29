@@ -1,11 +1,14 @@
-// components/AI/Flashcards.jsx
+// frontend/src/components/AI/Flashcards.jsx
 
 import React, { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
-import flashcardsService from "../../services/flashcardsService";
-// import "./AI/Flashcards.css"; // Placeholder for styling
+import flashcardsService from "../../services/aiServices/flashcardsService";
+import { useParams } from "react-router-dom";
+import coursesData from "../../data/coursesData";
+import "../../styles/AI/Flashcards.css"; // Importing dedicated CSS
 
-function Flashcards({ courseId }) {
+function Flashcards() {
+  const { grade, subject } = useParams();
   const { token } = useContext(AuthContext);
   const [flashcards, setFlashcards] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -13,7 +16,27 @@ function Flashcards({ courseId }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showAnswer, setShowAnswer] = useState(false);
 
+  // Determine course_id based on grade and subject
+  const gradeData = coursesData.find(
+    (g) => g.grade.toLowerCase() === grade.toLowerCase()
+  );
+
+  const subjectData = gradeData
+    ? gradeData.subjects.find(
+        (s) => s.name.toLowerCase() === subject.toLowerCase()
+      )
+    : null;
+
+  const courseId = subjectData ? subjectData.course_id : null;
+
   useEffect(() => {
+    if (!courseId) {
+      setError(
+        "Invalid course selection. Please navigate back and select a valid course."
+      );
+      return;
+    }
+
     const fetchFlashcards = async () => {
       setLoading(true);
       try {
@@ -30,6 +53,11 @@ function Flashcards({ courseId }) {
   }, [courseId, token]);
 
   const handleGenerateFlashcards = async () => {
+    if (!courseId) {
+      setError("Invalid course selection.");
+      return;
+    }
+
     setLoading(true);
     try {
       const response = await flashcardsService.generateFlashcards(

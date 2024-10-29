@@ -1,4 +1,4 @@
-// scripts/initializeDatabase.js
+// backend/scripts/initializeDatabase.js
 
 const sequelize = require('../config/database');
 const {
@@ -8,7 +8,9 @@ const {
     Enrollment,
     Announcement,
     OTP,
+    Flashcard,
 } = require('../models');
+const coursesData = require('./coursesData'); // Newly added
 
 (async () => {
     try {
@@ -18,8 +20,20 @@ const {
         // Sync all models
         await sequelize.sync({force: true}); // 'force: true' will drop tables and re-create them
 
-        // Insert initial data here if needed
-        // e.g., await Course.create({ title: 'Sample Course', description: 'This is a sample course.' });
+        // Insert courses from coursesData
+        for (const grade of coursesData) {
+            for (const subject of grade.subjects) {
+                await Course.create({
+                    id: subject.course_id, // Manually setting the ID
+                    title: subject.name,
+                    description: `${ subject.name } course for ${ grade.grade }`,
+                    created_at: new Date(),
+                });
+            }
+        }
+
+        // Insert other initial data if necessary
+        // e.g., announcements, users, etc.
 
         console.log('Database initialized successfully.');
         process.exit(0);

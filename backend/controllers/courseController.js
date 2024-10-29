@@ -1,7 +1,6 @@
 // controllers/courseController.js
 
-const {Course, Enrollment, Topic, User} = require('../models');
-const {Op} = require('sequelize');
+const {Course, Enrollment, Topic} = require('../models'); // Ensure Topic is imported
 
 exports.getCoursesForStudent = async (req, res) => {
     const userId = req.user.id; // Adjusted from req.user._id to req.user.id
@@ -29,9 +28,9 @@ exports.getCoursesForStudent = async (req, res) => {
 
                 const totalTopics = course.Topics.length;
 
-
-
-                const completedTopicsCount = completedTopics.length;
+                // TODO: Define how to calculate completedTopicsCount
+                // For now, set to 0
+                const completedTopicsCount = 0;
 
                 return {
                     id: course.id,
@@ -39,7 +38,6 @@ exports.getCoursesForStudent = async (req, res) => {
                     description: course.description,
                     totalTopics,
                     completedTopics: completedTopicsCount,
-
                 };
             })
         );
@@ -53,5 +51,3 @@ exports.getCoursesForStudent = async (req, res) => {
         res.status(500).json({message: 'Server error'});
     }
 };
-
-

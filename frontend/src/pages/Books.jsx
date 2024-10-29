@@ -1,96 +1,176 @@
-// src/pages/Books.jsx
+// frontend/src/pages/Books.jsx
 
 import React, { useState, useEffect, useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom"; // Use useParams to get grade and subject from URL
 import coursesData from "../data/coursesData";
-import { AuthContext } from "../contexts/AuthContext";
-import "./pageStyles/Books.css";
+import Lottie from "react-lottie";
+import animationData from "../animations/book.json"; // Example Lottie animation JSON
+import { FaChevronDown } from "react-icons/fa";
+import { AuthContext } from "../contexts/AuthContext"; // Ensure AuthContext is imported
+import flashcardsService from "../services/flashcardsService"; // Import Flashcards Service
+import "./pageStyles/Courses.css";
 
 function Books() {
-  const { grade, subject } = useParams();
-  const decodedGrade = decodeURIComponent(grade);
-  const decodedSubject = decodeURIComponent(subject);
-  const { token } = useContext(AuthContext);
+  const { grade, subject } = useParams(); // Get grade and subject from URL
+  const [selectedGrade, setSelectedGrade] = useState(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [hoveredSubject, setHoveredSubject] = useState(null);
+  const [flashcards, setFlashcards] = useState([]);
+  const [showFlashcards, setShowFlashcards] = useState(false);
+  const [loadingFlashcards, setLoadingFlashcards] = useState(false);
+  const [flashcardError, setFlashcardError] = useState("");
+  const { token } = useContext(AuthContext); // Get token from AuthContext
+  const navigate = useNavigate();
 
-  // Find the grade and subject data
-  const gradeData = coursesData.find(
-    (g) => g.grade.toLowerCase() === decodedGrade.toLowerCase()
-  );
-  const subjectData = gradeData
-    ? gradeData.subjects.find(
-        (s) => s.name.toLowerCase() === decodedSubject.toLowerCase()
-      )
-    : null;
+  useEffect(() => {
+    // Find the grade based on URL parameter
+    const gradeItem = coursesData.find((g) => g.grade === grade);
+    setSelectedGrade(gradeItem);
+  }, [grade]);
 
-  const [selectedSection, setSelectedSection] = useState("Outline");
-
-  if (!gradeData || !subjectData) {
-    return (
-      <div className="books-page" style={{ padding: "20px" }}>
-        <h2>Invalid Grade or Subject</h2>
-      </div>
+  const handleGradeClick = (gradeItem) => {
+    setSelectedGrade(gradeItem);
+    setIsMenuOpen(false);
+    navigate(
+      `/dashboard/courses/books/${encodeURIComponent(gradeItem.grade)}/`
     );
+  };
+
+  const handleSubjectClick = (subject) => {
+    navigate(
+      `/dashboard/courses/books/${encodeURIComponent(
+        grade
+      )}/${encodeURIComponent(subject.name)}`
+    );
+  };
+
+  const toggleFlashcards = async () => {
+    if (!flashcards.length) {
+      // Fetch flashcards if not already fetched
+      setLoadingFlashcards(true);
+      setFlashcardError("");
+      try {
+        // Find the course_id based on grade and subject
+        const gradeItem = coursesData.find((g) => g.grade === grade);
+        const subjectItem = gradeItem.subjects.find((s) => s.name === subject);
+        if (!subjectItem) {
+          throw new Error("Subject not found.");
+        }
+
+        const courseId = subjectItem.course_id;
+
+        const data = await flashcardsService.getFlashcards(courseId, token);
+        setFlashcards(data.flashcards);
+      } catch (error) {
+        console.error("Error fetching flashcards:", error);
+        setFlashcardError(
+          error.response?.data?.message || "Failed to load flashcards."
+        );
+      } finally {
+        setLoadingFlashcards(false);
+      }
+    }
+    setShowFlashcards(!showFlashcards);
+  };
+
+  const defaultOptions = {
+    loop: true,
+    autoplay: false,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
+
+  if (!selectedGrade) {
+    return <div>Loading...</div>;
   }
 
-  // Handlers for top section navigation
-  const handleSectionClick = (section) => {
-    setSelectedSection(section);
-  };
-
-  // Render content based on selected section
-  const renderContent = () => {
-    switch (selectedSection) {
-      case "Outline":
-        return subjectData.outline ? (
-          <embed
-            src={subjectData.outline}
-            type="application/pdf"
-            width="100%"
-            height="600px"
-          />
-        ) : (
-          <p>No Outline Available</p>
-        );
-      case "Ebook":
-        return subjectData.ebook ? (
-          <embed
-            src={subjectData.ebook}
-            type="application/pdf"
-            width="100%"
-            height="600px"
-          />
-        ) : (
-          <p>No Ebook Available</p>
-        );
-      default:
-        return <p>Select a section to view content</p>;
-    }
-  };
-
   return (
-    <div className="books-page" style={{ padding: "20px" }}>
-      <h2>
-        {decodedGrade} - {decodedSubject}
-      </h2>
-
-      {/* Top Section Navigation */}
-      <div className="books-navigation" style={{ marginBottom: "20px" }}>
-        <button
-          onClick={() => handleSectionClick("Outline")}
-          style={{ marginRight: "10px" }}
+    <div className="books-page">
+      <div className={`floating-sidebar ${isMenuOpen ? "open" : ""}`}>
+        <div
+          className="sidebar-header"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
-          Outline
-        </button>
-        <button
-          onClick={() => handleSectionClick("Ebook")}
-          style={{ marginRight: "10px" }}
-        >
-          Ebook
-        </button>
+          <h3>{selectedGrade ? selectedGrade.grade : "Grades"}</h3>
+          <FaChevronDown
+            className={`dropdown-icon ${isMenuOpen ? "open" : ""}`}
+          />
+        </div>
+        <ul className="grade-list">
+          {coursesData.map((gradeItem) => (
+            <li
+              key={gradeItem.grade}
+              onClick={() => handleGradeClick(gradeItem)}
+              className={
+                selectedGrade && selectedGrade.grade === gradeItem.grade
+                  ? "active"
+                  : ""
+              }
+            >
+              {gradeItem.grade}
+            </li>
+          ))}
+        </ul>
       </div>
 
-      {/* Bottom Section Content */}
-      <div className="books-content">{renderContent()}</div>
+      <div className="main-content">
+        <h2>{selectedGrade.grade} Subjects</h2>
+        <div className="subjects-list">
+          {selectedGrade.subjects.map((subjectItem) => (
+            <div
+              key={subjectItem.name}
+              className="subject-item"
+              onClick={() => handleSubjectClick(subjectItem)}
+              onMouseEnter={() => setHoveredSubject(subjectItem.name)}
+              onMouseLeave={() => setHoveredSubject(null)}
+            >
+              <div className="subject-icon">
+                <Lottie
+                  options={defaultOptions}
+                  height={100}
+                  width={100}
+                  isStopped={hoveredSubject !== subjectItem.name}
+                  isPaused={hoveredSubject !== subjectItem.name}
+                />
+              </div>
+              <h3>{subjectItem.name}</h3>
+              {/* Flashcards Button */}
+              <button
+                className="flashcards-button"
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevent triggering subject click
+                  toggleFlashcards();
+                }}
+              >
+                {showFlashcards ? "Hide Flashcards" : "Show Flashcards"}
+              </button>
+            </div>
+          ))}
+        </div>
+
+        {/* Flashcards Section */}
+        {loadingFlashcards && <div>Loading flashcards...</div>}
+        {flashcardError && <div className="error">{flashcardError}</div>}
+        {showFlashcards && flashcards.length > 0 && (
+          <div className="flashcards-section">
+            <h2>Flashcards for {subject}</h2>
+            <div className="flashcards-list">
+              {flashcards.map((fc) => (
+                <div key={fc.id} className="flashcard">
+                  <div className="flashcard-question">
+                    <strong>Q:</strong> {fc.question}
+                  </div>
+                  <div className="flashcard-answer">
+                    <strong>A:</strong> {fc.answer}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
