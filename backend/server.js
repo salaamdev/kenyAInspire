@@ -45,6 +45,8 @@ const userRoutes = require('./routes/userRoutes');
 const chatbotRoutes = require('./routes/chatbotRoutes');
 const protectedRoutes = require('./routes/protectedRoutes');
 const authMiddleware = require('./middleware/authMiddleware');
+const flashcardsRoutes = require('./routes/AI/flashcardsRoutes');
+
 // Use routes
 app.use('/api/auth', authRoutes);
 app.use('/api/courses', courseRoutes);
@@ -53,6 +55,8 @@ app.use('/api/recommendations', recommendationRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/chatbot', chatbotRoutes);
 app.use('/api/protected', protectedRoutes);
+app.use('/api/ai/flashcards', flashcardsRoutes);
+
 // Error handler middleware (should be after all routes)
 app.use(errorHandler);
 

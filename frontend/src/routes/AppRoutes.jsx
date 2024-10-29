@@ -1,4 +1,4 @@
-// src\routes\AppRoutes.jsx
+// routes/AppRoutes.jsx
 
 import React, { Suspense, lazy } from "react";
 import { Routes, Route } from "react-router-dom";
@@ -12,6 +12,7 @@ const SignUpPage = lazy(() => import("../pages/SignUpPage"));
 const HomePage = lazy(() => import("../pages/HomePage"));
 const ErrorPage = lazy(() => import("../pages/ErrorPage"));
 const Books = lazy(() => import("../pages/Books"));
+const Flashcards = lazy(() => import("../components/AI/Flashcards")); // Newly added
 
 function AppRoutes() {
   return (
@@ -35,6 +36,11 @@ function AppRoutes() {
           <Route path="courses" element={<Courses />} />
           <Route path="settings" element={<Settings />} />
           <Route path="courses/books/:grade/:subject" element={<Books />} />
+          <Route
+            path="courses/books/:grade/:subject/flashcards"
+            element={<Flashcards />}
+          />{" "}
+          {/* Newly added Route */}
         </Route>
 
         {/* Fallback Route */}
