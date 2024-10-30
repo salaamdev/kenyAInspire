@@ -56,7 +56,16 @@ function Books() {
           },
         }
       );
-      setFlashcards(response.data.flashcards);
+
+      // Handle both response formats
+      let flashcardsData = response.data.flashcards || response.data;
+
+      // Validate the flashcards structure
+      if (!Array.isArray(flashcardsData)) {
+        throw new Error("Invalid flashcards format.");
+      }
+
+      setFlashcards(flashcardsData);
     } catch (err) {
       console.error(err);
       setError("Failed to load flashcards.");

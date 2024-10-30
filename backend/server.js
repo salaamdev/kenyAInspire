@@ -43,6 +43,8 @@ const userRoutes = require('./routes/userRoutes');
 const chatbotRoutes = require('./routes/chatbotRoutes');
 const protectedRoutes = require('./routes/protectedRoutes');
 const flashcardRoutes = require('./routes/flashcardRoutes');
+const quizRoutes = require('./routes/quizRoutes');
+
 
 // Use routes
 app.use('/api/auth', authRoutes);
@@ -52,6 +54,8 @@ app.use('/api/users', userRoutes);
 app.use('/api/chatbot', chatbotRoutes);
 app.use('/api/protected', protectedRoutes);
 app.use('/api/flashcards', flashcardRoutes);
+app.use('/api/quiz', quizRoutes);
+
 
 // Error handler middleware (should be after all routes)
 app.use(errorHandler);

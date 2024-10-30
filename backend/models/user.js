@@ -1,4 +1,4 @@
-// models/user.js
+// models/User.js
 
 const {DataTypes} = require('sequelize');
 const sequelize = require('../config/database');
@@ -26,6 +26,11 @@ const User = sequelize.define(
     created_at: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
+    },
+    failedQuestions: {
+      type: DataTypes.TEXT, // Use TEXT to store JSON string
+      allowNull: true,
+      defaultValue: '[]', // Set default value as a JSON string
     },
   },
   {
