@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { UserPreferencesContext } from "../contexts/UserPreferencesContext";
+import { UserPreferencesContext } from "../contexts/UserPreferencesContext.jsx";
 import { FaFont, FaAdjust, FaLowVision, FaVolumeUp } from "react-icons/fa";
 import "./componentStyles/AccessibilityOptions.css";
 

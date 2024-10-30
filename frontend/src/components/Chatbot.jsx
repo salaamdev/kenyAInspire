@@ -1,7 +1,7 @@
 // src/components/Chatbot.jsx
 
 import React, { useState, useEffect, useRef } from "react";
-import { sendMessageToAI, getCourses, getProgress } from "../services/api";
+import { sendMessageToAI } from "../services/api";
 import { AuthContext } from "../contexts/AuthContext";
 import {
   FaPaperPlane,
@@ -17,7 +17,7 @@ function Chatbot({ isOpen, onClose }) {
   const { token, user } = React.useContext(AuthContext);
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState("");
-  const [studentData, setStudentData] = useState({ courses: [], progress: [] });
+  const [studentData, setStudentData] = useState({ courses: [] });
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef(null);
 
@@ -34,26 +34,24 @@ function Chatbot({ isOpen, onClose }) {
   }, []);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const coursesData = await getCourses(token);
-        const progressData = await getProgress(token);
-        const data = {
-          courses: coursesData.courses,
-          progress: progressData.progress,
-        };
-        setStudentData(data);
-        setMessages([
-          {
-            text: `Hello ${user.name}! How can I assist you today?`,
-            isUser: false,
-          },
-        ]);
-      } catch (error) {
-        console.error("Error fetching student data:", error);
-      }
-    };
-    fetchData();
+    // const fetchData = async () => {
+    //   try {
+    //     const coursesData = await getCourses(token);
+    //     const data = {
+    //       courses: coursesData.courses,
+    //     };
+    //     setStudentData(data);
+    //     setMessages([
+    //       {
+    //         text: `Hello ${user.name}! How can I assist you today?`,
+    //         isUser: false,
+    //       },
+    //     ]);
+    //   } catch (error) {
+    //     console.error("Error fetching student data:", error);
+    //   }
+    // };
+    // fetchData();
   }, [token, user.name]);
 
   useEffect(() => {

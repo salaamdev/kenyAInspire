@@ -1,6 +1,13 @@
 import os
 
-EXCLUDED_FOLDERS = {"node_modules", ".git", "pageStyles", "componentStyles"}
+EXCLUDED_FOLDERS = {
+    "node_modules",
+    ".git",
+    "pageStyles",
+    "componentStyles",
+    "animations",
+    "assets",
+}
 EXCLUDED_EXTENSIONS = {
     ".jpg",
     ".jpeg",
@@ -11,6 +18,9 @@ EXCLUDED_EXTENSIONS = {
     ".md",
     ".json",
     ".sqlite",
+    ".PDF",
+    ".pdf",
+    ".css",
 }
 EXCLUDED_FILES = {
     "package.json",
@@ -19,6 +29,7 @@ EXCLUDED_FILES = {
     "vite.config.js",
     "eslint.config.js",
     "index.html",
+    "ErrorPage",
 }
 
 

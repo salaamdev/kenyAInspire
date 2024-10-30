@@ -2,10 +2,10 @@
 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const {User, OTP, Enrollment, Course} = require('../models');
+const {User, OTP} = require('../models');
 const nodemailer = require('nodemailer');
-const otpGenerator = require('otp-generator');
-const {Op} = require('sequelize');
+const {validationResult} = require('express-validator');
+require('dotenv').config();
 
 /**
  * @desc    Register a new user (Step 1: Send OTP)
@@ -13,41 +13,47 @@ const {Op} = require('sequelize');
  * @access  Public
  */
 exports.register = async (req, res) => {
+    // Handle validation errors
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({errors: errors.array()});
+    }
+
     const {name, email, password, action} = req.body;
 
-    if (action === 'request_otp') {
-        try {
-            // Check if user already exists
-            const existingUser = await User.findOne({where: {email}});
-            if (existingUser) {
-                return res.status(400).json({message: 'Email already exists'});
-            }
+    if (action !== 'request_otp') {
+        return res.status(400).json({message: 'Invalid action'});
+    }
 
-            // Generate OTP
-            // const otpCode = otpGenerator.generate(6, {upperCaseAlphabets: false, specialChars: false});
-            // Generate 6 digit random numerical OTP
-            const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
-
-            // Hash the password
-            const hashedPassword = await bcrypt.hash(password, 10);
-
-            // Save OTP along with name and hashed password
-            await OTP.create({
-                email,
-                name,
-                password: hashedPassword,
-                otp: otpCode,
-                createdAt: new Date(),
-            });
-
-            // Send OTP via email
-            await sendOTPEmail(email, otpCode);
-
-            res.status(200).json({message: 'OTP sent to email'});
-        } catch (error) {
-            console.error('OTP Error:', error);
-            res.status(500).json({message: 'Server error'});
+    try {
+        // Check if user already exists
+        const existingUser = await User.findOne({where: {email}});
+        if (existingUser) {
+            return res.status(400).json({message: 'Email already exists'});
         }
+
+        // Generate 6-digit OTP
+        const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
+
+        // Hash the password
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Save OTP along with name and hashed password
+        await OTP.create({
+            email,
+            name,
+            password: hashedPassword,
+            otp: otpCode,
+            createdAt: new Date(),
+        });
+
+        // Send OTP via email
+        await sendOTPEmail(email, otpCode);
+
+        res.status(200).json({message: 'OTP sent to email'});
+    } catch (error) {
+        console.error('OTP Error:', error);
+        res.status(500).json({message: 'Server error'});
     }
 };
 
@@ -57,6 +63,12 @@ exports.register = async (req, res) => {
  * @access  Public
  */
 exports.verifyOTP = async (req, res) => {
+    // Handle validation errors
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({errors: errors.array()});
+    }
+
     const {email, otp} = req.body;
 
     try {
@@ -80,19 +92,9 @@ exports.verifyOTP = async (req, res) => {
             password: otpEntry.password, // Already hashed
         });
 
-        // Enroll user in all existing courses
-        const courses = await Course.findAll();
-        const enrollmentPromises = courses.map((course) => {
-            return Enrollment.create({
-                user_id: user.id,
-                course_id: course.id,
-            });
-        });
-        await Promise.all(enrollmentPromises);
-
-        // Generate JWT token
+        // Generate JWT token with shorter expiry and implement refresh tokens in future
         const token = jwt.sign({id: user.id}, process.env.JWT_SECRET, {
-            expiresIn: '1d',
+            expiresIn: '1h', // Reduced from '1d'
         });
 
         // Delete OTP entry
@@ -140,6 +142,12 @@ async function sendOTPEmail (email, otp) {
  * @access  Public
  */
 exports.login = async (req, res) => {
+    // Handle validation errors
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({errors: errors.array()});
+    }
+
     const {email, password} = req.body;
 
     try {
@@ -157,7 +165,7 @@ exports.login = async (req, res) => {
 
         // Generate JWT token
         const token = jwt.sign({id: user.id}, process.env.JWT_SECRET, {
-            expiresIn: '1d',
+            expiresIn: '1h', // Reduced from '1d'
         });
 
         // Respond with token and user data

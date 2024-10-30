@@ -1,24 +1,25 @@
-const User = require('../models/user');
-const bcrypt = require('bcrypt');
+// controllers/userController.js or a separate script
 
-exports.updateProfile = async (req, res) => {
+const {User, Course, Enrollment} = require('../models');
+
+exports.enrollUserInCourse = async (req, res) => {
     const userId = req.user.id;
-    const {name, email, password} = req.body;
+    const {course_id} = req.body;
 
     try {
-        const updateData = {name, email};
-
-        // Update password if provided
-        if (password) {
-            const hashedPassword = await bcrypt.hash(password, 10);
-            updateData.password = hashedPassword;
+        const course = await Course.findByPk(course_id);
+        if (!course) {
+            return res.status(404).json({message: 'Course not found'});
         }
 
-        await User.findByIdAndUpdate(userId, updateData);
+        const enrollment = await Enrollment.create({
+            user_id: userId,
+            course_id: course_id,
+        });
 
-        res.json({message: 'Profile updated successfully'});
+        res.status(201).json({message: 'Enrolled successfully', enrollment});
     } catch (error) {
-        console.error('Error updating profile:', error);
+        console.error('Enrollment Error:', error);
         res.status(500).json({message: 'Server error'});
     }
 };

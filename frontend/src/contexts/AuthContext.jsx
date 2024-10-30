@@ -1,5 +1,7 @@
+// src\contexts\AuthContext.jsx
+
 import React, { createContext, useState, useEffect } from "react";
-import { loginUser } from "../services/api"; // Correct import
+import { loginUser } from "../services/api";
 
 export const AuthContext = createContext();
 
@@ -24,8 +26,12 @@ function AuthContextProvider({ children }) {
     localStorage.removeItem("token");
   };
 
+  useEffect(() => {
+    // Optional: Validate token or fetch user data on mount
+  }, []);
+
   return (
-    <AuthContext.Provider value={{ user, token, login, logout }}>
+    <AuthContext.Provider value={{ user, token, login, logout, setUser }}>
       {children}
     </AuthContext.Provider>
   );

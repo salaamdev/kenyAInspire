@@ -31,7 +31,7 @@ function SignUpForm() {
       // Handle OTP verification
       try {
         await verifyOTP({ email: emailForOtp, otp: data.otp });
-        alert("Registration successful!");
+        // alert("Registration successful!");
         navigate("/login");
       } catch (error) {
         console.error("OTP Verification Error:", error);

@@ -17,28 +17,6 @@
   margin-bottom: 1rem;
 }
 
-.progress-container {
-  margin-top: 1rem;
-}
-
-.progress-label {
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-}
-
-.progress-bar {
-  height: 10px;
-  background-color: #e0e0e0;
-  border-radius: 5px;
-  overflow: hidden;
-}
-
-.progress-fill {
-  height: 100%;
-  background-color: #0066cc;
-  transition: width 0.3s ease;
-}
-
 .header-buttons {
   display: flex;
   gap: 1rem;

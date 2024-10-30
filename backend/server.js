@@ -1,5 +1,5 @@
 // server.js
-
+const helmet = require('helmet');
 const express = require('express');
 const cors = require('cors');
 const multer = require('multer');
@@ -18,38 +18,38 @@ const app = express();
 const upload = multer({dest: 'uploads/'});
 
 // Use middleware
+app.use(helmet());
 app.use(express.json());
-app.use(cors());
+const allowedOrigins = ['http://localhost:3000', 'http://localhost:5173'];
+
+app.use(cors({
+    origin: function (origin, callback) {
+        // Allow requests with no origin (like mobile apps or curl requests)
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.indexOf(origin) === -1) {
+            const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+            return callback(new Error(msg), false);
+        }
+        return callback(null, true);
+    },
+    credentials: true, // If you need to send cookies or authentication headers
+}));
 
 // Import routes
 const authRoutes = require('./routes/authRoutes');
-const courseRoutes = require('./routes/courseRoutes');
-const progressRoutes = require('./routes/progressRoutes');
 const announcementRoutes = require('./routes/announcementRoutes');
-const eventRoutes = require('./routes/eventRoutes');
 const recommendationRoutes = require('./routes/recommendationRoutes');
 const userRoutes = require('./routes/userRoutes');
 const chatbotRoutes = require('./routes/chatbotRoutes');
 const protectedRoutes = require('./routes/protectedRoutes');
-const aiFeedbackController = require('./controllers/aiFeedbackController');
 const authMiddleware = require('./middleware/authMiddleware');
-
 // Use routes
 app.use('/api/auth', authRoutes);
-app.use('/api/courses', courseRoutes);
-app.use('/api/progress', progressRoutes);
 app.use('/api/announcements', announcementRoutes);
-app.use('/api/events', eventRoutes);
 app.use('/api/recommendations', recommendationRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/chatbot', chatbotRoutes);
 app.use('/api/protected', protectedRoutes);
-app.post(
-    '/api/ai-feedback',
-    authMiddleware,
-    upload.single('file'),
-    aiFeedbackController.getAIFeedback
-);
 // Error handler middleware (should be after all routes)
 app.use(errorHandler);
 
@@ -59,17 +59,7 @@ sequelize.authenticate()
         console.log('Connection to SQLite has been established successfully.');
 
         // Import models to sync them
-        const {
-            User,
-            Course,
-            Topic,
-            Enrollment,
-            Progress,
-            StudentTopicProgress,
-            Announcement,
-            Event,
-            OTP,
-        } = require('./models');
+        const {User, Announcement, OTP} = require('./models');
 
         // Sync all models
         return sequelize.sync(); // Use { force: true } for development to reset tables
