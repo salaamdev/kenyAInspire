@@ -1,0 +1,17 @@
+.content-container {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.content-title {
+  color: #0066cc;
+  margin-bottom: 1rem;
+}
+
+.content-item {
+  background-color: #f0f8ff;
+  border-radius: 4px;
+  padding: 1rem;
+}
