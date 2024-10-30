@@ -1,91 +1,107 @@
-chunk-6BKLQ22S.js?v=9a2083ab:21551 Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
-api.js:32 
+chunk-6BKLQ22S.js?v=a30f8590:21551 Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+Books.jsx:78 
         
         
-       GET http://localhost:5000/api/courses 404 (Not Found)
-dispatchXhrRequest @ axios.js?v=9a2083ab:1680
-xhr @ axios.js?v=9a2083ab:1560
-dispatchRequest @ axios.js?v=9a2083ab:2035
-_request @ axios.js?v=9a2083ab:2240
-request @ axios.js?v=9a2083ab:2141
-Axios.<computed> @ axios.js?v=9a2083ab:2259
-wrap @ axios.js?v=9a2083ab:8
-getCourses @ api.js:32
-fetchData @ Chatbot.jsx:39
-(anonymous) @ Chatbot.jsx:54
-commitHookEffectListMount @ chunk-6BKLQ22S.js?v=9a2083ab:16915
-commitPassiveMountOnFiber @ chunk-6BKLQ22S.js?v=9a2083ab:18156
-commitPassiveMountEffects_complete @ chunk-6BKLQ22S.js?v=9a2083ab:18129
-commitPassiveMountEffects_begin @ chunk-6BKLQ22S.js?v=9a2083ab:18119
-commitPassiveMountEffects @ chunk-6BKLQ22S.js?v=9a2083ab:18109
-flushPassiveEffectsImpl @ chunk-6BKLQ22S.js?v=9a2083ab:19490
-flushPassiveEffects @ chunk-6BKLQ22S.js?v=9a2083ab:19447
-commitRootImpl @ chunk-6BKLQ22S.js?v=9a2083ab:19416
-commitRoot @ chunk-6BKLQ22S.js?v=9a2083ab:19277
-performSyncWorkOnRoot @ chunk-6BKLQ22S.js?v=9a2083ab:18895
-flushSyncCallbacks @ chunk-6BKLQ22S.js?v=9a2083ab:9119
-(anonymous) @ chunk-6BKLQ22S.js?v=9a2083ab:18627
-Show 19 more frames
+       POST http://localhost:5173/api/flashcards/generate 404 (Not Found)
+dispatchXhrRequest @ axios.js?v=a30f8590:1680
+xhr @ axios.js?v=a30f8590:1560
+dispatchRequest @ axios.js?v=a30f8590:2035
+_request @ axios.js?v=a30f8590:2240
+request @ axios.js?v=a30f8590:2141
+httpMethod @ axios.js?v=a30f8590:2269
+wrap @ axios.js?v=a30f8590:8
+fetchFlashcards @ Books.jsx:78
+handleSectionClick @ Books.jsx:48
+onClick @ Books.jsx:267
+callCallback2 @ chunk-6BKLQ22S.js?v=a30f8590:3674
+invokeGuardedCallbackDev @ chunk-6BKLQ22S.js?v=a30f8590:3699
+invokeGuardedCallback @ chunk-6BKLQ22S.js?v=a30f8590:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-6BKLQ22S.js?v=a30f8590:3736
+executeDispatch @ chunk-6BKLQ22S.js?v=a30f8590:7014
+processDispatchQueueItemsInOrder @ chunk-6BKLQ22S.js?v=a30f8590:7034
+processDispatchQueue @ chunk-6BKLQ22S.js?v=a30f8590:7043
+dispatchEventsForPlugins @ chunk-6BKLQ22S.js?v=a30f8590:7051
+(anonymous) @ chunk-6BKLQ22S.js?v=a30f8590:7174
+batchedUpdates$1 @ chunk-6BKLQ22S.js?v=a30f8590:18913
+batchedUpdates @ chunk-6BKLQ22S.js?v=a30f8590:3579
+dispatchEventForPluginEventSystem @ chunk-6BKLQ22S.js?v=a30f8590:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-6BKLQ22S.js?v=a30f8590:5478
+dispatchEvent @ chunk-6BKLQ22S.js?v=a30f8590:5472
+dispatchDiscreteEvent @ chunk-6BKLQ22S.js?v=a30f8590:5449
+Show 22 more frames
 Show less
-Chatbot.jsx:51 Error fetching student data: AxiosError {message: 'Request failed with status code 404', name: 'AxiosError', code: 'ERR_BAD_REQUEST', config: {…}, request: XMLHttpRequest, …}
-fetchData @ Chatbot.jsx:51
-await in fetchData
-(anonymous) @ Chatbot.jsx:54
-commitHookEffectListMount @ chunk-6BKLQ22S.js?v=9a2083ab:16915
-commitPassiveMountOnFiber @ chunk-6BKLQ22S.js?v=9a2083ab:18156
-commitPassiveMountEffects_complete @ chunk-6BKLQ22S.js?v=9a2083ab:18129
-commitPassiveMountEffects_begin @ chunk-6BKLQ22S.js?v=9a2083ab:18119
-commitPassiveMountEffects @ chunk-6BKLQ22S.js?v=9a2083ab:18109
-flushPassiveEffectsImpl @ chunk-6BKLQ22S.js?v=9a2083ab:19490
-flushPassiveEffects @ chunk-6BKLQ22S.js?v=9a2083ab:19447
-commitRootImpl @ chunk-6BKLQ22S.js?v=9a2083ab:19416
-commitRoot @ chunk-6BKLQ22S.js?v=9a2083ab:19277
-performSyncWorkOnRoot @ chunk-6BKLQ22S.js?v=9a2083ab:18895
-flushSyncCallbacks @ chunk-6BKLQ22S.js?v=9a2083ab:9119
-(anonymous) @ chunk-6BKLQ22S.js?v=9a2083ab:18627
-Show 12 more frames
+Books.jsx:90 AxiosError {message: 'Request failed with status code 404', name: 'AxiosError', code: 'ERR_BAD_REQUEST', config: {…}, request: XMLHttpRequest, …}
+fetchFlashcards @ Books.jsx:90
+await in fetchFlashcards
+handleSectionClick @ Books.jsx:48
+onClick @ Books.jsx:267
+callCallback2 @ chunk-6BKLQ22S.js?v=a30f8590:3674
+invokeGuardedCallbackDev @ chunk-6BKLQ22S.js?v=a30f8590:3699
+invokeGuardedCallback @ chunk-6BKLQ22S.js?v=a30f8590:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-6BKLQ22S.js?v=a30f8590:3736
+executeDispatch @ chunk-6BKLQ22S.js?v=a30f8590:7014
+processDispatchQueueItemsInOrder @ chunk-6BKLQ22S.js?v=a30f8590:7034
+processDispatchQueue @ chunk-6BKLQ22S.js?v=a30f8590:7043
+dispatchEventsForPlugins @ chunk-6BKLQ22S.js?v=a30f8590:7051
+(anonymous) @ chunk-6BKLQ22S.js?v=a30f8590:7174
+batchedUpdates$1 @ chunk-6BKLQ22S.js?v=a30f8590:18913
+batchedUpdates @ chunk-6BKLQ22S.js?v=a30f8590:3579
+dispatchEventForPluginEventSystem @ chunk-6BKLQ22S.js?v=a30f8590:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-6BKLQ22S.js?v=a30f8590:5478
+dispatchEvent @ chunk-6BKLQ22S.js?v=a30f8590:5472
+dispatchDiscreteEvent @ chunk-6BKLQ22S.js?v=a30f8590:5449
+Show 15 more frames
 Show less
-api.js:32 
+Books.jsx:54 
         
         
-       GET http://localhost:5000/api/courses 404 (Not Found)
-dispatchXhrRequest @ axios.js?v=9a2083ab:1680
-xhr @ axios.js?v=9a2083ab:1560
-dispatchRequest @ axios.js?v=9a2083ab:2035
-_request @ axios.js?v=9a2083ab:2240
-request @ axios.js?v=9a2083ab:2141
-Axios.<computed> @ axios.js?v=9a2083ab:2259
-wrap @ axios.js?v=9a2083ab:8
-getCourses @ api.js:32
-fetchData @ Chatbot.jsx:39
-(anonymous) @ Chatbot.jsx:54
-commitHookEffectListMount @ chunk-6BKLQ22S.js?v=9a2083ab:16915
-invokePassiveEffectMountInDEV @ chunk-6BKLQ22S.js?v=9a2083ab:18324
-invokeEffectsInDev @ chunk-6BKLQ22S.js?v=9a2083ab:19701
-commitDoubleInvokeEffectsInDEV @ chunk-6BKLQ22S.js?v=9a2083ab:19686
-flushPassiveEffectsImpl @ chunk-6BKLQ22S.js?v=9a2083ab:19503
-flushPassiveEffects @ chunk-6BKLQ22S.js?v=9a2083ab:19447
-commitRootImpl @ chunk-6BKLQ22S.js?v=9a2083ab:19416
-commitRoot @ chunk-6BKLQ22S.js?v=9a2083ab:19277
-performSyncWorkOnRoot @ chunk-6BKLQ22S.js?v=9a2083ab:18895
-flushSyncCallbacks @ chunk-6BKLQ22S.js?v=9a2083ab:9119
-(anonymous) @ chunk-6BKLQ22S.js?v=9a2083ab:18627
-Show 18 more frames
+       POST http://localhost:5173/api/quiz/generate 404 (Not Found)
+dispatchXhrRequest @ axios.js?v=a30f8590:1680
+xhr @ axios.js?v=a30f8590:1560
+dispatchRequest @ axios.js?v=a30f8590:2035
+_request @ axios.js?v=a30f8590:2240
+request @ axios.js?v=a30f8590:2141
+httpMethod @ axios.js?v=a30f8590:2269
+wrap @ axios.js?v=a30f8590:8
+fetchQuizQuestions @ Books.jsx:54
+handleSectionClick @ Books.jsx:45
+onClick @ Books.jsx:272
+callCallback2 @ chunk-6BKLQ22S.js?v=a30f8590:3674
+invokeGuardedCallbackDev @ chunk-6BKLQ22S.js?v=a30f8590:3699
+invokeGuardedCallback @ chunk-6BKLQ22S.js?v=a30f8590:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-6BKLQ22S.js?v=a30f8590:3736
+executeDispatch @ chunk-6BKLQ22S.js?v=a30f8590:7014
+processDispatchQueueItemsInOrder @ chunk-6BKLQ22S.js?v=a30f8590:7034
+processDispatchQueue @ chunk-6BKLQ22S.js?v=a30f8590:7043
+dispatchEventsForPlugins @ chunk-6BKLQ22S.js?v=a30f8590:7051
+(anonymous) @ chunk-6BKLQ22S.js?v=a30f8590:7174
+batchedUpdates$1 @ chunk-6BKLQ22S.js?v=a30f8590:18913
+batchedUpdates @ chunk-6BKLQ22S.js?v=a30f8590:3579
+dispatchEventForPluginEventSystem @ chunk-6BKLQ22S.js?v=a30f8590:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-6BKLQ22S.js?v=a30f8590:5478
+dispatchEvent @ chunk-6BKLQ22S.js?v=a30f8590:5472
+dispatchDiscreteEvent @ chunk-6BKLQ22S.js?v=a30f8590:5449
+Show 22 more frames
 Show less
-Chatbot.jsx:51 Error fetching student data: AxiosError {message: 'Request failed with status code 404', name: 'AxiosError', code: 'ERR_BAD_REQUEST', config: {…}, request: XMLHttpRequest, …}
-fetchData @ Chatbot.jsx:51
-await in fetchData
-(anonymous) @ Chatbot.jsx:54
-commitHookEffectListMount @ chunk-6BKLQ22S.js?v=9a2083ab:16915
-invokePassiveEffectMountInDEV @ chunk-6BKLQ22S.js?v=9a2083ab:18324
-invokeEffectsInDev @ chunk-6BKLQ22S.js?v=9a2083ab:19701
-commitDoubleInvokeEffectsInDEV @ chunk-6BKLQ22S.js?v=9a2083ab:19686
-flushPassiveEffectsImpl @ chunk-6BKLQ22S.js?v=9a2083ab:19503
-flushPassiveEffects @ chunk-6BKLQ22S.js?v=9a2083ab:19447
-commitRootImpl @ chunk-6BKLQ22S.js?v=9a2083ab:19416
-commitRoot @ chunk-6BKLQ22S.js?v=9a2083ab:19277
-performSyncWorkOnRoot @ chunk-6BKLQ22S.js?v=9a2083ab:18895
-flushSyncCallbacks @ chunk-6BKLQ22S.js?v=9a2083ab:9119
-(anonymous) @ chunk-6BKLQ22S.js?v=9a2083ab:18627
-Show 11 more frames
+Books.jsx:69 AxiosError {message: 'Request failed with status code 404', name: 'AxiosError', code: 'ERR_BAD_REQUEST', config: {…}, request: XMLHttpRequest, …}
+fetchQuizQuestions @ Books.jsx:69
+await in fetchQuizQuestions
+handleSectionClick @ Books.jsx:45
+onClick @ Books.jsx:272
+callCallback2 @ chunk-6BKLQ22S.js?v=a30f8590:3674
+invokeGuardedCallbackDev @ chunk-6BKLQ22S.js?v=a30f8590:3699
+invokeGuardedCallback @ chunk-6BKLQ22S.js?v=a30f8590:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-6BKLQ22S.js?v=a30f8590:3736
+executeDispatch @ chunk-6BKLQ22S.js?v=a30f8590:7014
+processDispatchQueueItemsInOrder @ chunk-6BKLQ22S.js?v=a30f8590:7034
+processDispatchQueue @ chunk-6BKLQ22S.js?v=a30f8590:7043
+dispatchEventsForPlugins @ chunk-6BKLQ22S.js?v=a30f8590:7051
+(anonymous) @ chunk-6BKLQ22S.js?v=a30f8590:7174
+batchedUpdates$1 @ chunk-6BKLQ22S.js?v=a30f8590:18913
+batchedUpdates @ chunk-6BKLQ22S.js?v=a30f8590:3579
+dispatchEventForPluginEventSystem @ chunk-6BKLQ22S.js?v=a30f8590:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-6BKLQ22S.js?v=a30f8590:5478
+dispatchEvent @ chunk-6BKLQ22S.js?v=a30f8590:5472
+dispatchDiscreteEvent @ chunk-6BKLQ22S.js?v=a30f8590:5449
+Show 15 more frames
 Show less

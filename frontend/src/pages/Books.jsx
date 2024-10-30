@@ -1,10 +1,11 @@
-// src/pages/Books.jsx
+// frontend/src/pages/Books.jsx
 
 import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import coursesData from "../data/coursesData";
 import { AuthContext } from "../contexts/AuthContext";
 import "./pageStyles/Books.css";
+import axios from "axios";
 
 function Books() {
   const { grade, subject } = useParams();
@@ -12,7 +13,6 @@ function Books() {
   const decodedSubject = decodeURIComponent(subject);
   const { token } = useContext(AuthContext);
 
-  // Find the grade and subject data
   const gradeData = coursesData.find(
     (g) => g.grade.toLowerCase() === decodedGrade.toLowerCase()
   );
@@ -23,6 +23,9 @@ function Books() {
     : null;
 
   const [selectedSection, setSelectedSection] = useState("Outline");
+  const [flashcards, setFlashcards] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   if (!gradeData || !subjectData) {
     return (
@@ -32,12 +35,45 @@ function Books() {
     );
   }
 
-  // Handlers for top section navigation
   const handleSectionClick = (section) => {
     setSelectedSection(section);
+    if (section === "Flashcard") {
+      fetchFlashcards();
+    }
   };
 
-  // Render content based on selected section
+  const fetchFlashcards = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/flashcards/generate",
+        { grade: decodedGrade, subject: decodedSubject },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // If authentication is required
+          },
+        }
+      );
+
+      // Handle both response formats
+      let flashcardsData = response.data.flashcards || response.data;
+
+      // Validate the flashcards structure
+      if (!Array.isArray(flashcardsData)) {
+        throw new Error("Invalid flashcards format.");
+      }
+
+      setFlashcards(flashcardsData);
+    } catch (err) {
+      console.error(err);
+      setError("Failed to load flashcards.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const renderContent = () => {
     switch (selectedSection) {
       case "Outline":
@@ -62,6 +98,24 @@ function Books() {
         ) : (
           <p>No Ebook Available</p>
         );
+      case "Flashcard":
+        if (loading) return <p>Loading flashcards...</p>;
+        if (error) return <p>{error}</p>;
+        if (flashcards.length === 0) return <p>No Flashcards Available</p>;
+        return (
+          <div className="flashcards-container">
+            {flashcards.map((card, index) => (
+              <div key={index} className="flashcard">
+                <div className="flashcard-question">
+                  <strong>Q:</strong> {card.question}
+                </div>
+                <div className="flashcard-answer">
+                  <strong>A:</strong> {card.answer}
+                </div>
+              </div>
+            ))}
+          </div>
+        );
       default:
         return <p>Select a section to view content</p>;
     }
@@ -72,7 +126,6 @@ function Books() {
       <h2>
         {decodedGrade} - {decodedSubject}
       </h2>
-
       {/* Top Section Navigation */}
       <div className="books-navigation" style={{ marginBottom: "20px" }}>
         <button
@@ -87,8 +140,10 @@ function Books() {
         >
           Ebook
         </button>
+        <button onClick={() => handleSectionClick("Flashcard")}>
+          Flashcard
+        </button>
       </div>
-
       {/* Bottom Section Content */}
       <div className="books-content">{renderContent()}</div>
     </div>

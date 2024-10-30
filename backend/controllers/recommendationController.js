@@ -25,7 +25,7 @@ exports.getRecommendations = async (req, res) => {
 
         // Call OpenAI API with GPT-4
         const aiResponse = await openai.createChatCompletion({
-            model: 'gpt-4',
+            model: 'gpt-4o-mini',
             messages: messages,
             max_tokens: 150,
         });

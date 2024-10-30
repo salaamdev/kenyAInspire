@@ -74,3 +74,60 @@
     height: 400px;
   }
 }
+
+/* frontend/src/pages/pageStyles/Books.css */
+
+.flashcards-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.flashcard {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 15px;
+  background-color: #f9f9f9;
+}
+
+.flashcard-question {
+  margin-bottom: 10px;
+}
+
+.flashcard-answer {
+  display: none;
+  margin-top: 10px;
+  color: #333;
+}
+
+.flashcard:hover .flashcard-answer {
+  display: block;
+}
+
+/* frontend/src/pages/pageStyles/Books.css */
+
+.quiz-container {
+  margin-top: 20px;
+}
+
+.quiz-options {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.quiz-options label {
+  margin-bottom: 10px;
+}
+
+.quiz-navigation {
+  margin-top: 20px;
+}
+
+.quiz-navigation button {
+  margin-right: 10px;
+}
+
+.quiz-results {
+  margin-top: 20px;
+}
