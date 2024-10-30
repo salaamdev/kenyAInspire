@@ -921,4 +921,4 @@ const coursesData = [
     }
 ];
 
-export default coursesData;
+module.exports = coursesData;
