@@ -1,3 +1,4 @@
+// about us component
 import React from "react";
 import aboutImage from "../assets/about-image.png";
 import "./componentStyles/AboutUs.css";
