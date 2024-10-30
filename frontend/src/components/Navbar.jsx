@@ -3,7 +3,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
-import { FaHome, FaBook, FaCog, FaCommentDots } from "react-icons/fa";
+import {
+  FaHome,
+  FaBook,
+  FaCog,
+  FaCommentDots,
+  FaClipboardList,
+} from "react-icons/fa";
 import Chatbot from "./Chatbot"; // Import the Chatbot component
 import "./componentStyles/Navbar.css";
 
@@ -34,6 +40,11 @@ function Navbar() {
                 <FaBook />
                 <span>Courses</span>
               </Link>
+              <Link to="/dashboard/failed-questions" className="nav-link">
+                <FaClipboardList />
+                <span>Analytics</span>
+              </Link>
+
               <Link to="/dashboard/settings" className="nav-link">
                 <FaCog />
                 <span>Settings</span>

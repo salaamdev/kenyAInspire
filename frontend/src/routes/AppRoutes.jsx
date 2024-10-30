@@ -12,6 +12,8 @@ const SignUpPage = lazy(() => import("../pages/SignUpPage"));
 const HomePage = lazy(() => import("../pages/HomePage"));
 const ErrorPage = lazy(() => import("../pages/ErrorPage"));
 const Books = lazy(() => import("../pages/Books"));
+const Quiz = lazy(() => import("../pages/Quiz"));
+const FailedQuestions = lazy(() => import("../pages/FailedQuestions"));
 
 function AppRoutes() {
   return (
@@ -35,6 +37,8 @@ function AppRoutes() {
           <Route path="courses" element={<Courses />} />
           <Route path="settings" element={<Settings />} />
           <Route path="courses/books/:grade/:subject" element={<Books />} />
+          <Route path="courses/quiz/:grade/:subject" element={<Quiz />} />
+          <Route path="failed-questions" element={<FailedQuestions />} />
         </Route>
 
         {/* Fallback Route */}

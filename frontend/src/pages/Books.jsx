@@ -1,18 +1,19 @@
-// frontend/src/pages/Books.jsx
-
 import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import coursesData from "../data/coursesData";
 import { AuthContext } from "../contexts/AuthContext";
 import "./pageStyles/Books.css";
 import axios from "axios";
+import { Link } from "react-router-dom";
+import Quiz from "./Quiz";
+import { generateQuiz } from "../services/api";
+import Flashcard from "../components/Flashcard"; // Import the Flashcard component
 
 function Books() {
   const { grade, subject } = useParams();
   const decodedGrade = decodeURIComponent(grade);
   const decodedSubject = decodeURIComponent(subject);
   const { token } = useContext(AuthContext);
-
   const gradeData = coursesData.find(
     (g) => g.grade.toLowerCase() === decodedGrade.toLowerCase()
   );
@@ -21,11 +22,12 @@ function Books() {
         (s) => s.name.toLowerCase() === decodedSubject.toLowerCase()
       )
     : null;
-
   const [selectedSection, setSelectedSection] = useState("Outline");
   const [flashcards, setFlashcards] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [quizData, setQuizData] = useState([]);
+  // const [showQuiz, setShowQuiz] = useState(false); // Define showQuiz state
 
   if (!gradeData || !subjectData) {
     return (
@@ -39,6 +41,9 @@ function Books() {
     setSelectedSection(section);
     if (section === "Flashcard") {
       fetchFlashcards();
+    }
+    if (section === "Quiz") {
+      fetchQuiz(); // Define this function if needed
     }
   };
 
@@ -56,19 +61,28 @@ function Books() {
           },
         }
       );
-
-      // Handle both response formats
       let flashcardsData = response.data.flashcards || response.data;
-
-      // Validate the flashcards structure
       if (!Array.isArray(flashcardsData)) {
         throw new Error("Invalid flashcards format.");
       }
-
       setFlashcards(flashcardsData);
     } catch (err) {
       console.error(err);
       setError("Failed to load flashcards.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchQuiz = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await generateQuiz(token, decodedGrade, decodedSubject);
+      setQuizData(data);
+    } catch (err) {
+      console.error(err);
+      setError("Failed to load quiz.");
     } finally {
       setLoading(false);
     }
@@ -102,20 +116,9 @@ function Books() {
         if (loading) return <p>Loading flashcards...</p>;
         if (error) return <p>{error}</p>;
         if (flashcards.length === 0) return <p>No Flashcards Available</p>;
-        return (
-          <div className="flashcards-container">
-            {flashcards.map((card, index) => (
-              <div key={index} className="flashcard">
-                <div className="flashcard-question">
-                  <strong>Q:</strong> {card.question}
-                </div>
-                <div className="flashcard-answer">
-                  <strong>A:</strong> {card.answer}
-                </div>
-              </div>
-            ))}
-          </div>
-        );
+        return <Flashcard flashcards={flashcards} />; // Use the Flashcard component
+      case "Quiz":
+        return <Quiz grade={decodedGrade} subject={decodedSubject} />;
       default:
         return <p>Select a section to view content</p>;
     }
@@ -142,6 +145,12 @@ function Books() {
         </button>
         <button onClick={() => handleSectionClick("Flashcard")}>
           Flashcard
+        </button>
+        <button
+          onClick={() => handleSectionClick("Quiz")}
+          className="start-quiz-button"
+        >
+          Start Quiz
         </button>
       </div>
       {/* Bottom Section Content */}

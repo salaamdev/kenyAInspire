@@ -1,9 +1,9 @@
-// src/pages/Home.jsx
+// frontend/src/pages/Home.jsx
 
 import React, { useEffect, useState, useContext } from "react";
 import WelcomeBanner from "../components/WelcomeBanner";
 import Announcements from "../components/Announcements";
-import PersonalizedContent from "../components/PersonalizedContent";
+import Recommendations from "../components/Recommendations"; // Import the new component
 import { AuthContext } from "../contexts/AuthContext";
 import { getAnnouncements, getRecommendations } from "../services/api";
 import "./pageStyles/Dashboard.css";
@@ -34,7 +34,8 @@ function Home() {
       <WelcomeBanner />
       <div className="dashboard-grid">
         <Announcements announcements={announcements} />
-        <PersonalizedContent recommendations={recommendations} />
+        <Recommendations markdownContent={recommendations} />{" "}
+        {/* Use the new component */}
       </div>
     </>
   );

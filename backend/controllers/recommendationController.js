@@ -1,25 +1,43 @@
-// controllers/recommendationController.js
+// backend/controllers/recommendationController.js
 
 const {Configuration, OpenAIApi} = require('openai');
+const {UserQuestion, Question} = require('../models');
 require('dotenv').config();
 
 // Initialize OpenAI
 const configuration = new Configuration({
     apiKey: process.env.OPENAI_API_KEY,
 });
-
 const openai = new OpenAIApi(configuration);
 
 // Get AI-generated recommendations
 exports.getRecommendations = async (req, res) => {
     const userName = req.user.name;
+    const userId = req.user.id;
 
     try {
-        // Create a prompt for the AI without course data
+        // Fetch failed questions
+        const failedQuestions = await UserQuestion.findAll({
+            where: {userId, isCorrect: false},
+            include: [{model: Question}],
+        });
+
+        // Format failed questions
+        const formattedQuestions = failedQuestions.map(q => ({
+            question: q.Question.questionText,
+            subject: q.Question.subject,
+            grade: q.Question.grade,
+        }));
+
+        // Create a prompt including failed questions
         const messages = [
             {
                 role: "user",
-                content: `In 100 words or less, provide personalized learning recommendations for the student named ${ userName }. Start with a greeting that addresses the student by name. Format the output as a list of recommendations, without using any symbols like dashes, bullets, or asterisks. End with a motivational message encouraging the student to keep up their great work.`,
+                content: `respond like this: Hello ${ userName }, based on your recent performance, here are some personalized learning recommendations. You struggled with the following topics:\n` +
+                    `${ formattedQuestions.map(q => `- Grade ${ q.grade } ${ q.subject }: "${ q.question }"`).join('\n') }\n` +
+                    `Please focus on these areas to improve your understanding.
+                    The questions are to be converted to topics. then search online and give 3 links for further reading
+                    `,
             },
         ];
 
@@ -27,7 +45,7 @@ exports.getRecommendations = async (req, res) => {
         const aiResponse = await openai.createChatCompletion({
             model: 'gpt-4o-mini',
             messages: messages,
-            max_tokens: 150,
+            max_tokens: 300,
         });
 
         // Send the AI response back to the client
