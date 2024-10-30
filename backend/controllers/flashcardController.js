@@ -34,7 +34,7 @@ exports.generateFlashcards = async (req, res) => {
                     "answer": "Paris."
                   }
                 ]
-                make sure not other text is generated outside of the JSON array. Always use the same format for the flashcards. That is the only way to parse the response.
+                make sure not other text is generated outside of the JSON array. Always use the same format for the flashcards. That is the only way to parse the response. Finally make sure the flashcards are related to the subject, for language based subjects, respond with the same language as the subject. 
                   `
             }
         ];
@@ -47,7 +47,7 @@ exports.generateFlashcards = async (req, res) => {
 
         // Parse the AI response as JSON
         const flashcardsText = aiResponse.data.choices[0].message.content.trim();
-        console.log(flashcardsText);
+        // console.log(flashcardsText);
         let flashcards;
 
         try {
