@@ -2,8 +2,9 @@
 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const {User, OTP, Course, Enrollment} = require('../models'); const nodemailer = require('nodemailer');
-const {validationResult} = require('express-validator'); // Import for validation
+const {User, OTP} = require('../models');
+const nodemailer = require('nodemailer');
+const {validationResult} = require('express-validator');
 require('dotenv').config();
 
 /**
@@ -90,16 +91,6 @@ exports.verifyOTP = async (req, res) => {
             email: otpEntry.email,
             password: otpEntry.password, // Already hashed
         });
-
-        // Enroll user in all existing courses
-        const courses = await Course.findAll();
-        const enrollmentPromises = courses.map((course) => {
-            return Enrollment.create({
-                user_id: user.id,
-                course_id: course.id,
-            });
-        });
-        await Promise.all(enrollmentPromises);
 
         // Generate JWT token with shorter expiry and implement refresh tokens in future
         const token = jwt.sign({id: user.id}, process.env.JWT_SECRET, {

@@ -35,24 +35,22 @@ app.use(cors({
     credentials: true, // If you need to send cookies or authentication headers
 }));
 
-
 // Import routes
 const authRoutes = require('./routes/authRoutes');
-const courseRoutes = require('./routes/courseRoutes');
 const announcementRoutes = require('./routes/announcementRoutes');
 const recommendationRoutes = require('./routes/recommendationRoutes');
 const userRoutes = require('./routes/userRoutes');
 const chatbotRoutes = require('./routes/chatbotRoutes');
 const protectedRoutes = require('./routes/protectedRoutes');
-const authMiddleware = require('./middleware/authMiddleware');
+
 // Use routes
 app.use('/api/auth', authRoutes);
-app.use('/api/courses', courseRoutes);
 app.use('/api/announcements', announcementRoutes);
 app.use('/api/recommendations', recommendationRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/chatbot', chatbotRoutes);
 app.use('/api/protected', protectedRoutes);
+
 // Error handler middleware (should be after all routes)
 app.use(errorHandler);
 
@@ -62,14 +60,7 @@ sequelize.authenticate()
         console.log('Connection to SQLite has been established successfully.');
 
         // Import models to sync them
-        const {
-            User,
-            Course,
-            Topic,
-            Enrollment,
-            Announcement,
-            OTP,
-        } = require('./models');
+        const {User, Announcement, OTP} = require('./models');
 
         // Sync all models
         return sequelize.sync(); // Use { force: true } for development to reset tables

@@ -2,6 +2,7 @@
 
 const jwt = require('jsonwebtoken');
 const {User} = require('../models');
+require('dotenv').config();
 
 const authMiddleware = async (req, res, next) => {
     // Get token from header

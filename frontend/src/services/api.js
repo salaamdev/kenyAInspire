@@ -60,11 +60,3 @@ export const updateProfile = async (token, userData) => {
     );
     return response.data;
 };
-
-
-
-
-
-
-
-

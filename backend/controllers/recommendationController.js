@@ -1,9 +1,9 @@
 // controllers/recommendationController.js
 
 const {Configuration, OpenAIApi} = require('openai');
-const Enrollment = require('../models/enrollment'); // Assuming you have an Enrollment model
 require('dotenv').config();
 
+// Initialize OpenAI
 const configuration = new Configuration({
     apiKey: process.env.OPENAI_API_KEY,
 });
@@ -12,28 +12,20 @@ const openai = new OpenAIApi(configuration);
 
 // Get AI-generated recommendations
 exports.getRecommendations = async (req, res) => {
-    const userId = req.user.id;
     const userName = req.user.name;
 
     try {
-        // Fetch user progress from the database
-
-
-        // Fetch user enrollments from the database
-        const userEnrollments = await Enrollment.findAll({
-            where: {user_id: userId},
-        });
-        // {role: "system", content: `You are a helpful assistant. Your goal is to provide personalized learning recommendations for students. You have access to the student's progress in various subjects. The student's name is ${ userName }. Always greet the student first. Provide recommendations based on their progress. Then end with a motivational message that encourages them to work on the recommended content.`},
-        // Create a prompt for the AI
+        // Create a prompt for the AI without course data
         const messages = [
             {
-                role: "user", content: `In 100 words or less, provide personalized learning recommendations for the student named ${ userName } based on their progress in various subjects. Start with a greeting that addresses the student by name. Format the output as a list of recommendations, without using any symbols like dashes, bullets, or asterisks. End with a motivational message encouraging the student to keep up their great work.`
+                role: "user",
+                content: `In 100 words or less, provide personalized learning recommendations for the student named ${ userName }. Start with a greeting that addresses the student by name. Format the output as a list of recommendations, without using any symbols like dashes, bullets, or asterisks. End with a motivational message encouraging the student to keep up their great work.`,
             },
         ];
 
-        // Call OpenAI API with GPT-4o-mini
+        // Call OpenAI API with GPT-4
         const aiResponse = await openai.createChatCompletion({
-            model: 'gpt-4o-mini',
+            model: 'gpt-4',
             messages: messages,
             max_tokens: 150,
         });
