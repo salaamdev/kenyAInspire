@@ -1,5 +1,3 @@
-// frontend/src/pages/Books.jsx
-
 import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import coursesData from "../data/coursesData";
@@ -8,14 +6,14 @@ import "./pageStyles/Books.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import Quiz from "./Quiz";
-import { generateQuiz } from "../services/api"; // Ensure this import is present
+import { generateQuiz } from "../services/api";
+import Flashcard from "../components/Flashcard"; // Import the Flashcard component
 
 function Books() {
   const { grade, subject } = useParams();
   const decodedGrade = decodeURIComponent(grade);
   const decodedSubject = decodeURIComponent(subject);
   const { token } = useContext(AuthContext);
-
   const gradeData = coursesData.find(
     (g) => g.grade.toLowerCase() === decodedGrade.toLowerCase()
   );
@@ -24,7 +22,6 @@ function Books() {
         (s) => s.name.toLowerCase() === decodedSubject.toLowerCase()
       )
     : null;
-
   const [selectedSection, setSelectedSection] = useState("Outline");
   const [flashcards, setFlashcards] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -45,7 +42,6 @@ function Books() {
     if (section === "Flashcard") {
       fetchFlashcards();
     }
-    // If there are any specific actions for Quiz, add them here
     if (section === "Quiz") {
       fetchQuiz(); // Define this function if needed
     }
@@ -65,15 +61,10 @@ function Books() {
           },
         }
       );
-
-      // Handle both response formats
       let flashcardsData = response.data.flashcards || response.data;
-
-      // Validate the flashcards structure
       if (!Array.isArray(flashcardsData)) {
         throw new Error("Invalid flashcards format.");
       }
-
       setFlashcards(flashcardsData);
     } catch (err) {
       console.error(err);
@@ -82,8 +73,6 @@ function Books() {
       setLoading(false);
     }
   };
-
-  // frontend/src/pages/Books.jsx
 
   const fetchQuiz = async () => {
     setLoading(true);
@@ -127,20 +116,7 @@ function Books() {
         if (loading) return <p>Loading flashcards...</p>;
         if (error) return <p>{error}</p>;
         if (flashcards.length === 0) return <p>No Flashcards Available</p>;
-        return (
-          <div className="flashcards-container">
-            {flashcards.map((card, index) => (
-              <div key={index} className="flashcard">
-                <div className="flashcard-question">
-                  <strong>Q:</strong> {card.question}
-                </div>
-                <div className="flashcard-answer">
-                  <strong>A:</strong> {card.answer}
-                </div>
-              </div>
-            ))}
-          </div>
-        );
+        return <Flashcard flashcards={flashcards} />; // Use the Flashcard component
       case "Quiz":
         return <Quiz grade={decodedGrade} subject={decodedSubject} />;
       default:
@@ -179,8 +155,6 @@ function Books() {
       </div>
       {/* Bottom Section Content */}
       <div className="books-content">{renderContent()}</div>
-      {/* Render Quiz Here */}
-      {/* {showQuiz && <Quiz grade={decodedGrade} subject={decodedSubject} />} */}
     </div>
   );
 }
