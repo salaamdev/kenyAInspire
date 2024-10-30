@@ -1,0 +1,21 @@
+/* Quiz.css */
+
+.quiz-page {
+  padding: 20px;
+}
+
+.quiz-question {
+  margin-top: 20px;
+}
+
+.quiz-options {
+  margin-top: 15px;
+}
+
+.quiz-option {
+  margin-bottom: 10px;
+}
+
+.quiz-results {
+  padding: 20px;
+}

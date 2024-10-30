@@ -1,0 +1,18 @@
+/* FailedQuestions.css */
+
+.failed-questions-page {
+  padding: 20px;
+}
+
+.failed-questions-list {
+  list-style: none;
+  padding: 0;
+}
+
+.failed-question-item {
+  margin-bottom: 15px;
+}
+
+.failed-question-item button {
+  margin-top: 5px;
+}

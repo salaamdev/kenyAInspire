@@ -1,14 +1,13 @@
-// backend/controllers/quizController.js
+// controllers/quizController.js
 
 const {Configuration, OpenAIApi} = require('openai');
-const User = require('../models/User');
+const {User, Question, UserQuestion} = require('../models');
 require('dotenv').config();
 
 // Initialize OpenAI
 const configuration = new Configuration({
     apiKey: process.env.OPENAI_API_KEY,
 });
-
 const openai = new OpenAIApi(configuration);
 
 // Generate Quiz Questions
@@ -21,70 +20,158 @@ exports.generateQuiz = async (req, res) => {
     }
 
     try {
-        const user = await User.findByPk(userId);
-        const failedQuestions = JSON.parse(user.failedQuestions || '[]');
+        // Fetch user's previously incorrect questions
+        const failedQuestions = await UserQuestion.findAll({
+            where: {userId, isCorrect: false},
+            include: [{model: Question}],
+            limit: 5,
+            order: [['answeredAt', 'DESC']],
+        });
 
-        let prompt = '';
+        let messages = [
+            {
+                role: 'system',
+                content: `You are an AI tutor generating multiple-choice questions for ${ subject } at grade ${ grade }. Each question should have 4 options labeled A, B, C, D, and indicate the correct answer.`,
+            },
+        ];
 
         if (failedQuestions.length > 0) {
-            const previousQuestions = failedQuestions
-                .slice(-5)
-                .map(q => q.question)
+            // Include previous incorrect questions
+            const previousTopics = failedQuestions
+                .map((entry) => entry.Question.questionText)
                 .join('\n');
-            prompt = `Based on the following questions, generate 5 similar multiple-choice questions for the subject "${ subject }" in grade ${ grade }:\n${ previousQuestions }\nAdditionally, create 5 new multiple-choice questions for the same subject and grade. Provide options labeled A, B, C, D, and indicate the correct answer.`;
-        } else {
-            prompt = `Create 10 multiple-choice questions for the subject "${ subject }" in grade ${ grade }. Provide options labeled A, B, C, D, and indicate the correct answer.`;
+
+            messages.push({
+                role: 'user',
+                content: `Based on these topics the student struggled with:\n${ previousTopics }\nGenerate 3 similar multiple-choice questions.`,
+            });
         }
 
-        const response = await openai.createCompletion({
-            model: 'text-davinci-003',
-            prompt,
+        // Add message to generate new questions
+        messages.push({
+            role: 'user',
+            content: `Generate 7 new multiple-choice questions for ${ subject } at grade ${ grade }.`,
+        });
+
+        // OpenAI API call
+        const aiResponse = await openai.createChatCompletion({
+            model: 'gpt-3.5-turbo',
+            messages: messages,
             max_tokens: 1500,
-            temperature: 0.7,
         });
 
-        const questionsText = response.data.choices[0].text.trim();
-        const questionsArray = questionsText.split('\n\n').map(q => {
-            const lines = q.split('\n');
-            const questionLine = lines[0];
-            const options = lines.slice(1, 5).map(opt => opt.trim());
-            const answerLine = lines[5];
+        const questionsText = aiResponse.data.choices[0].message.content.trim();
 
-            return {
-                question: questionLine.replace(/^\d+\.\s*/, '').trim(),
-                options: options.map(opt => opt.replace(/^[A-D]\.\s*/, '').trim()),
-                correctAnswer: answerLine.replace(/Answer:\s*/, '').trim(),
-            };
-        });
+        // Parse the AI response into questions
+        const questionsArray = parseQuestions(questionsText);
 
-        res.json({questions: questionsArray});
+        // Save new questions to the database
+        const savedQuestions = await Promise.all(
+            questionsArray.map(async (q) => {
+                const question = await Question.create({
+                    grade,
+                    subject,
+                    questionText: q.question,
+                    options: q.options,
+                    correctAnswer: q.correctAnswer,
+                });
+                return question;
+            })
+        );
+
+        res.json({questions: savedQuestions});
     } catch (error) {
         console.error(error);
         res.status(500).json({error: 'Failed to generate quiz.'});
     }
 };
 
-// Store Failed Questions
-exports.storeFailedQuestions = async (req, res) => {
-    const userId = req.user.id;
-    const {failedQuestions} = req.body;
+// Helper function to parse questions
+function parseQuestions (text) {
+    // Implement parsing logic based on the AI's response format
+    // Example:
+    // Split by question numbers and extract question, options, and answer
+    const questions = [];
+    const questionBlocks = text.split(/\n\n+/);
+    for (const block of questionBlocks) {
+        const lines = block.trim().split('\n');
+        if (lines.length < 6) continue;
 
-    if (!failedQuestions || !Array.isArray(failedQuestions)) {
-        return res.status(400).json({error: 'Invalid failed questions data.'});
+        const questionText = lines[0].replace(/^\d+\.\s*/, '');
+        const options = lines.slice(1, 5).map((line) => line.replace(/^[A-D]\.\s*/, ''));
+        const answerLine = lines[5];
+        const correctAnswer = answerLine.match(/Answer:\s*([A-D])/i)?.[1];
+
+        if (questionText && options.length === 4 && correctAnswer) {
+            questions.push({
+                question: questionText,
+                options,
+                correctAnswer,
+            });
+        }
+    }
+    return questions;
+}
+
+// Record User's Answer
+exports.recordAnswer = async (req, res) => {
+    const userId = req.user.id;
+    const {questionId, isCorrect} = req.body;
+
+    if (typeof isCorrect !== 'boolean' || !questionId) {
+        return res.status(400).json({error: 'Invalid data.'});
     }
 
     try {
-        const user = await User.findByPk(userId);
-        user.failedQuestions = JSON.stringify([
-            ...JSON.parse(user.failedQuestions || '[]'),
-            ...failedQuestions,
-        ]);
+        await UserQuestion.create({
+            userId,
+            questionId,
+            isCorrect,
+        });
 
-        await user.save();
-
-        res.json({message: 'Failed questions recorded successfully.'});
+        res.json({message: 'Answer recorded successfully.'});
     } catch (error) {
         console.error(error);
-        res.status(500).json({error: 'Failed to store failed questions.'});
+        res.status(500).json({error: 'Failed to record answer.'});
+    }
+};
+
+// Get User's Incorrectly Answered Questions
+exports.getFailedQuestions = async (req, res) => {
+    const userId = req.user.id;
+
+    try {
+        const failedQuestions = await UserQuestion.findAll({
+            where: {userId, isCorrect: false},
+            include: [{model: Question}],
+        });
+
+        const questions = failedQuestions.map((entry) => entry.Question);
+
+        res.json({failedQuestions: questions});
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({error: 'Failed to fetch failed questions.'});
+    }
+};
+
+// Delete a Failed Question
+exports.deleteFailedQuestion = async (req, res) => {
+    const userId = req.user.id;
+    const {questionId} = req.params;
+
+    try {
+        const result = await UserQuestion.destroy({
+            where: {userId, questionId, isCorrect: false},
+        });
+
+        if (result) {
+            res.json({message: 'Failed question deleted successfully.'});
+        } else {
+            res.status(404).json({error: 'Failed question not found.'});
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({error: 'Failed to delete failed question.'});
     }
 };

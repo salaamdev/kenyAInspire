@@ -1,7 +1,8 @@
 // scripts/initializeDatabase.js
 
 const sequelize = require('../config/database');
-const {User, Announcement, OTP} = require('../models');
+const {User, Announcement, OTP, Question, UserQuestion} = require('../models');
+
 
 (async () => {
     try {

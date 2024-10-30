@@ -6,6 +6,7 @@ import coursesData from "../data/coursesData";
 import { AuthContext } from "../contexts/AuthContext";
 import "./pageStyles/Books.css";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 function Books() {
   const { grade, subject } = useParams();
@@ -143,6 +144,16 @@ function Books() {
         <button onClick={() => handleSectionClick("Flashcard")}>
           Flashcard
         </button>
+        <div className="quiz-link" style={{ marginTop: "20px" }}>
+          <Link
+            to={`/dashboard/courses/quiz/${encodeURIComponent(
+              decodedGrade
+            )}/${encodeURIComponent(decodedSubject)}`}
+            className="start-quiz-button"
+          >
+            Take a Quiz on {decodedSubject}
+          </Link>
+        </div>
       </div>
       {/* Bottom Section Content */}
       <div className="books-content">{renderContent()}</div>

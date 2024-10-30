@@ -34,6 +34,8 @@ function Navbar() {
                 <FaBook />
                 <span>Courses</span>
               </Link>
+              <Link to="/dashboard/failed-questions">Failed Questions</Link>
+
               <Link to="/dashboard/settings" className="nav-link">
                 <FaCog />
                 <span>Settings</span>

@@ -1,21 +1,21 @@
 // models/index.js
 
 const sequelize = require('../config/database');
-const {DataTypes} = require('sequelize');
-
-// Import remaining model definitions
 const User = require('./user');
 const Announcement = require('./announcement');
 const OTP = require('./otp');
+const Question = require('./question');
+const UserQuestion = require('./userQuestion');
 
-// Define associations if any (currently none)
-// User.hasMany(OTP, {foreignKey: 'email', sourceKey: 'email'});
-// OTP.belongsTo(User, {foreignKey: 'email', targetKey: 'email'});
+// Define associations
+User.belongsToMany(Question, {through: UserQuestion, foreignKey: 'userId'});
+Question.belongsToMany(User, {through: UserQuestion, foreignKey: 'questionId'});
 
-// Export models
 module.exports = {
     sequelize,
     User,
     Announcement,
     OTP,
+    Question,
+    UserQuestion,
 };
