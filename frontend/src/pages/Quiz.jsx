@@ -4,12 +4,10 @@ import { AuthContext } from "../contexts/AuthContext";
 import { generateQuiz, recordAnswer } from "../services/api";
 import "./pageStyles/Quiz.css";
 
-function Quiz() {
-  const { grade, subject } = useParams();
-  const decodedGrade = decodeURIComponent(grade);
-  const decodedSubject = decodeURIComponent(subject);
+function Quiz({ grade, subject }) {
+  const decodedGrade = grade;
+  const decodedSubject = subject;
   const { token } = useContext(AuthContext);
-
   const [questions, setQuestions] = useState([]);
   const [userAnswers, setUserAnswers] = useState({});
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);

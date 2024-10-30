@@ -7,6 +7,8 @@ import { AuthContext } from "../contexts/AuthContext";
 import "./pageStyles/Books.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import Quiz from "./Quiz";
+import { generateQuiz } from "../services/api"; // Ensure this import is present
 
 function Books() {
   const { grade, subject } = useParams();
@@ -27,6 +29,8 @@ function Books() {
   const [flashcards, setFlashcards] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [quizData, setQuizData] = useState([]);
+  // const [showQuiz, setShowQuiz] = useState(false); // Define showQuiz state
 
   if (!gradeData || !subjectData) {
     return (
@@ -40,6 +44,10 @@ function Books() {
     setSelectedSection(section);
     if (section === "Flashcard") {
       fetchFlashcards();
+    }
+    // If there are any specific actions for Quiz, add them here
+    if (section === "Quiz") {
+      fetchQuiz(); // Define this function if needed
     }
   };
 
@@ -70,6 +78,22 @@ function Books() {
     } catch (err) {
       console.error(err);
       setError("Failed to load flashcards.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // frontend/src/pages/Books.jsx
+
+  const fetchQuiz = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await generateQuiz(token, decodedGrade, decodedSubject);
+      setQuizData(data);
+    } catch (err) {
+      console.error(err);
+      setError("Failed to load quiz.");
     } finally {
       setLoading(false);
     }
@@ -117,6 +141,8 @@ function Books() {
             ))}
           </div>
         );
+      case "Quiz":
+        return <Quiz grade={decodedGrade} subject={decodedSubject} />;
       default:
         return <p>Select a section to view content</p>;
     }
@@ -144,19 +170,17 @@ function Books() {
         <button onClick={() => handleSectionClick("Flashcard")}>
           Flashcard
         </button>
-        <div className="quiz-link" style={{ marginTop: "20px" }}>
-          <Link
-            to={`/dashboard/courses/quiz/${encodeURIComponent(
-              decodedGrade
-            )}/${encodeURIComponent(decodedSubject)}`}
-            className="start-quiz-button"
-          >
-            Take a Quiz on {decodedSubject}
-          </Link>
-        </div>
+        <button
+          onClick={() => handleSectionClick("Quiz")}
+          className="start-quiz-button"
+        >
+          Start Quiz
+        </button>
       </div>
       {/* Bottom Section Content */}
       <div className="books-content">{renderContent()}</div>
+      {/* Render Quiz Here */}
+      {/* {showQuiz && <Quiz grade={decodedGrade} subject={decodedSubject} />} */}
     </div>
   );
 }
