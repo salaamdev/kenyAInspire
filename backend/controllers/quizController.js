@@ -31,7 +31,15 @@ exports.generateQuiz = async (req, res) => {
         let messages = [
             {
                 role: 'system',
-                content: `You are an AI tutor generating multiple-choice questions for ${ subject } at grade ${ grade }. Each question should have 4 options labeled A, B, C, D, and indicate the correct answer.`,
+                content: `You are an AI tutor generating multiple-choice questions for ${ subject } at grade ${ grade }. Each question should have 4 options labeled A, B, C, D, and indicate the correct answer. Do not format, dont rewrite a,b,c,d. respond with the question and choices sepereted by a new line.
+                here is an example:
+                1. What is the opposite of "dark"?
+                Bright
+                Small
+                Fast
+                Cold
+                Correct answer: A) Bright
+                `,
             },
         ];
 
@@ -55,13 +63,13 @@ exports.generateQuiz = async (req, res) => {
 
         // OpenAI API call
         const aiResponse = await openai.createChatCompletion({
-            model: 'gpt-3.5-turbo',
+            model: 'gpt-4o-mini',
             messages: messages,
             max_tokens: 1500,
         });
 
         const questionsText = aiResponse.data.choices[0].message.content.trim();
-
+        console.log(questionsText);
         // Parse the AI response into questions
         const questionsArray = parseQuestions(questionsText);
 
