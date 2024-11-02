@@ -2,7 +2,7 @@ import React from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import HeroSection from "../components/HeroSection";
-import AboutUs from "../components/AboutUs";
+// import AboutUs from "../components/AboutUs";
 import FAQ from "../components/FAQ";
 import CTA from "../components/CTA";
 import Partners from "../components/Partners";

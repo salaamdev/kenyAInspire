@@ -36,7 +36,7 @@ exports.getRecommendations = async (req, res) => {
                 content: `respond like this: Hello ${ userName }, based on your recent performance, here are some personalized learning recommendations. You struggled with the following topics:\n` +
                     `${ formattedQuestions.map(q => `- Grade ${ q.grade } ${ q.subject }: "${ q.question }"`).join('\n') }\n` +
                     `Please focus on these areas to improve your understanding.
-                    The questions are to be converted to topics. then search online and give 3 links for further reading
+                    The questions are to be converted to topics. then search online and give 3 links for further reading.
                     `,
             },
         ];
