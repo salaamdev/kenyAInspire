@@ -1,0 +1,24 @@
+.lesson-plan-page {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.lesson-plan-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.sidebar {
+    width: 20%;
+    margin-right: 20px;
+}
+
+.editor-section {
+    width: 60%;
+}
+
+.ai-suggestions {
+    width: 20%;
+    margin-left: 20px;
+}
