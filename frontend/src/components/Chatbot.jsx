@@ -11,7 +11,7 @@ import {
   FaMicrophone,
   FaVolumeUp,
 } from "react-icons/fa";
-import "./componentStyles/ChatBot.css";
+import "./componentStyles/Chatbot.css";
 
 function Chatbot({ isOpen, onClose }) {
   const { token, user } = React.useContext(AuthContext);
