@@ -23,10 +23,10 @@ function HeroSection() {
         </p>
         <div className="hero-cta">
           <Link to="/signup" className="hero-button learner">
-            I'm a learner
+            Student Portal
           </Link>
           <button className="hero-button instructor" disabled>
-            I'm an instructor
+            Instructor Portal
           </button>
         </div>
         <div className="social-icons">

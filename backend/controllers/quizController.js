@@ -31,7 +31,7 @@ exports.generateQuiz = async (req, res) => {
         let messages = [
             {
                 role: 'system',
-                content: `You are an AI tutor generating multiple-choice questions for ${ subject } at grade ${ grade }. Each question should have 4 options labeled A, B, C, D, and indicate the correct answer. Do not format, dont rewrite a,b,c,d. respond with the question and choices sepereted by a new line.
+                content: `You are an AI tutor generating multiple-choice questions for ${ subject } at grade ${ grade } in kenya. Content should be relevant to the new Kenyan competency based curriculum (cbc). Each question should have 4 options labeled A, B, C, D, and indicate the correct answer. Do not format, dont rewrite A, B, C, D. respond with the question and choices sepereted by a new line.
                 here is an example:
                 1. What is the opposite of "dark"?
                 Bright
