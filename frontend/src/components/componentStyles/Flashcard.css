@@ -17,6 +17,7 @@
   height: 300px;
   perspective: 1000px;
   cursor: pointer;
+  margin-bottom: 20%;
 }
 
 .flashcard-inner {
