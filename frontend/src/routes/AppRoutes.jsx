@@ -1,9 +1,11 @@
-// src\routes\AppRoutes.jsx
+// src/routes/AppRoutes.jsx
 
 import React, { Suspense, lazy } from "react";
 import { Routes, Route } from "react-router-dom";
 import PrivateRoute from "../components/PrivateRoute";
+import InstructorPrivateRoute from "../instructor/routes/InstructorPrivateRoute"; // Instructor route guard
 import DashboardLayout from "../pages/DashboardLayout";
+
 const Home = lazy(() => import("../pages/Home"));
 const Courses = lazy(() => import("../pages/Courses"));
 const Settings = lazy(() => import("../pages/Settings"));
@@ -15,6 +17,14 @@ const Books = lazy(() => import("../pages/Books"));
 const Quiz = lazy(() => import("../pages/Quiz"));
 const FailedQuestions = lazy(() => import("../pages/FailedQuestions"));
 
+// New instructor pages
+const InstructorLogin = lazy(() =>
+  import("../instructor/pages/InstructorLogin")
+);
+const InstructorDashboard = lazy(() =>
+  import("../instructor/pages/InstructorDashboard")
+);
+
 function AppRoutes() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
@@ -24,7 +34,18 @@ function AppRoutes() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignUpPage />} />
 
-        {/* Protected Routes */}
+        {/* Instructor Routes */}
+        <Route path="/instructor/login" element={<InstructorLogin />} />
+        <Route
+          path="/instructor/dashboard"
+          element={
+            <InstructorPrivateRoute>
+              <InstructorDashboard />
+            </InstructorPrivateRoute>
+          }
+        />
+
+        {/* Student Protected Routes */}
         <Route
           path="/dashboard"
           element={

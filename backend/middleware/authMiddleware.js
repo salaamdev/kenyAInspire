@@ -24,8 +24,14 @@ const authMiddleware = async (req, res, next) => {
             return res.status(401).json({message: 'User not found'});
         }
 
-        // Add user to request
-        req.user = user;
+        // Attach user to the request with role included
+        req.user = {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            role: user.role, // Include the role
+        };
+
         next();
     } catch (err) {
         console.error('Auth Middleware Error:', err);

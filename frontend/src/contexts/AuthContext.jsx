@@ -1,6 +1,4 @@
-// src\contexts\AuthContext.jsx
-
-import React, { createContext, useState, useEffect } from "react";
+import React, { useState, useEffect, createContext } from "react";
 import { loginUser } from "../services/api";
 
 export const AuthContext = createContext();
@@ -17,6 +15,11 @@ function AuthContextProvider({ children }) {
     setToken(data.token);
     localStorage.setItem("user", JSON.stringify(data.user));
     localStorage.setItem("token", data.token);
+    if (data.user.role === "teacher") {
+      window.location.href = "/instructor/dashboard";
+      return;
+    }
+    return data.user; // Return the user data
   };
 
   const logout = () => {

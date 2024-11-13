@@ -25,9 +25,9 @@ function HeroSection() {
           <Link to="/signup" className="hero-button learner">
             Start Learning Today
           </Link>
-          <button className="hero-button instructor" disabled>
+          <Link to="/login" className="hero-button instructor">
             Instructor Portal
-          </button>
+          </Link>
         </div>
         {/* <div className="social-icons">
           <a

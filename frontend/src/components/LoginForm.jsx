@@ -11,8 +11,11 @@ function LoginForm() {
 
   const onSubmit = async (data) => {
     try {
-      await login(data);
-      navigate("/dashboard");
+      const user = await login(data);
+      // Only redirect to student dashboard if not an instructor
+      if (user && user.role !== "teacher") {
+        navigate("/dashboard");
+      }
     } catch (error) {
       console.error("Login Error:", error);
     }

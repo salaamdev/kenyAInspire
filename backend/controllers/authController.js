@@ -103,7 +103,7 @@ exports.verifyOTP = async (req, res) => {
         // Respond with token and user data
         res.status(201).json({
             token,
-            user: {id: user.id, name: user.name, email: user.email},
+            user: {id: user.id, name: user.name, email: user.email, role: user.role},
         });
     } catch (error) {
         console.error('OTP Verification Error:', error);
@@ -168,10 +168,10 @@ exports.login = async (req, res) => {
             expiresIn: '1h', // Reduced from '1d'
         });
 
-        // Respond with token and user data
+        // Respond with token, user data, and role
         res.status(200).json({
             token,
-            user: {id: user.id, name: user.name, email: user.email},
+            user: {id: user.id, name: user.name, email: user.email, role: user.role},
         });
     } catch (error) {
         console.error('Login Error:', error);

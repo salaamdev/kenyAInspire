@@ -23,6 +23,15 @@ const User = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    // New role field
+    role: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: 'student', // Default role is 'student'
+      validate: {
+        isIn: [['student', 'teacher']],
+      },
+    },
     created_at: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
