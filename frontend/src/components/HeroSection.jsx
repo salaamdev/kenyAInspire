@@ -1,13 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import {
-  FaFacebook,
-  FaTwitter,
-  FaLinkedin,
-  FaInstagram,
-  FaYoutube,
-} from "react-icons/fa";
-import { FaSquareXTwitter } from "react-icons/fa6";
+// import {
+//   FaFacebook,
+//   FaTwitter,
+//   FaLinkedin,
+//   FaInstagram,
+//   FaYoutube,
+// } from "react-icons/fa";
+// import { FaSquareXTwitter } from "react-icons/fa6";
 import heroImage from "../assets/hero-image.png";
 import "./componentStyles/HeroSection.css";
 
@@ -29,7 +29,7 @@ function HeroSection() {
             Instructor Portal
           </button>
         </div>
-        <div className="social-icons">
+        {/* <div className="social-icons">
           <a
             href="https://facebook.com"
             target="_blank"
@@ -70,7 +70,7 @@ function HeroSection() {
           >
             <FaYoutube />
           </a>
-        </div>
+        </div> */}
       </div>
       <img
         src={heroImage}

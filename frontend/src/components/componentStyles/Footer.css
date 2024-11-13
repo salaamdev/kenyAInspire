@@ -1,81 +1,78 @@
-/* src/components/componentStyles/Footer.css */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+/* Footer.css */
 .dashboard-footer {
-  /* margin: 0; */
-  background-color: #ffffff;
-  color: #000000;
-  text-align: center;
-  padding: 1rem 0;
-  border-top: 1px solid #e6e6e6;
-  position: relative;
-  bottom: 0;
-  width: 100%;
-}
-
-/* .footer-container {
-  background-color: #0066cc;
-  color: #ffffff;
-  padding: 3rem 2rem;
+  background-color: #333;
+  color: white;
+  padding: 2rem 0;
 }
 
 .footer-content {
-  display: flex;
-  justify-content: space-between;
   max-width: 1200px;
   margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
-.footer-section {
-  flex: 1;
-  margin-right: 2rem;
+.footer-left,
+.footer-center,
+.footer-right {
+  margin: 1rem;
 }
 
-.footer-section:last-child {
-  margin-right: 0;
-}
-
-.footer-section h4 {
-  font-size: 1.25rem;
-  margin-bottom: 1rem;
-}
-
-.footer-section p,
-.footer-section ul {
+.footer-left p {
+  margin: 0;
   font-size: 0.9rem;
-  line-height: 1.6;
 }
 
-.footer-section ul {
-  list-style-type: none;
-  padding: 0;
+.footer-left span {
+  color: #ff4d4d;
 }
 
-.footer-section ul li {
-  margin-bottom: 0.5rem;
+.footer-center {
+  display: flex;
+  gap: 1rem;
 }
 
-.footer-section a {
-  color: #ffffff;
+.footer-link {
+  color: white;
   text-decoration: none;
+  font-size: 0.9rem;
   transition: color 0.3s ease;
 }
 
-.footer-section a:hover {
-  color: #e6f2ff;
+.footer-link:hover {
+  color: #ff4d4d;
+}
+
+.footer-right {
+  display: flex;
+  gap: 1rem;
+}
+
+.social-icon {
+  color: white;
+  font-size: 1.2rem;
+  transition: color 0.3s ease;
+}
+
+.social-icon:hover {
+  color: #ff4d4d;
 }
 
 @media (max-width: 768px) {
+  .dashboard-footer {
+    padding: 1.5rem 0;
+  }
   .footer-content {
     flex-direction: column;
+    text-align: center;
   }
 
-  .footer-section {
-    margin-right: 0;
-    margin-bottom: 2rem;
+  .footer-left,
+  .footer-center,
+  .footer-right {
+    margin: 0.5rem 0;
   }
 }
 
@@ -88,6 +85,6 @@
   }
 }
 
-.footer-container {
-  animation: fadeIn 0.8s ease-out;
-} */
+.dashboard-footer {
+  animation: fadeIn 0.5s ease-out;
+}
