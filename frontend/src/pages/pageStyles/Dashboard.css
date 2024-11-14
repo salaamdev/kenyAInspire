@@ -28,9 +28,10 @@
     .dashboard {
       padding: 1rem;
       margin-top: 200px;
-  }
+    }
 
-  .dashboard-grid {
-    grid-template-columns: 1fr;
+    .dashboard-grid {
+      grid-template-columns: 1fr;
+    }
   }
 }
