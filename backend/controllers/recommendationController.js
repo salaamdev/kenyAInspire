@@ -45,7 +45,7 @@ exports.getRecommendations = async (req, res) => {
         const aiResponse = await openai.createChatCompletion({
             model: 'gpt-4o-mini',
             messages: messages,
-            max_tokens: 300,
+            max_tokens: 500,
         });
 
         // Send the AI response back to the client

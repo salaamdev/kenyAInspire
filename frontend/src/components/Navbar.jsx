@@ -44,7 +44,6 @@ function Navbar() {
                 <FaClipboardList />
                 <span>Analytics</span>
               </Link>
-
               <Link to="/dashboard/settings" className="nav-link">
                 <FaCog />
                 <span>Settings</span>
@@ -67,6 +66,10 @@ function Navbar() {
               </Link>
             </>
           )}
+          {/* Instructor Portal Link */}
+          {/* <Link to="/instructor/login" className="nav-link">
+            Instructor Portal
+          </Link> */}
         </div>
       </nav>
       {/* Render the Chatbot component */}

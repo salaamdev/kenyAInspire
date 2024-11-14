@@ -3,10 +3,11 @@ import os
 EXCLUDED_FOLDERS = {
     "node_modules",
     ".git",
-    "pageStyles",
-    "componentStyles",
-    "animations",
-    "assets",
+    # "pageStyles",
+    # "componentStyles",
+    # "animations",
+    # "assets",
+    # ".github",
 }
 EXCLUDED_EXTENSIONS = {
     ".jpg",
@@ -28,8 +29,8 @@ EXCLUDED_FILES = {
     ".gitignore",
     "vite.config.js",
     "eslint.config.js",
-    "index.html",
-    "ErrorPage",
+    # "index.html",
+    # "ErrorPage",
 }
 
 
@@ -68,15 +69,13 @@ def write_file_paths_and_content(root_directory, output_file):
 
 if __name__ == "__main__":
     # For backend folder
-    backend_root_directory = r"D:\Code\kenyAInspire---team-HassDonn\backend"
-    backend_output_file = r"D:\Code\kenyAInspire---team-HassDonn\unrelated\backend.txt"
+    backend_root_directory = r"../backend/"
+    backend_output_file = r"./output/backend.txt"
     write_file_paths_and_content(backend_root_directory, backend_output_file)
     print(f"File paths and contents written to {backend_output_file}")
 
     # For frontend folder
-    frontend_root_directory = r"D:\Code\kenyAInspire---team-HassDonn\frontend"
-    frontend_output_file = (
-        r"D:\Code\kenyAInspire---team-HassDonn\unrelated\frontend.txt"
-    )
+    frontend_root_directory = r"../frontend/"
+    frontend_output_file = r"./output/frontend.txt"
     write_file_paths_and_content(frontend_root_directory, frontend_output_file)
     print(f"File paths and contents written to {frontend_output_file}")

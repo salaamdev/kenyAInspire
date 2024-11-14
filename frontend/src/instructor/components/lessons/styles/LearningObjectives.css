@@ -1,0 +1,56 @@
+/* frontend/src/instructor/components/lesson/styles/LearningObjectives.css */
+.objectives-widget {
+  background: white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+}
+
+.objectives-widget h2 {
+  color: #1e293b;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.objectives-list {
+  list-style: none;
+  padding: 0;
+}
+
+.objectives-list li {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 0;
+  color: #475569;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.objectives-list li:last-child {
+  border-bottom: none;
+}
+
+.objectives-list li::before {
+  content: "•";
+  color: #3b82f6;
+  font-weight: bold;
+  margin-right: 0.75rem;
+}
+
+@media (max-width: 768px) {
+  .objectives-widget {
+    padding: 1rem;
+  }
+
+  .objectives-widget h2 {
+    font-size: 1.25rem;
+  }
+
+  .objectives-list li {
+    font-size: 0.95rem;
+  }
+}

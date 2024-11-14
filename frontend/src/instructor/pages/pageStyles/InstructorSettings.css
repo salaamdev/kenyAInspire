@@ -1,0 +1,50 @@
+.settings-page {
+  min-height: 100vh;
+  background-color: #f0f8ff;
+  padding: 2rem;
+  padding-top: 6rem;
+}
+
+.settings-title {
+  text-align: center;
+  color: #333;
+  margin-bottom: 2rem;
+}
+
+.settings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.settings-section {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.settings-section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #333;
+  margin-bottom: 1.5rem;
+}
+
+.settings-icon {
+  color: #0066cc;
+}
+
+@media (max-width: 768px) {
+  .settings-page {
+    padding: 1rem;
+    padding-top: 6rem;
+  }
+
+  .settings-grid {
+    grid-template-columns: 1fr;
+  }
+}

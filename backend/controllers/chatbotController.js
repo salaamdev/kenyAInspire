@@ -30,7 +30,7 @@ exports.handleMessage = async (req, res) => {
         const aiResponse = await openai.createChatCompletion({
             model: 'gpt-4o-mini', // Corrected model name
             messages: messages,
-            max_tokens: 150,
+            max_tokens: 500,
         });
 
         const reply = aiResponse.data.choices[0].message.content.trim();

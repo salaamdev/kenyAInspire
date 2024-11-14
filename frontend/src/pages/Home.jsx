@@ -1,9 +1,9 @@
 // frontend/src/pages/Home.jsx
-
 import React, { useEffect, useState, useContext } from "react";
 import WelcomeBanner from "../components/WelcomeBanner";
+import StudentStats from "../components/StudentStats";
 import Announcements from "../components/Announcements";
-import Recommendations from "../components/Recommendations"; // Import the new component
+import Recommendations from "../components/Recommendations";
 import { AuthContext } from "../contexts/AuthContext";
 import { getAnnouncements, getRecommendations } from "../services/api";
 import "./pageStyles/Dashboard.css";
@@ -30,14 +30,14 @@ function Home() {
   }, [token]);
 
   return (
-    <>
+    <div className="dashboard-home">
       <WelcomeBanner />
+      <StudentStats />
       <div className="dashboard-grid">
         <Announcements announcements={announcements} />
-        <Recommendations markdownContent={recommendations} />{" "}
-        {/* Use the new component */}
+        <Recommendations markdownContent={recommendations} />
       </div>
-    </>
+    </div>
   );
 }
 

@@ -1,0 +1,174 @@
+/* frontend/src/instructor/pages/pageStyles/InstructorGrades.css */
+
+.grades-page {
+  min-height: 100vh;
+  background-color: #f8f9fa;
+  padding: 2rem;
+}
+
+.grades-container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.grades-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.grades-header h1 {
+  color: #1a1a1a;
+  font-size: 2rem;
+}
+
+.filters {
+  display: flex;
+  gap: 1rem;
+}
+
+.filters select {
+  padding: 0.5rem 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.375rem;
+  background-color: white;
+  font-size: 0.875rem;
+}
+
+.grades-grid {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: 1fr;
+}
+
+.grades-table-section {
+  background: white;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+th,
+td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+}
+
+.improvement {
+  font-weight: 500;
+}
+
+.improvement.positive {
+  color: #059669;
+}
+
+.improvement.negative {
+  color: #dc2626;
+}
+
+.edit-grade-btn {
+  padding: 0.5rem 1rem;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 0.375rem;
+  cursor: pointer;
+}
+
+.grades-charts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.chart-container {
+  background: white;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.quick-insights {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.insight-card {
+  background: white;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.insight-card h3 {
+  color: #4b5563;
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+}
+
+.highlight {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #2563eb;
+  margin: 0.5rem 0;
+}
+
+.trend {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.trend.positive {
+  color: #059669;
+}
+
+.score {
+  display: block;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #2563eb;
+  margin-top: 0.5rem;
+}
+
+.text-small {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+@media (max-width: 768px) {
+  .grades-page {
+    padding: 1rem;
+  }
+
+  .grades-header {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .grades-charts {
+    grid-template-columns: 1fr;
+  }
+
+  .quick-insights {
+    grid-template-columns: 1fr;
+  }
+}

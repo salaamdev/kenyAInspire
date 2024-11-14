@@ -1,10 +1,10 @@
-// DashboardLayout.jsx
-
+// frontend/src/pages/DashboardLayout.jsx
 import React from "react";
 import { Outlet } from "react-router-dom";
-import Navbar from "../components/Navbar"; // Include if you have a Navbar
-import Footer from "../components/Footer";
-// import Sidebar from "../components/Sidebar"; // Include if you have a Sidebar
+import Navbar from "../components/Navbar";
+import StudentStats from "../components/StudentStats";
+import Announcements from "../components/Announcements";
+import Recommendations from "../components/Recommendations";
 import "./pageStyles/Dashboard.css";
 
 export default function DashboardLayout() {
@@ -12,13 +12,15 @@ export default function DashboardLayout() {
     <>
       <div className="dashboard">
         <Navbar />
-        {/* Optionally include Navbar and Sidebar */}
-        {/* <Sidebar /> */}
         <main className="dashboard-content">
-          <Outlet /> {/* This renders the child components */}
+          {/* <div className="dashboard-grid">
+            <Announcements />
+            <Recommendations />
+          </div> */}
+          {/* <StudentStats /> */}
+          <Outlet />
         </main>
       </div>
-      <Footer />
     </>
   );
 }

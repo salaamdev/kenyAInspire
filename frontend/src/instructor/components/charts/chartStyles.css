@@ -1,0 +1,33 @@
+.chart-widget {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin: 20px 0;
+  transition: transform 0.3s ease;
+}
+
+.chart-widget:hover {
+  transform: translateY(-5px);
+}
+
+.ai-insight {
+  display: flex;
+  align-items: center;
+  background: #f9f9f9;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  font-style: italic;
+}
+
+.ai-insight i {
+  margin-right: 10px;
+  color: #007bff;
+}
+
+@media (max-width: 600px) {
+  .chart-widget {
+    padding: 15px;
+  }
+}

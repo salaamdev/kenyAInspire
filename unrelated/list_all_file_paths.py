@@ -5,20 +5,21 @@ EXCLUDED_FOLDERS = {
     "node_modules",
     ".git",
     "animations",
-    "assets",
+    # "assets",
+    ".github",
 }
 # "pageStyles",
 # "componentStyles",
 
 EXCLUDED_EXTENSIONS = {
-    ".jpg",
-    ".jpeg",
-    ".png",
-    ".svg",
-    ".gif",
-    ".db",
-    ".md",
-    ".json",
+    # ".jpg",
+    # ".jpeg",
+    # ".png",
+    # ".svg",
+    # ".gif",
+    # ".db",
+    # ".md",
+    # ".json",
 }
 # ".sqlite",
 # ".PDF",
@@ -66,10 +67,10 @@ def extract_file_paths(root_directory, output_file):
 
 
 # Set your root directory and output file path
-root_directory = (
-    r"D:\Code\kenyAInspire---team-HassDonn"  # Replace with your folder path
+root_directory = r"../"  # Replace with your folder path
+output_file = (
+    r"./output/all_file_paths.txt"  # Replace with your desired output file name
 )
-output_file = r"D:\Code\kenyAInspire---team-HassDonn\unrelated\all_file_paths.txt"  # Replace with your desired output file name
 
 # Call the function
 extract_file_paths(root_directory, output_file)

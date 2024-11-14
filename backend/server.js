@@ -45,6 +45,7 @@ const protectedRoutes = require('./routes/protectedRoutes');
 const flashcardRoutes = require('./routes/flashcardRoutes');
 const quizRoutes = require('./routes/quizRoutes');
 
+app.use('/api/instructor', require('./routes/instructorRoutes'));
 
 // Use routes
 app.use('/api/auth', authRoutes);
