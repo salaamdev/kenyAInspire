@@ -1,7 +1,7 @@
 // frontend/src/instructor/components/UpcomingAssignments.jsx
 import React, { useEffect, useState } from "react";
 import { getUpcomingAssignments } from "../../services/instructorApi";
-import "./UpcomingAssignments.css";
+import "./componentStyles/UpcomingAssignments.css";
 
 function UpcomingAssignments() {
   const [assignments, setAssignments] = useState([]);

@@ -3,11 +3,11 @@ import os
 EXCLUDED_FOLDERS = {
     "node_modules",
     ".git",
-    "pageStyles",
-    "componentStyles",
-    "animations",
-    "assets",
-    ".github",
+    # "pageStyles",
+    # "componentStyles",
+    # "animations",
+    # "assets",
+    # ".github",
 }
 EXCLUDED_EXTENSIONS = {
     ".jpg",
@@ -29,8 +29,8 @@ EXCLUDED_FILES = {
     ".gitignore",
     "vite.config.js",
     "eslint.config.js",
-    "index.html",
-    "ErrorPage",
+    # "index.html",
+    # "ErrorPage",
 }
 
 

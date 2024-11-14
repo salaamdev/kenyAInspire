@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import "./QuickActions.css";
+import "./componentStyles/QuickActions.css";
 
 function QuickActions() {
   const navigate = useNavigate();

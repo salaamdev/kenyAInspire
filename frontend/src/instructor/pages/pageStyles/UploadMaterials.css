@@ -1,0 +1,31 @@
+/* UploadMaterials.css */
+
+.upload-materials-container {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 1rem;
+}
+
+.upload-materials-container h2 {
+  text-align: center;
+}
+
+.upload-materials-container .form-group {
+  margin-bottom: 1rem;
+}
+
+.upload-materials-container label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.upload-materials-container input[type="file"],
+.upload-materials-container textarea {
+  width: 100%;
+}
+
+.upload-materials-container button {
+  display: block;
+  margin: 0 auto;
+  padding: 0.5rem 2rem;
+}

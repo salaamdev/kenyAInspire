@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
 import { getClassPerformance } from "../../services/instructorApi";
-import "./ClassPerformanceChart.css";
+import "./componentStyles/ClassPerformanceChart.css";
 
 // frontend/src/instructor/components/ClassPerformanceChart.jsx
 function ClassPerformanceChart() {

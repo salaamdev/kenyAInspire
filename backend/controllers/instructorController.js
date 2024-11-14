@@ -1,4 +1,4 @@
-const {Student, Assignment, Submission} = require('../models');
+const {Student, Assignment, Submission, User} = require('../models');
 const {Op} = require('sequelize');
 
 // Get Recent Activity
@@ -8,7 +8,7 @@ exports.getRecentActivity = async (req, res) => {
             order: [['submittedAt', 'DESC']],
             limit: 10,
             include: [
-                {model: Student, attributes: ['name']},
+                {model: User, attributes: ['name']},
                 {model: Assignment, attributes: ['title']}
             ]
         });
@@ -49,18 +49,18 @@ exports.getAssignments = async (req, res) => {
 // Create Assignment
 exports.createAssignment = async (req, res) => {
     try {
-        const {title, dueDate, description} = req.body;
-        const newAssignment = await Assignment.create({
+        const {title, description, dueDate} = req.body;
+        const assignment = await Assignment.create({
             title,
-            dueDate,
             description,
-            instructorId: req.user.id // Track which instructor created it
+            dueDate,
+            createdBy: req.user.id
         });
 
-        res.status(201).json({success: true, assignment: newAssignment});
+        res.status(201).json({message: 'Assignment created successfully.', assignment});
     } catch (error) {
         console.error('Error creating assignment:', error);
-        res.status(500).json({success: false, message: error.message});
+        res.status(500).json({message: 'Failed to create assignment.'});
     }
 };
 
@@ -70,13 +70,25 @@ exports.getSubmissions = async (req, res) => {
         const {assignmentId} = req.params;
         const submissions = await Submission.findAll({
             where: {assignmentId},
-            include: {model: Student, attributes: ['name']}
+            include: [
+                {
+                    model: User,
+                    attributes: ['name']
+                }
+            ]
         });
 
-        res.json({success: true, submissions});
+        const formattedSubmissions = submissions.map(submission => ({
+            id: submission.id,
+            studentName: submission.User.name,
+            submittedAt: submission.submittedAt,
+            grade: submission.grade
+        }));
+
+        res.status(200).json({submissions: formattedSubmissions});
     } catch (error) {
         console.error('Error fetching submissions:', error);
-        res.status(500).json({success: false, message: error.message});
+        res.status(500).json({message: 'Failed to fetch submissions.'});
     }
 };
 
@@ -86,7 +98,7 @@ exports.getSubmission = async (req, res) => {
         const {submissionId} = req.params;
         const submission = await Submission.findByPk(submissionId, {
             include: [
-                {model: Student, attributes: ['name']},
+                {model: User, attributes: ['name']},
                 {model: Assignment, attributes: ['title']}
             ]
         });
@@ -191,4 +203,24 @@ const calculateStudentAverage = (submissions) => {
     if (!submissions || submissions.length === 0) return 0;
     const sum = submissions.reduce((acc, sub) => acc + (sub.grade || 0), 0);
     return +(sum / submissions.length).toFixed(2);
+};
+
+// Upload Material
+exports.uploadMaterial = async (req, res) => {
+    try {
+        const {description} = req.body;
+        const file = req.file;
+
+        if (!file) {
+            return res.status(400).json({message: 'No file uploaded.'});
+        }
+
+        // Example: Save file information in database if needed
+        // await Material.create({ filename: file.filename, description, uploaderId: req.user.id });
+
+        res.status(200).json({message: 'File uploaded successfully.'});
+    } catch (error) {
+        console.error('Error uploading material:', error);
+        res.status(500).json({message: 'Failed to upload material.'});
+    }
 };

@@ -1,56 +1,51 @@
-// frontend/src/instructor/components/InstructorNavbar.jsx
+import React, { useContext } from "react";
+import { Link, NavLink } from "react-router-dom";
+import { AuthContext } from "../../contexts/AuthContext";
+import {
+  FaHome,
+  FaBook,
+  FaClipboardList,
+  FaCog,
+  FaSignOutAlt,
+} from "react-icons/fa";
+import "./componentStyles/InstructorNavbar.css";
 
-import React from "react";
-import { NavLink } from "react-router-dom";
-import "./InstructorNavbar.css"; // Optional: Import CSS if you have any styles
+export default function InstructorNavbar() {
+  const { logout } = useContext(AuthContext);
 
-function InstructorNavbar() {
   return (
     <nav className="instructor-nav">
-      <ul className="instructor-nav-list">
-        <li>
-          <NavLink
-            to="/instructor/dashboard"
-            className={({ isActive }) => (isActive ? "active" : "")}
-          >
-            Dashboard
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
-            to="/instructor/assignments"
-            className={({ isActive }) => (isActive ? "active" : "")}
-          >
-            Assignments
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
-            to="/instructor/materials"
-            className={({ isActive }) => (isActive ? "active" : "")}
-          >
-            Lesson Plan
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
-            to="/instructor/grades"
-            className={({ isActive }) => (isActive ? "active" : "")}
-          >
-            Grades
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
-            to="/instructor/settings"
-            className={({ isActive }) => (isActive ? "active" : "")}
-          >
-            Settings
-          </NavLink>
-        </li>
-      </ul>
+      <div className="logo">
+        <Link to="/instructor/dashboard">
+          Keny<span>AI</span>nspire Instructor
+        </Link>
+      </div>
+      <div className="nav-links">
+        <NavLink to="/instructor/dashboard" className="nav-link">
+          <FaHome />
+          <span>Dashboard</span>
+        </NavLink>
+        <NavLink to="/instructor/assignments" className="nav-link">
+          <FaBook />
+          <span>Assignments</span>
+        </NavLink>
+        <NavLink to="/instructor/materials" className="nav-link">
+          <FaClipboardList />
+          <span>Lesson Plan</span>
+        </NavLink>
+        <NavLink to="/instructor/grades" className="nav-link">
+          <FaClipboardList />
+          <span>Grades</span>
+        </NavLink>
+        <NavLink to="/instructor/settings" className="nav-link">
+          <FaCog />
+          <span>Settings</span>
+        </NavLink>
+        <button onClick={logout} className="nav-link logout-button">
+          <FaSignOutAlt />
+          <span>Logout</span>
+        </button>
+      </div>
     </nav>
   );
 }
-
-export default InstructorNavbar;

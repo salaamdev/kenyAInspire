@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { getRecentActivity } from "../../services/instructorApi";
-import "./RecentActivity.css";
+import "./componentStyles/RecentActivity.css";
 
 function RecentActivity() {
   const [activities, setActivities] = useState([]);
