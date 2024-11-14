@@ -1,49 +1,33 @@
-/* frontend/src/instructor/components/componentStyles/ClassPerformanceChart.css */
-.class-performance-chart {
-  background: white;
-  border-radius: 8px;
+.chart-widget {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.chart-container {
   margin: 20px 0;
-  height: 400px;
+  transition: transform 0.3s ease;
 }
 
-.performance-summary {
-  margin-top: 20px;
-  padding: 15px;
-  background: #f8f9fa;
-  border-radius: 6px;
-}
-
-.performance-summary h3 {
-  color: #333;
-  margin-bottom: 10px;
-}
-
-.performance-summary ul {
-  list-style: none;
-  padding: 0;
-}
-
-.performance-summary li {
-  padding: 5px 0;
-  color: #555;
+.chart-widget:hover {
+  transform: translateY(-5px);
 }
 
 .ai-insight {
-  background: #f0f8ff;
-  padding: 10px;
-  border-radius: 6px;
-  margin: 10px 0;
   display: flex;
   align-items: center;
-  gap: 10px;
-  border-left: 4px solid #0066cc;
+  background: #f9f9f9;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  font-style: italic;
 }
 
-.fas {
-  color: #0066cc;
+.ai-insight i {
+  margin-right: 10px;
+  color: #007bff;
+}
+
+@media (max-width: 600px) {
+  .chart-widget {
+    padding: 15px;
+  }
 }

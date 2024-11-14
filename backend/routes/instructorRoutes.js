@@ -7,13 +7,26 @@ const instructorController = require('../controllers/instructorController');
 const {check, validationResult} = require('express-validator');
 const multer = require('multer');
 const upload = multer({dest: 'uploads/'}); // Configure as needed
+const lessonPlanController = require('../controllers/lessonPlanController');
+
+// Add the new route
+router.post('/lesson-plans/generate',
+  authMiddleware,
+  (req, res, next) => {
+    if (req.user.role !== 'teacher') {
+      return res.status(403).json({message: 'Access denied'});
+    }
+    next();
+  },
+  lessonPlanController.generateLessonPlan
+);
 
 router.get('/dashboard', authMiddleware, (req, res, next) => {
-    if (req.user.role !== 'teacher') {
-        return res.status(403).json({message: 'Access denied'});
-    }
-    // Proceed to handle the request
-    instructorController.getDashboard(req, res, next);
+  if (req.user.role !== 'teacher') {
+    return res.status(403).json({message: 'Access denied'});
+  }
+  // Proceed to handle the request
+  instructorController.getDashboard(req, res, next);
 });
 
 
@@ -33,7 +46,7 @@ router.get('/recent-activity', authMiddleware, instructorController.getRecentAct
 router.get('/upcoming-assignments', authMiddleware, instructorController.getUpcomingAssignments);
 router.get('/class-performance', authMiddleware, instructorController.getClassPerformance);
 // Upload materials
-router.post('/materials/upload', 
+router.post('/materials/upload',
   authMiddleware,
   (req, res, next) => {
     if (req.user.role !== 'teacher') {
@@ -41,7 +54,7 @@ router.post('/materials/upload',
     }
     next();
   },
-  upload.single('file'), 
+  upload.single('file'),
   instructorController.uploadMaterial
 );
 

@@ -7,46 +7,91 @@ import SubjectPerformanceChart from "../components/charts/SubjectPerformanceChar
 import GenderDistributionChart from "../components/charts/GenderDistributionChart";
 import AttendanceTrendChart from "../components/charts/AttendanceTrendChart";
 import ExamPerformanceDistributionChart from "../components/charts/ExamPerformanceDistributionChart";
-// import "./pageStyles/InstructorDashboard.css";
+import "./pageStyles/InstructorDashboard.css";
 
 export default function InstructorDashboard() {
+  const stats = [
+    {
+      title: "Total Students",
+      value: "1,247",
+      trend: "+5.2%",
+      isPositive: true,
+    },
+    {
+      title: "Average Attendance",
+      value: "92%",
+      trend: "+2.1%",
+      isPositive: true,
+    },
+    {
+      title: "Average Grade",
+      value: "B+",
+      trend: "+0.3",
+      isPositive: true,
+    },
+    {
+      title: "Success Rate",
+      value: "88%",
+      trend: "-1.2%",
+      isPositive: false,
+    },
+  ];
+
   return (
     <div className="instructor-dashboard-page">
       <InstructorNavbar />
       <div className="instructor-dashboard-container">
-        <h1 className="page-title">Instructor Dashboard</h1>
-        <div className="dashboard-widgets">
-          <div className="widget">
-            <h2 className="widget-title">Recent Activity</h2>
-            <RecentActivity />
-          </div>
-          <div className="widget">
-            <h2 className="widget-title">Upcoming Assignments</h2>
-            <UpcomingAssignments />
-          </div>
-          <div className="widget">
-            <h2 className="widget-title">Class Performance Overview</h2>
-            <ClassPerformanceChart />
+        <div className="dashboard-header">
+          <h1 className="page-title">Dashboard Overview</h1>
+
+          <div className="stats-grid">
+            {stats.map((stat, index) => (
+              <div key={index} className="stat-card">
+                <h3>{stat.title}</h3>
+                <div className="stat-value">{stat.value}</div>
+                <div
+                  className={`stat-trend ${
+                    stat.isPositive ? "trend-up" : "trend-down"
+                  }`}
+                >
+                  {stat.trend}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
-        <div className="dashboard-charts-grid">
-          <div className="chart-row">
-            <div className="chart-container">
-              <h2 className="chart-title">Subject Performance</h2>
+
+        <div className="charts-container">
+          {/* First Pair */}
+          <div className="chart-pair">
+            <div className="chart-widget">
+              <div className="chart-header">
+                <h3 className="chart-title">Class Performance</h3>
+              </div>
+              <ClassPerformanceChart />
+            </div>
+
+            <div className="chart-widget">
+              <div className="chart-header">
+                <h3 className="chart-title">Subject Performance</h3>
+              </div>
               <SubjectPerformanceChart />
             </div>
-            <div className="chart-container">
-              <h2 className="chart-title">Gender Distribution</h2>
-              <GenderDistributionChart />
-            </div>
           </div>
-          <div className="chart-row">
-            <div className="chart-container">
-              <h2 className="chart-title">Attendance Trend</h2>
+
+          {/* Second Pair */}
+          <div className="chart-pair">
+            <div className="chart-widget">
+              <div className="chart-header">
+                <h3 className="chart-title">Attendance Trends</h3>
+              </div>
               <AttendanceTrendChart />
             </div>
-            <div className="chart-container">
-              <h2 className="chart-title">Exam Performance Distribution</h2>
+
+            <div className="chart-widget">
+              <div className="chart-header">
+                <h3 className="chart-title">Grade Distribution</h3>
+              </div>
               <ExamPerformanceDistributionChart />
             </div>
           </div>

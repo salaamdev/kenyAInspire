@@ -1,35 +1,32 @@
-/* frontend/src/instructor/components/charts/chartStyles.css */
 .chart-widget {
-  background: white;
-  border-radius: 12px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 20px;
-  margin: 15px 0;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 20px 0;
+  transition: transform 0.3s ease;
+}
+
+.chart-widget:hover {
+  transform: translateY(-5px);
 }
 
 .ai-insight {
   display: flex;
   align-items: center;
-  gap: 10px;
+  background: #f9f9f9;
   padding: 10px;
-  margin: 10px 0;
-  background: #f0f8ff;
-  border-radius: 6px;
-  border-left: 4px solid #0066cc;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  font-style: italic;
 }
 
 .ai-insight i {
-  color: #0066cc;
-  font-size: 1.2em;
+  margin-right: 10px;
+  color: #007bff;
 }
 
-.ai-insight p {
-  margin: 0;
-  color: #333;
-  font-size: 0.9em;
-}
-
-@media (max-width: 768px) {
+@media (max-width: 600px) {
   .chart-widget {
     padding: 15px;
   }

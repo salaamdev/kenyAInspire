@@ -8,6 +8,7 @@ const UserQuestion = require('./userQuestion');
 const Student = require('./Student');
 const Assignment = require('./Assignment');
 const Submission = require('./Submission');
+const LessonPlan = require('./lessonPlan');
 
 // Define associations
 Student.hasMany(Submission, {
@@ -48,5 +49,6 @@ module.exports = {
     UserQuestion,
     Student,
     Assignment,
-    Submission
+    Submission,
+    LessonPlan
 };

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import InstructorNavbar from "../components/InstructorNavbar";
 import { getSubmission, submitGrade } from "../../services/instructorApi";
+import "./pageStyles/GradeSubmission.css";
 
 function GradeSubmission() {
   const { submissionId } = useParams();

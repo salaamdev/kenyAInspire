@@ -1,86 +1,131 @@
+/* frontend/src/instructor/pages/pageStyles/InstructorDashboard.css */
 .instructor-dashboard-page {
   min-height: 100vh;
   background-color: #f8f9fa;
-}
-
-.instructor-dashboard-container {
-  max-width: 1200px;
-  margin: 2rem auto;
   padding: 2rem;
 }
 
-.page-title {
-  font-size: 2.5rem;
-  color: #333;
+.instructor-dashboard-container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.dashboard-header {
   margin-bottom: 2rem;
-  text-align: center;
-  animation: fadeInDown 0.5s ease-out;
 }
 
-@keyframes fadeInDown {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.page-title {
+  color: #1a1a1a;
+  font-size: 2rem;
+  margin-bottom: 1rem;
 }
 
-.dashboard-widgets {
+.stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
 }
 
-.dashboard-widgets > * {
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+.stat-card {
+  background: white;
+  border-radius: 0.5rem;
   padding: 1.5rem;
-  animation: fadeIn 0.5s ease-out;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  text-align: center;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+.stat-card h3 {
+  color: #4b5563;
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
 }
 
-@media (max-width: 768px) {
-  .instructor-dashboard-container {
-    padding: 1.5rem;
+.stat-value {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #2563eb;
+  margin-bottom: 0.5rem;
+}
+
+.stat-trend {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.trend-up {
+  color: #059669;
+}
+
+.trend-down {
+  color: #dc2626;
+}
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.chart-widget {
+  background: white;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.chart-title {
+  font-size: 1.1rem;
+  color: #1a1a1a;
+  font-weight: 600;
+}
+
+@media (max-width: 1024px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 
-  .page-title {
-    font-size: 2rem;
-  }
-
-  .dashboard-widgets {
+  .charts-grid {
     grid-template-columns: 1fr;
   }
 }
 
-/* Update InstructorDashboard.css */
-.dashboard-charts-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  margin-top: 2rem;
+@media (max-width: 640px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
 }
-
-.chart-row {
+.charts-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
 }
 
-@media (max-width: 768px) {
-  .chart-row {
+.chart-pair {
+  grid-column: span 2;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.chart-widget {
+  background: white;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  height: 100%;
+}
+
+@media (max-width: 1024px) {
+  .chart-pair {
     grid-template-columns: 1fr;
   }
 }
