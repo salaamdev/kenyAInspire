@@ -13,7 +13,7 @@ import AssignmentSubmissions from "../pages/AssignmentSubmissions";
 import GradeSubmission from "../pages/GradeSubmission";
 import UploadMaterials from "../pages/UploadMaterials";
 import CreateAssignment from "../pages/CreateAssignment";
-import AssignmentSubmissions from "../pages/AssignmentSubmissions";
+// import AssignmentSubmissions from "../pages/AssignmentSubmissions";
 import InstructorAnalytics from "../pages/InstructorAnalytics";
 
 function InstructorRoutes() {
