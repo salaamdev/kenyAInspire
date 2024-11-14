@@ -1,0 +1,49 @@
+/* frontend/src/instructor/components/componentStyles/ClassPerformanceChart.css */
+.class-performance-chart {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.chart-container {
+  margin: 20px 0;
+  height: 400px;
+}
+
+.performance-summary {
+  margin-top: 20px;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 6px;
+}
+
+.performance-summary h3 {
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.performance-summary ul {
+  list-style: none;
+  padding: 0;
+}
+
+.performance-summary li {
+  padding: 5px 0;
+  color: #555;
+}
+
+.ai-insight {
+  background: #f0f8ff;
+  padding: 10px;
+  border-radius: 6px;
+  margin: 10px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-left: 4px solid #0066cc;
+}
+
+.fas {
+  color: #0066cc;
+}

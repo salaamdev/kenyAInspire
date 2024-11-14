@@ -1,0 +1,54 @@
+/* frontend/src/instructor/components/componentStyles/RecentActivity.css */
+.recent-activity-widget {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.ai-insight {
+  background: #f0f8ff;
+  padding: 10px;
+  border-radius: 6px;
+  margin: 10px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-left: 4px solid #0066cc;
+}
+
+.activity-list {
+  list-style: none;
+  padding: 0;
+}
+
+.activity-item {
+  border-bottom: 1px solid #eee;
+  padding: 12px 0;
+}
+
+.activity-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.student-name {
+  font-weight: bold;
+  color: #333;
+}
+
+.grade {
+  color: #28a745;
+  font-weight: bold;
+}
+
+.assignment {
+  color: #666;
+  margin: 5px 0;
+}
+
+.timestamp {
+  color: #999;
+  font-size: 0.9em;
+}

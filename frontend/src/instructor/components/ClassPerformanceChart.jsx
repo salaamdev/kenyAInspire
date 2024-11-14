@@ -1,67 +1,82 @@
 // frontend/src/instructor/components/ClassPerformanceChart.jsx
-
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Bar } from "react-chartjs-2";
-import { getClassPerformance } from "../../services/instructorApi";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
 import "./componentStyles/ClassPerformanceChart.css";
 
-// frontend/src/instructor/components/ClassPerformanceChart.jsx
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
+
 function ClassPerformanceChart() {
-  const [chartData, setChartData] = useState({
-    labels: [],
+  const staticData = {
+    labels: [
+      "Form 1A",
+      "Form 1B",
+      "Form 2A",
+      "Form 2B",
+      "Form 3A",
+      "Form 3B",
+      "Form 4A",
+      "Form 4B",
+    ],
     datasets: [
       {
-        label: "Average Grade",
-        data: [],
-        backgroundColor: "rgba(75,192,192,0.6)",
+        label: "Average Class Performance",
+        data: [72, 68, 75, 70, 82, 78, 85, 80],
+        backgroundColor: "rgba(75, 192, 192, 0.6)",
+        borderColor: "rgba(75, 192, 192, 1)",
+        borderWidth: 1,
       },
     ],
-  });
+  };
 
-  useEffect(() => {
-    fetchClassPerformance();
-  }, []);
-
-  const fetchClassPerformance = async () => {
-    try {
-      const { data } = await getClassPerformance();
-      if (data && data.students) {
-        setChartData({
-          labels: data.students.map((student) => student.name),
-          datasets: [
-            {
-              label: "Average Grade",
-              data: data.students.map((student) => student.averageGrade),
-              backgroundColor: "rgba(75,192,192,0.6)",
-            },
-          ],
-        });
-      }
-    } catch (error) {
-      console.error("Error fetching class performance:", error);
-      // Set empty chart data on error
-      setChartData({
-        labels: [],
-        datasets: [
-          {
-            label: "Average Grade",
-            data: [],
-            backgroundColor: "rgba(75,192,192,0.6)",
-          },
-        ],
-      });
-    }
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: { position: "top" },
+      title: {
+        display: true,
+        text: "Class Performance Analysis 2024",
+      },
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        max: 100,
+        title: {
+          display: true,
+          text: "Average Score (%)",
+        },
+      },
+    },
   };
 
   return (
-    <div className="class-performance-chart">
-      <h2>Class Performance</h2>
-      {chartData.labels.length > 0 ? (
-        <Bar data={chartData} />
-      ) : (
-        <p>Loading chart data...</p>
-      )}
+    <div className="chart-widget">
+      <div className="ai-insight">
+        <i className="fas fa-brain"></i>
+        <p>
+          AI Insight: Form 4A shows highest improvement at 15% above term
+          average
+        </p>
+      </div>
+      <Bar data={staticData} options={options} />
     </div>
   );
 }
+
 export default ClassPerformanceChart;

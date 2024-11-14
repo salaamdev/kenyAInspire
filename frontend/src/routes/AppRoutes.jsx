@@ -16,6 +16,9 @@ const ErrorPage = lazy(() => import("../pages/ErrorPage"));
 const Books = lazy(() => import("../pages/Books"));
 const Quiz = lazy(() => import("../pages/Quiz"));
 const FailedQuestions = lazy(() => import("../pages/FailedQuestions"));
+const InstructorAnalytics = lazy(() =>
+  import("../instructor/pages/InstructorAnalytics")
+);
 
 // Instructor pages
 const InstructorLogin = lazy(() =>
@@ -58,6 +61,10 @@ function AppRoutes() {
                 <Route path="materials" element={<InstructorMaterials />} />
                 <Route path="grades" element={<InstructorGrades />} />
                 <Route path="settings" element={<InstructorSettings />} />
+                <Route
+                  path="/instructor/analytics"
+                  element={<InstructorAnalytics />}
+                />
                 {/* Additional instructor routes can be added here */}
               </Routes>
             </InstructorPrivateRoute>

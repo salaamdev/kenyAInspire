@@ -7,6 +7,7 @@ import {
   FaClipboardList,
   FaCog,
   FaSignOutAlt,
+  FaChartBar,
 } from "react-icons/fa";
 import "./componentStyles/InstructorNavbar.css";
 
@@ -28,6 +29,10 @@ export default function InstructorNavbar() {
         <NavLink to="/instructor/assignments" className="nav-link">
           <FaBook />
           <span>Assignments</span>
+        </NavLink>
+        <NavLink to="/instructor/analytics" className="nav-link">
+          <FaChartBar />
+          <span>Analytics</span>
         </NavLink>
         <NavLink to="/instructor/materials" className="nav-link">
           <FaClipboardList />

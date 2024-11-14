@@ -11,9 +11,10 @@ import InstructorGrades from "../pages/InstructorGrades";
 import InstructorSettings from "../pages/InstructorSettings";
 import AssignmentSubmissions from "../pages/AssignmentSubmissions";
 import GradeSubmission from "../pages/GradeSubmission";
-import UploadMaterials from "../pages/UploadMaterials"; // Add this import
-import CreateAssignment from "../pages/CreateAssignment"; // Add this import
-import AssignmentSubmissions from "../pages/AssignmentSubmissions"; // Add this import
+import UploadMaterials from "../pages/UploadMaterials";
+import CreateAssignment from "../pages/CreateAssignment";
+import AssignmentSubmissions from "../pages/AssignmentSubmissions";
+import InstructorAnalytics from "../pages/InstructorAnalytics";
 
 function InstructorRoutes() {
   return (
@@ -27,6 +28,7 @@ function InstructorRoutes() {
         }
       >
         <Route path="dashboard" element={<InstructorDashboard />} />
+        <Route path="analytics" element={<InstructorAnalytics />} />{" "}
         <Route path="assignments" element={<InstructorAssignments />} />
         <Route path="materials" element={<InstructorMaterials />} />
         <Route path="grades" element={<InstructorGrades />} />

@@ -1,48 +1,67 @@
 // frontend/src/instructor/components/RecentActivity.jsx
-
-import React, { useEffect, useState } from "react";
-import { getRecentActivity } from "../../services/instructorApi";
+import React from "react";
 import "./componentStyles/RecentActivity.css";
 
 function RecentActivity() {
-  const [activities, setActivities] = useState([]);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    fetchRecentActivity();
-  }, []);
-
-  const fetchRecentActivity = async () => {
-    try {
-      const data = await getRecentActivity();
-      setActivities(data.activities);
-      setError(null); // Clear any previous errors
-    } catch (error) {
-      setError("Error fetching recent activity");
-      console.error("Error fetching recent activity:", error);
-    }
-  };
+  const staticActivities = [
+    {
+      id: 1,
+      studentName: "James Kimani",
+      assignmentTitle: "Kiswahili Insha",
+      timestamp: "2024-01-15T14:30:00",
+      grade: "85%",
+    },
+    {
+      id: 2,
+      studentName: "Faith Wanjiku",
+      assignmentTitle: "Mathematics Quiz",
+      timestamp: "2024-01-15T13:15:00",
+      grade: "92%",
+    },
+    {
+      id: 3,
+      studentName: "Brian Odhiambo",
+      assignmentTitle: "Biology Lab Report",
+      timestamp: "2024-01-15T11:45:00",
+      grade: "88%",
+    },
+    {
+      id: 4,
+      studentName: "Sarah Muthoni",
+      assignmentTitle: "English Essay",
+      timestamp: "2024-01-15T10:20:00",
+      grade: "90%",
+    },
+    {
+      id: 5,
+      studentName: "Daniel Kiprop",
+      assignmentTitle: "Chemistry Test",
+      timestamp: "2024-01-15T09:00:00",
+      grade: "95%",
+    },
+  ];
 
   return (
     <div className="recent-activity-widget">
       <h2>Recent Activity</h2>
-      {error ? (
-        <p className="error-message">{error}</p>
-      ) : activities.length > 0 ? (
-        <ul>
-          {activities.map((activity) => (
-            <li key={activity.id}>
-              <p>
-                <strong>{activity.studentName}</strong> submitted{" "}
-                <strong>{activity.assignmentTitle}</strong>
-              </p>
-              <p>{new Date(activity.timestamp).toLocaleString()}</p>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>No recent activity</p>
-      )}
+      <div className="ai-insight">
+        <i className="fas fa-robot"></i>
+        <p>AI Analysis: Student engagement is 35% higher than last week</p>
+      </div>
+      <ul className="activity-list">
+        {staticActivities.map((activity) => (
+          <li key={activity.id} className="activity-item">
+            <div className="activity-header">
+              <span className="student-name">{activity.studentName}</span>
+              <span className="grade">{activity.grade}</span>
+            </div>
+            <p className="assignment">{activity.assignmentTitle}</p>
+            <p className="timestamp">
+              {new Date(activity.timestamp).toLocaleString("en-KE")}
+            </p>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
