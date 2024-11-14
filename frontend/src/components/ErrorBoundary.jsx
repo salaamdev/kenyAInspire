@@ -1,29 +1,31 @@
 import React from "react";
 
+// frontend/src/components/ErrorBoundary.jsx
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { hasError: false };
+    this.state = { hasError: false, error: null };
   }
 
   static getDerivedStateFromError(error) {
-    // Update state
-    return { hasError: true };
+    return { hasError: true, error };
   }
 
   componentDidCatch(error, errorInfo) {
-    // Log error
-    console.error("Error:", error, errorInfo);
+    console.error("Error caught by boundary:", error, errorInfo);
   }
 
   render() {
     if (this.state.hasError) {
-      // Fallback UI
-      return <h1>Something went wrong.</h1>;
+      return (
+        <div className="error-container">
+          <h2>Something went wrong.</h2>
+          <p>{this.state.error?.message}</p>
+          <button onClick={() => window.location.reload()}>Reload Page</button>
+        </div>
+      );
     }
-
     return this.props.children;
   }
 }
-
 export default ErrorBoundary;

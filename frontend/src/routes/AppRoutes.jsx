@@ -17,12 +17,24 @@ const Books = lazy(() => import("../pages/Books"));
 const Quiz = lazy(() => import("../pages/Quiz"));
 const FailedQuestions = lazy(() => import("../pages/FailedQuestions"));
 
-// New instructor pages
+// Instructor pages
 const InstructorLogin = lazy(() =>
   import("../instructor/pages/InstructorLogin")
 );
 const InstructorDashboard = lazy(() =>
   import("../instructor/pages/InstructorDashboard")
+);
+const InstructorAssignments = lazy(() =>
+  import("../instructor/pages/InstructorAssignments")
+);
+const InstructorMaterials = lazy(() =>
+  import("../instructor/pages/InstructorMaterials")
+);
+const InstructorGrades = lazy(() =>
+  import("../instructor/pages/InstructorGrades")
+);
+const InstructorSettings = lazy(() =>
+  import("../instructor/pages/InstructorSettings")
 );
 
 function AppRoutes() {
@@ -37,10 +49,17 @@ function AppRoutes() {
         {/* Instructor Routes */}
         <Route path="/instructor/login" element={<InstructorLogin />} />
         <Route
-          path="/instructor/dashboard"
+          path="/instructor/*"
           element={
             <InstructorPrivateRoute>
-              <InstructorDashboard />
+              <Routes>
+                <Route path="dashboard" element={<InstructorDashboard />} />
+                <Route path="assignments" element={<InstructorAssignments />} />
+                <Route path="materials" element={<InstructorMaterials />} />
+                <Route path="grades" element={<InstructorGrades />} />
+                <Route path="settings" element={<InstructorSettings />} />
+                {/* Additional instructor routes can be added here */}
+              </Routes>
             </InstructorPrivateRoute>
           }
         />

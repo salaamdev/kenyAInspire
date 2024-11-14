@@ -9,25 +9,19 @@ function InstructorLogin() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(""); // Clear previous errors
-    handleLogin({ email, password });
-  };
-
-  const handleLogin = async (credentials) => {
     try {
-      const user = await login(credentials);
+      const user = await login({ email, password });
       if (user.role === "teacher") {
         navigate("/instructor/dashboard");
       } else {
-        setError("Access denied: You are not an instructor.");
+        alert("Access denied: You are not an instructor.");
       }
     } catch (error) {
       console.error("Login Error:", error);
-      setError("Failed to login. Please check your credentials.");
+      alert("Failed to login. Please check your credentials.");
     }
   };
 
@@ -35,7 +29,6 @@ function InstructorLogin() {
     <div className="instructor-login">
       <form onSubmit={handleSubmit} className="login-form">
         <h2>Instructor Login</h2>
-        {error && <div className="error-message">{error}</div>}
         <div className="form-group">
           <label htmlFor="email">Email:</label>
           <input

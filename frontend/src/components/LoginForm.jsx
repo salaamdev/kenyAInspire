@@ -13,7 +13,9 @@ function LoginForm() {
     try {
       const user = await login(data);
       // Only redirect to student dashboard if not an instructor
-      if (user && user.role !== "teacher") {
+      if (user && user.role === "teacher") {
+        navigate("/instructor/dashboard");
+      } else {
         navigate("/dashboard");
       }
     } catch (error) {

@@ -1,4 +1,4 @@
-// src/instructor/components/InstructorPrivateRoute.jsx
+// frontend/src/instructor/routes/InstructorPrivateRoute.jsx
 
 import React from "react";
 import { Navigate } from "react-router-dom";
@@ -10,7 +10,7 @@ function InstructorPrivateRoute({ children }) {
   return user && user.role === "teacher" ? (
     children
   ) : (
-    <Navigate to="/instructor/login" />
+    <Navigate to="/dashboard" />
   );
 }
 
