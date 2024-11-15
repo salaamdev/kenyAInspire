@@ -127,7 +127,7 @@ function Analytics() {
           <FaGraduationCap className="stat-icon" />
           <div className="stat-info">
             <h3>Overall Grade</h3>
-            <p className="stat-value">A-</p>
+            <p className="stat-value">B+</p>
             <span className="stat-trend positive">↑ 2.3%</span>
           </div>
         </div>

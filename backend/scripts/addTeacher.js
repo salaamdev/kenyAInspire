@@ -8,9 +8,9 @@ const sequelize = require('../config/database');
     try {
         await sequelize.authenticate();
 
-        const name = 'Teacher Name'; // Replace with actual name or prompt for input
-        const email = 'teacher@example.com'; // Replace with actual email
-        const password = 'securepassword'; // Replace with actual password
+        const name = 'Cecilia Nanfuka'; // Replace with actual name or prompt for input
+        const email = 'cnanfuka@spu.ac.ke'; // Replace with actual email
+        const password = 'Abdiz01..'; // Replace with actual password
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
