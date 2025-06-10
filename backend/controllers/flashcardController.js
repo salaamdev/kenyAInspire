@@ -1,14 +1,12 @@
 // controllers/flashcardController.js
 
-const {Configuration, OpenAIApi} = require('openai');
+const OpenAI = require('openai');
 require('dotenv').config();
 
 // Initialize OpenAI
-const configuration = new Configuration({
+const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
 });
-
-const openai = new OpenAIApi(configuration);
 
 // Generate Flashcards
 exports.generateFlashcards = async (req, res) => {
@@ -37,16 +35,14 @@ exports.generateFlashcards = async (req, res) => {
                 make sure not other text is generated outside of the JSON array. Always use the same format for the flashcards. That is the only way to parse the response. Finally make sure the flashcards are related to the subject, for language based subjects, respond with the same language as the subject. 
                   `
             }
-        ];
-
-        const aiResponse = await openai.createChatCompletion({
+        ];        const aiResponse = await openai.chat.completions.create({
             model: 'gpt-4o-mini',
             messages,
             max_tokens: 500,
         });
 
         // Parse the AI response as JSON
-        const flashcardsText = aiResponse.data.choices[0].message.content.trim();
+        const flashcardsText = aiResponse.choices[0].message.content.trim();
         // console.log(flashcardsText);
         let flashcards;
 

@@ -1,14 +1,13 @@
 // backend/controllers/recommendationController.js
 
-const {Configuration, OpenAIApi} = require('openai');
+const OpenAI = require('openai');
 const {UserQuestion, Question} = require('../models');
 require('dotenv').config();
 
 // Initialize OpenAI
-const configuration = new Configuration({
+const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
 });
-const openai = new OpenAIApi(configuration);
 
 // Get AI-generated recommendations
 exports.getRecommendations = async (req, res) => {
@@ -39,10 +38,8 @@ exports.getRecommendations = async (req, res) => {
                     The questions are to be converted to topics. then search online and give 3 links for further reading.
                     `,
             },
-        ];
-
-        // Call OpenAI API with GPT-4
-        const aiResponse = await openai.createChatCompletion({
+        ];        // Call OpenAI API with GPT-4
+        const aiResponse = await openai.chat.completions.create({
             model: 'gpt-4o-mini',
             messages: messages,
             max_tokens: 500,
@@ -51,7 +48,7 @@ exports.getRecommendations = async (req, res) => {
         // Send the AI response back to the client
         res.status(200).json({
             success: true,
-            recommendations: aiResponse.data.choices[0].message.content,
+            recommendations: aiResponse.choices[0].message.content,
         });
     } catch (error) {
         console.error(error);

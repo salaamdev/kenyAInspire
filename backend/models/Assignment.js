@@ -4,14 +4,6 @@ const sequelize = require('../config/database');
 const Assignment = sequelize.define(
     'Assignment',
     {
-        createdBy: {
-            type: DataTypes.INTEGER,
-            allowNull: true,
-            references: {
-                model: 'instructors',
-                key: 'id'
-            }
-        },
         id: {
             type: DataTypes.INTEGER,
             autoIncrement: true,

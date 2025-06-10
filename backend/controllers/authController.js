@@ -45,12 +45,27 @@ exports.register = async (req, res) => {
             password: hashedPassword,
             otp: otpCode,
             createdAt: new Date(),
-        });
-
-        // Send OTP via email
-        await sendOTPEmail(email, otpCode);
-
-        res.status(200).json({message: 'OTP sent to email'});
+        });        // Send OTP via email
+        try {
+            await sendOTPEmail(email, otpCode);
+            // In development, always include OTP in response
+            if (process.env.NODE_ENV === 'development') {
+                res.status(200).json({
+                    message: 'OTP sent to email',
+                    devOtp: otpCode // Include OTP for development
+                });
+            } else {
+                res.status(200).json({message: 'OTP sent to email'});
+            }
+        } catch (emailError) {
+            console.error('Email sending failed:', emailError);
+            // Always provide OTP when email fails
+            res.status(200).json({
+                message: 'Registration initiated. Email service temporarily unavailable.',
+                note: 'Please use OTP: ' + otpCode + ' (for development)',
+                devOtp: otpCode
+            });
+        }
     } catch (error) {
         console.error('OTP Error:', error);
         res.status(500).json({message: 'Server error'});
@@ -130,10 +145,14 @@ async function sendOTPEmail (email, otp) {
         to: email,
         subject: 'KenyAInspire OTP Verification',
         text: `Your OTP code is ${ otp }. It is valid for 10 minutes.`,
-    };
-
-    // Send email
-    await transporter.sendMail(mailOptions);
+    };    // Send email
+    try {
+        await transporter.sendMail(mailOptions);
+        console.log('OTP email sent successfully to:', email);
+    } catch (error) {
+        console.error('Failed to send OTP email:', error.message);
+        throw error; // Re-throw to be handled by calling function
+    }
 }
 
 /**

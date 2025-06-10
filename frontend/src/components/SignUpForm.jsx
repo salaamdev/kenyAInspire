@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { registerUser, verifyOTP } from "../services/api";
 import { Link, useNavigate } from "react-router-dom";
@@ -11,19 +11,30 @@ function SignUpForm() {
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm();
-  const [otpSent, setOtpSent] = useState(false);
+  } = useForm();  const [otpSent, setOtpSent] = useState(false);
   const [emailForOtp, setEmailForOtp] = useState("");
   const [otpError, setOtpError] = useState("");
+  const [otpMessage, setOtpMessage] = useState("");
+  const [devOtp, setDevOtp] = useState("");
 
   const password = watch("password");
 
   const onSubmit = async (data) => {
     if (!otpSent) {
-      try {
-        await registerUser({ ...data, action: "request_otp" });
+      try {        const response = await registerUser({ ...data, action: "request_otp" });
         setOtpSent(true);
         setEmailForOtp(data.email);
+        setOtpMessage(response.message);
+        
+        // Check if OTP is provided in response (for development)
+        if (response.devOtp) {
+          setDevOtp(response.devOtp);
+        } else if (response.note && response.note.includes("OTP:")) {
+          const otpMatch = response.note.match(/OTP:\s*(\d+)/);
+          if (otpMatch) {
+            setDevOtp(otpMatch[1]);
+          }
+        }
       } catch (error) {
         console.error("Registration Error:", error);
       }
@@ -99,10 +110,22 @@ function SignUpForm() {
             <button type="submit" className="form-button">
               Sign Up
             </button>
-          </>
-        ) : (
+          </>        ) : (
           <>
-            <p>An OTP has been sent to {emailForOtp}. Please enter it below:</p>
+            <p>{otpMessage || `An OTP has been sent to ${emailForOtp}. Please enter it below:`}</p>
+            {devOtp && (
+              <div style={{ 
+                background: '#f0f8ff', 
+                padding: '10px', 
+                margin: '10px 0', 
+                borderRadius: '4px',
+                border: '1px solid #0066cc'
+              }}>
+                <strong>Development OTP: {devOtp}</strong>
+                <br />
+                <small>Email service is temporarily unavailable. Use this OTP for testing.</small>
+              </div>
+            )}
             <input
               type="text"
               placeholder="Enter OTP"

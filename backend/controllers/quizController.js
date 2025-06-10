@@ -1,14 +1,13 @@
 // controllers/quizController.js
 
-const {Configuration, OpenAIApi} = require('openai');
+const OpenAI = require('openai');
 const {User, Question, UserQuestion} = require('../models');
 require('dotenv').config();
 
 // Initialize OpenAI
-const configuration = new Configuration({
+const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
 });
-const openai = new OpenAIApi(configuration);
 
 // Generate Quiz Questions
 exports.generateQuiz = async (req, res) => {
@@ -59,16 +58,14 @@ exports.generateQuiz = async (req, res) => {
         messages.push({
             role: 'user',
             content: `Generate 7 new multiple-choice questions for ${ subject } at grade ${ grade }.`,
-        });
-
-        // OpenAI API call
-        const aiResponse = await openai.createChatCompletion({
+        });        // OpenAI API call
+        const aiResponse = await openai.chat.completions.create({
             model: 'gpt-4o-mini',
             messages: messages,
             max_tokens: 1500,
         });
 
-        const questionsText = aiResponse.data.choices[0].message.content.trim();
+        const questionsText = aiResponse.choices[0].message.content.trim();
         console.log(questionsText);
         // Parse the AI response into questions
         const questionsArray = parseQuestions(questionsText);

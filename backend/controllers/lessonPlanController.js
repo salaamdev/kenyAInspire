@@ -1,12 +1,11 @@
 // backend/controllers/lessonPlanController.js
-const {Configuration, OpenAIApi} = require('openai');
+const OpenAI = require('openai');
 require('dotenv').config();
 
 // Initialize OpenAI
-const configuration = new Configuration({
+const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
 });
-const openai = new OpenAIApi(configuration);
 
 exports.generateLessonPlan = async (req, res) => {
   const {subject, grade, unit, topic} = req.body;
@@ -52,16 +51,14 @@ exports.generateLessonPlan = async (req, res) => {
         role: "user",
         content: `Create a detailed lesson plan for ${subject} Grade ${grade}, Unit ${unit}: ${topic}`
       }
-    ];
-
-    const completion = await openai.createChatCompletion({
+    ];    const completion = await openai.chat.completions.create({
       model: 'gpt-4o-mini',
       messages,
       temperature: 0.7,
       max_tokens: 2000
     });
 
-    const lessonPlan = completion.data.choices[0].message.content;
+    const lessonPlan = completion.choices[0].message.content;
 
     res.json({
       success: true,

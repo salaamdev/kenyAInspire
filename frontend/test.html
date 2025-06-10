@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KenyAInspire API Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin-bottom: 20px; padding: 10px; border: 1px solid #ccc; }
+        .result { margin-top: 10px; padding: 10px; background: #f9f9f9; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+        input { padding: 8px; margin: 5px; width: 200px; }
+    </style>
+</head>
+<body>
+    <h1>KenyAInspire API Test Page</h1>
+    
+    <div class="test-section">
+        <h3>1. Test Announcements (Public)</h3>
+        <button onclick="testAnnouncements()">Get Announcements</button>
+        <div id="announcements-result" class="result"></div>
+    </div>
+
+    <div class="test-section">
+        <h3>2. Test Student Registration</h3>
+        <input type="text" id="reg-name" placeholder="Name" value="Test User">
+        <input type="email" id="reg-email" placeholder="Email" value="test@example.com">
+        <input type="password" id="reg-password" placeholder="Password" value="password123">
+        <button onclick="testRegistration()">Register</button>
+        <div id="registration-result" class="result"></div>
+    </div>
+
+    <div class="test-section">
+        <h3>3. Test Student Login</h3>
+        <input type="email" id="login-email" placeholder="Email" value="student@example.com">
+        <input type="password" id="login-password" placeholder="Password" value="password123">
+        <button onclick="testLogin()">Login</button>
+        <div id="login-result" class="result"></div>
+    </div>
+
+    <div class="test-section">
+        <h3>4. Test Teacher Login</h3>
+        <input type="email" id="teacher-email" placeholder="Email" value="teacher@example.com">
+        <input type="password" id="teacher-password" placeholder="Password" value="password123">
+        <button onclick="testTeacherLogin()">Teacher Login</button>
+        <div id="teacher-result" class="result"></div>
+    </div>
+
+    <script>
+        let studentToken = '';
+        let teacherToken = '';
+
+        async function testAnnouncements() {
+            try {
+                const response = await fetch('http://localhost:5000/api/announcements');
+                const data = await response.json();
+                document.getElementById('announcements-result').innerHTML = `
+                    <strong>Status:</strong> ${response.status}<br>
+                    <strong>Data:</strong> <pre>${JSON.stringify(data, null, 2)}</pre>
+                `;
+            } catch (error) {
+                document.getElementById('announcements-result').innerHTML = `<strong>Error:</strong> ${error.message}`;
+            }
+        }
+
+        async function testRegistration() {
+            try {
+                const name = document.getElementById('reg-name').value;
+                const email = document.getElementById('reg-email').value;
+                const password = document.getElementById('reg-password').value;
+                
+                const response = await fetch('http://localhost:5000/api/auth/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, password, action: 'request_otp' })
+                });
+                const data = await response.json();
+                document.getElementById('registration-result').innerHTML = `
+                    <strong>Status:</strong> ${response.status}<br>
+                    <strong>Data:</strong> <pre>${JSON.stringify(data, null, 2)}</pre>
+                `;
+            } catch (error) {
+                document.getElementById('registration-result').innerHTML = `<strong>Error:</strong> ${error.message}`;
+            }
+        }
+
+        async function testLogin() {
+            try {
+                const email = document.getElementById('login-email').value;
+                const password = document.getElementById('login-password').value;
+                
+                const response = await fetch('http://localhost:5000/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await response.json();
+                if (data.token) studentToken = data.token;
+                document.getElementById('login-result').innerHTML = `
+                    <strong>Status:</strong> ${response.status}<br>
+                    <strong>Data:</strong> <pre>${JSON.stringify(data, null, 2)}</pre>
+                `;
+            } catch (error) {
+                document.getElementById('login-result').innerHTML = `<strong>Error:</strong> ${error.message}`;
+            }
+        }
+
+        async function testTeacherLogin() {
+            try {
+                const email = document.getElementById('teacher-email').value;
+                const password = document.getElementById('teacher-password').value;
+                
+                const response = await fetch('http://localhost:5000/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await response.json();
+                if (data.token) teacherToken = data.token;
+                document.getElementById('teacher-result').innerHTML = `
+                    <strong>Status:</strong> ${response.status}<br>
+                    <strong>Data:</strong> <pre>${JSON.stringify(data, null, 2)}</pre>
+                `;
+            } catch (error) {
+                document.getElementById('teacher-result').innerHTML = `<strong>Error:</strong> ${error.message}`;
+            }
+        }
+    </script>
+</body>
+</html>
